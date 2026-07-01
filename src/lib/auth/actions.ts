@@ -33,7 +33,7 @@ export async function loginAction(
     return { error: "Correo o contraseña incorrectos" };
   }
 
-  redirect("/catalogo");
+  redirect("/");
 }
 
 export async function logoutAction() {

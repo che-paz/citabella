@@ -117,3 +117,30 @@ INSERT INTO paquetes (id, salon_id, nombre, precio, duracion_minutos) VALUES
 INSERT INTO paquete_servicios (paquete_id, servicio_id, orden) VALUES
   ('ffffffff-ffff-ffff-ffff-ffffffffffff', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 1),
   ('ffffffff-ffff-ffff-ffff-ffffffffffff', 'cccccccc-cccc-cccc-cccc-cccccccccccc', 2);
+
+-- Clientas
+INSERT INTO clientas (id, salon_id, nombre, telefono, email) VALUES
+  ('44444444-4444-4444-4444-444444444444', '11111111-1111-1111-1111-111111111111', 'Sofía Martínez', '50255501001', 'sofia@example.com'),
+  ('55555555-5555-5555-5555-555555555555', '11111111-1111-1111-1111-111111111111', 'Carmen Reyes', '50255501002', NULL),
+  ('66666666-6666-6666-6666-666666666666', '11111111-1111-1111-1111-111111111111', 'Laura Méndez', '50255501003', 'laura@example.com');
+
+-- Horarios: Lun–Sáb (domingo cerrado)
+INSERT INTO horarios_salon (salon_id, dia_semana, hora_inicio, hora_fin) VALUES
+  ('11111111-1111-1111-1111-111111111111', 1, '09:00', '18:00'),
+  ('11111111-1111-1111-1111-111111111111', 2, '09:00', '18:00'),
+  ('11111111-1111-1111-1111-111111111111', 3, '09:00', '18:00'),
+  ('11111111-1111-1111-1111-111111111111', 4, '09:00', '18:00'),
+  ('11111111-1111-1111-1111-111111111111', 5, '09:00', '18:00'),
+  ('11111111-1111-1111-1111-111111111111', 6, '09:00', '14:00');
+
+-- Excepción: Navidad cerrado
+INSERT INTO excepciones_horario (salon_id, fecha, cerrado) VALUES
+  ('11111111-1111-1111-1111-111111111111', '2026-12-25', true);
+
+-- Citas de prueba (America/Guatemala, colaboradora María)
+INSERT INTO citas (id, salon_id, clienta_id, servicio_id, colaboradora_id, inicio, fin, estado, creada_por) VALUES
+  ('77777777-7777-7777-7777-777777777771', '11111111-1111-1111-1111-111111111111', '44444444-4444-4444-4444-444444444444', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '33333333-3333-3333-3333-333333333333', '2026-07-02T16:00:00Z', '2026-07-02T17:00:00Z', 'confirmada', 'admin'),
+  ('77777777-7777-7777-7777-777777777772', '11111111-1111-1111-1111-111111111111', '55555555-5555-5555-5555-555555555555', 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '33333333-3333-3333-3333-333333333333', '2026-07-02T20:00:00Z', '2026-07-02T22:00:00Z', 'pendiente', 'admin'),
+  ('77777777-7777-7777-7777-777777777773', '11111111-1111-1111-1111-111111111111', '66666666-6666-6666-6666-666666666666', 'dddddddd-dddd-dddd-dddd-dddddddddddd', '33333333-3333-3333-3333-333333333333', '2026-07-03T15:00:00Z', '2026-07-03T15:30:00Z', 'confirmada', 'colaboradora'),
+  ('77777777-7777-7777-7777-777777777774', '11111111-1111-1111-1111-111111111111', '44444444-4444-4444-4444-444444444444', 'cccccccc-cccc-cccc-cccc-cccccccccccc', '33333333-3333-3333-3333-333333333333', '2026-07-04T17:00:00Z', '2026-07-04T17:45:00Z', 'cancelada', 'admin'),
+  ('77777777-7777-7777-7777-777777777775', '11111111-1111-1111-1111-111111111111', '55555555-5555-5555-5555-555555555555', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', '33333333-3333-3333-3333-333333333333', '2026-07-05T21:00:00Z', '2026-07-05T22:00:00Z', 'pendiente_validacion', 'admin');

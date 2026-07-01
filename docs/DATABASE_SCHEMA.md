@@ -212,6 +212,21 @@ CREATE POLICY "tenant_select" ON citas FOR SELECT
 
 > Detalle completo de políticas: implementar en `supabase/migrations/002_rls_policies.sql`
 
+### RLS — Link público (migración 005)
+
+Helpers: `is_public_salon()`, `get_salon_id_by_slug()`, `upsert_clienta_public()`
+
+| Tabla | anon SELECT | anon INSERT |
+|-------|-------------|-------------|
+| salones | activo=true | — |
+| servicios, paquetes | activo + salón activo | — |
+| horarios_salon, excepciones_horario | salón activo | — |
+| citas | salón activo (disponibilidad) | `creada_por=clienta`, `pendiente_validacion` |
+| pagos | citas de clienta | `pendiente`, ligado a cita válida |
+| clientas | — | vía RPC `upsert_clienta_public` |
+
+Storage `comprobantes` (privado): anon INSERT/UPDATE solo si cita existe en path; admin SELECT por `salon_id`.
+
 ## Enums
 
 ```sql

@@ -225,3 +225,188 @@ ALTER TABLE planes_suscripcion ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "planes_suscripcion_select" ON planes_suscripcion
   FOR SELECT TO authenticated
   USING (true);
+
+-- ========== 003_agenda_schema.sql ==========
+
+CREATE TYPE cita_estado AS ENUM (
+  'pendiente',
+  'pendiente_validacion',
+  'confirmada',
+  'cancelada',
+  'completada',
+  'no_show'
+);
+
+CREATE TYPE cita_creada_por AS ENUM ('admin', 'clienta', 'colaboradora');
+
+CREATE TABLE clientas (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  salon_id UUID NOT NULL REFERENCES salones(id) ON DELETE CASCADE,
+  nombre TEXT NOT NULL,
+  telefono TEXT,
+  email TEXT,
+  fecha_nacimiento DATE,
+  notas TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_clientas_salon ON clientas(salon_id);
+
+CREATE TABLE horarios_salon (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  salon_id UUID NOT NULL REFERENCES salones(id) ON DELETE CASCADE,
+  dia_semana INT NOT NULL CHECK (dia_semana >= 0 AND dia_semana <= 6),
+  hora_inicio TIME NOT NULL,
+  hora_fin TIME NOT NULL,
+  CHECK (hora_fin > hora_inicio)
+);
+
+CREATE INDEX idx_horarios_salon_salon ON horarios_salon(salon_id);
+CREATE UNIQUE INDEX idx_horarios_salon_dia ON horarios_salon(salon_id, dia_semana);
+
+CREATE TABLE excepciones_horario (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  salon_id UUID NOT NULL REFERENCES salones(id) ON DELETE CASCADE,
+  fecha DATE NOT NULL,
+  cerrado BOOLEAN NOT NULL DEFAULT true,
+  hora_inicio TIME,
+  hora_fin TIME,
+  CHECK (
+    (cerrado = true AND hora_inicio IS NULL AND hora_fin IS NULL)
+    OR (cerrado = false AND hora_inicio IS NOT NULL AND hora_fin IS NOT NULL AND hora_fin > hora_inicio)
+  )
+);
+
+CREATE INDEX idx_excepciones_salon_fecha ON excepciones_horario(salon_id, fecha);
+CREATE UNIQUE INDEX idx_excepciones_salon_fecha_unique ON excepciones_horario(salon_id, fecha);
+
+CREATE TABLE citas (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  salon_id UUID NOT NULL REFERENCES salones(id) ON DELETE CASCADE,
+  clienta_id UUID NOT NULL REFERENCES clientas(id) ON DELETE RESTRICT,
+  servicio_id UUID REFERENCES servicios(id) ON DELETE RESTRICT,
+  paquete_id UUID REFERENCES paquetes(id) ON DELETE RESTRICT,
+  colaboradora_id UUID REFERENCES usuarios(id) ON DELETE SET NULL,
+  inicio TIMESTAMPTZ NOT NULL,
+  fin TIMESTAMPTZ NOT NULL,
+  estado cita_estado NOT NULL DEFAULT 'pendiente',
+  notas TEXT,
+  creada_por cita_creada_por NOT NULL DEFAULT 'admin',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  CHECK (fin > inicio),
+  CHECK (
+    (servicio_id IS NOT NULL AND paquete_id IS NULL)
+    OR (servicio_id IS NULL AND paquete_id IS NOT NULL)
+  )
+);
+
+CREATE TRIGGER citas_updated_at
+  BEFORE UPDATE ON citas
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE INDEX idx_citas_salon_inicio ON citas(salon_id, inicio);
+CREATE INDEX idx_citas_colaboradora ON citas(colaboradora_id, inicio);
+
+-- ========== 004_agenda_rls.sql ==========
+
+ALTER TABLE clientas ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "clientas_select" ON clientas
+  FOR SELECT TO authenticated
+  USING (salon_id = get_user_salon_id());
+
+CREATE POLICY "clientas_insert" ON clientas
+  FOR INSERT TO authenticated
+  WITH CHECK (
+    salon_id = get_user_salon_id()
+    AND get_user_rol() = 'admin_salon'
+  );
+
+CREATE POLICY "clientas_update" ON clientas
+  FOR UPDATE TO authenticated
+  USING (salon_id = get_user_salon_id() AND get_user_rol() = 'admin_salon')
+  WITH CHECK (salon_id = get_user_salon_id());
+
+ALTER TABLE horarios_salon ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "horarios_salon_select" ON horarios_salon
+  FOR SELECT TO authenticated
+  USING (salon_id = get_user_salon_id());
+
+CREATE POLICY "horarios_salon_insert" ON horarios_salon
+  FOR INSERT TO authenticated
+  WITH CHECK (
+    salon_id = get_user_salon_id()
+    AND get_user_rol() = 'admin_salon'
+  );
+
+CREATE POLICY "horarios_salon_update" ON horarios_salon
+  FOR UPDATE TO authenticated
+  USING (salon_id = get_user_salon_id() AND get_user_rol() = 'admin_salon')
+  WITH CHECK (salon_id = get_user_salon_id());
+
+CREATE POLICY "horarios_salon_delete" ON horarios_salon
+  FOR DELETE TO authenticated
+  USING (salon_id = get_user_salon_id() AND get_user_rol() = 'admin_salon');
+
+ALTER TABLE excepciones_horario ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "excepciones_horario_select" ON excepciones_horario
+  FOR SELECT TO authenticated
+  USING (salon_id = get_user_salon_id());
+
+CREATE POLICY "excepciones_horario_insert" ON excepciones_horario
+  FOR INSERT TO authenticated
+  WITH CHECK (
+    salon_id = get_user_salon_id()
+    AND get_user_rol() = 'admin_salon'
+  );
+
+CREATE POLICY "excepciones_horario_update" ON excepciones_horario
+  FOR UPDATE TO authenticated
+  USING (salon_id = get_user_salon_id() AND get_user_rol() = 'admin_salon')
+  WITH CHECK (salon_id = get_user_salon_id());
+
+CREATE POLICY "excepciones_horario_delete" ON excepciones_horario
+  FOR DELETE TO authenticated
+  USING (salon_id = get_user_salon_id() AND get_user_rol() = 'admin_salon');
+
+ALTER TABLE citas ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "citas_select" ON citas
+  FOR SELECT TO authenticated
+  USING (
+    salon_id = get_user_salon_id()
+    AND (
+      get_user_rol() = 'admin_salon'
+      OR colaboradora_id = auth.uid()
+    )
+  );
+
+CREATE POLICY "citas_insert" ON citas
+  FOR INSERT TO authenticated
+  WITH CHECK (
+    salon_id = get_user_salon_id()
+    AND (
+      get_user_rol() = 'admin_salon'
+      OR (get_user_rol() = 'colaboradora' AND colaboradora_id = auth.uid())
+    )
+  );
+
+CREATE POLICY "citas_update" ON citas
+  FOR UPDATE TO authenticated
+  USING (
+    salon_id = get_user_salon_id()
+    AND (
+      get_user_rol() = 'admin_salon'
+      OR colaboradora_id = auth.uid()
+    )
+  )
+  WITH CHECK (
+    salon_id = get_user_salon_id()
+    AND (
+      get_user_rol() = 'admin_salon'
+      OR colaboradora_id = auth.uid()
+    )
+  );

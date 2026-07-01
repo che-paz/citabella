@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   Calendar,
   CreditCard,
+  Home,
   LayoutGrid,
   LogOut,
   Menu,
@@ -24,20 +25,31 @@ import { Separator } from "@/components/ui/separator";
 import type { AuthUser } from "@/types/database";
 
 const navItems = [
+  { href: "/", label: "Inicio", icon: Home, exact: true },
+  { href: "/agenda", label: "Agenda", icon: Calendar },
+  { href: "/clientas", label: "Clientas", icon: Users },
   { href: "/catalogo", label: "Catálogo", icon: LayoutGrid },
-  { href: "/agenda", label: "Agenda", icon: Calendar, placeholder: true },
-  { href: "/clientas", label: "Clientas", icon: Users, placeholder: true },
-  { href: "/pagos", label: "Pagos", icon: CreditCard, placeholder: true },
+  { href: "/pagos", label: "Pagos", icon: CreditCard, adminOnly: true },
 ];
 
-function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
+function NavLinks({
+  onNavigate,
+  isAdmin,
+}: {
+  onNavigate?: () => void;
+  isAdmin: boolean;
+}) {
   const pathname = usePathname();
 
   return (
     <nav className="flex flex-col gap-1">
-      {navItems.map((item) => {
+      {navItems
+        .filter((item) => !item.adminOnly || isAdmin)
+        .map((item) => {
         const Icon = item.icon;
-        const isActive = pathname.startsWith(item.href);
+        const isActive = item.exact
+          ? pathname === item.href
+          : pathname.startsWith(item.href);
 
         return (
           <Link
@@ -49,14 +61,10 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
               isActive
                 ? "bg-primary text-primary-foreground"
                 : "text-muted-foreground hover:bg-muted hover:text-foreground",
-              item.placeholder && !isActive && "opacity-70"
             )}
           >
             <Icon className="h-4 w-4" />
             {item.label}
-            {item.placeholder && (
-              <span className="ml-auto text-xs opacity-60">Próximo</span>
-            )}
           </Link>
         );
       })}
@@ -73,7 +81,7 @@ export function DashboardNav({ user }: { user: AuthUser }) {
           <span className="text-lg font-semibold">CitaBella</span>
         </div>
         <div className="flex flex-1 flex-col p-4">
-          <NavLinks />
+          <NavLinks isAdmin={user.rol === "admin_salon"} />
           <div className="mt-auto space-y-3 pt-4">
             <Separator />
             <div className="px-3 text-sm">
@@ -108,7 +116,7 @@ export function DashboardNav({ user }: { user: AuthUser }) {
               <SheetTitle>{user.salon.nombre}</SheetTitle>
             </SheetHeader>
             <div className="mt-6 flex flex-1 flex-col">
-              <NavLinks />
+              <NavLinks isAdmin={user.rol === "admin_salon"} />
               <div className="mt-auto space-y-3 pt-6">
                 <Separator />
                 <p className="px-3 text-sm text-muted-foreground">{user.nombre}</p>

@@ -1,7 +1,7 @@
 # Sprint 01 — Fundación + Catálogo
 
-> **Estado:** En progreso — Fase 0 completada, Sprint 1.1 pendiente  
-> **Fechas:** 2026-07-01 — _en curso_  
+> **Estado:** ✅ Completado  
+> **Fechas:** 2026-07-01  
 > **Fase:** 0 → 1.1
 
 ## Objetivo
@@ -23,10 +23,15 @@ Establecer infraestructura multi-tenant y entregar CRUD de catálogo de servicio
 - [x] Layout dashboard con navegación (Catálogo activo, placeholders Agenda/Clientas/Pagos)
 - [x] `npm run build` exitoso
 
-### Sprint 1.1 — Catálogo 🔴
-- [ ] CRUD servicios
-- [ ] CRUD paquetes
-- [ ] Verificación RLS cross-tenant
+### Sprint 1.1 — Catálogo ✅
+- [x] CRUD servicios (listar, crear, editar, desactivar)
+- [x] CRUD paquetes (listar, crear, editar, desactivar)
+- [x] Toggle "Ver inactivos" en listado
+- [x] Reactivar servicios y paquetes inactivos
+- [x] Precios GTQ con `formatQuetzales()`
+- [x] Catálogo agrupado por categoría
+- [x] Solo `admin_salon` puede mutar; colaboradora solo lectura
+- [x] `npm run build` exitoso
 
 ## Decisiones tomadas
 
@@ -35,13 +40,15 @@ Establecer infraestructura multi-tenant y entregar CRUD de catálogo de servicio
 - Mutaciones de catálogo restringidas a `admin_salon` en RLS
 - Signup deshabilitado en Supabase config (solo usuarios creados por seed/admin)
 - UUIDs fijos en seed para reproducibilidad en tests locales
+- Soft delete en catálogo (`activo=false`) en lugar de DELETE físico
+- Server Actions + zod para validación de formularios de catálogo
 
 ## Deuda técnica
 
 - JWT custom claim para `rol` no implementado (se lee de `usuarios` en cada request)
 - Segundo tenant de prueba en seed para validar RLS cross-tenant (pendiente)
 - Warning Edge Runtime con `@supabase/supabase-js` en middleware (aceptable en MVP)
-- zod v4 instalado; verificar compatibilidad con `@hookform/resolvers` en Parte B
+- zod v4 compatible con Server Actions; `@hookform/resolvers` no usado en catálogo (useFormState)
 
 ## Próximo sprint
 
@@ -51,9 +58,10 @@ Establecer infraestructura multi-tenant y entregar CRUD de catálogo de servicio
 
 ```
 package.json, tailwind.config.ts, components.json
-src/app/(auth)/, src/app/(dashboard)/
-src/lib/supabase/, src/lib/auth/
+src/app/(auth)/, src/app/(dashboard)/catalogo/
+src/lib/supabase/, src/lib/auth/, src/lib/catalogo/
 src/components/ui/, src/components/dashboard/, src/components/auth/
+src/components/catalogo/
 src/types/database.ts
 supabase/migrations/001_initial_schema.sql
 supabase/migrations/002_rls_policies.sql

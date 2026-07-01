@@ -2,16 +2,16 @@
 
 > **Módulo:** Core  
 > **Fase:** 1 (básico) / 2 (métricas ampliadas)  
-> **Estado:** 🔴 Pendiente  
+> **Estado:** 🟢 MVP completado  
 > **Sprint objetivo:** 1.4
 
 ## User stories — MVP
 
 ### Admin
-- [ ] Ver citas del día (próximas y en curso)
-- [ ] Ver pagos pendientes de validación (badge/cola)
-- [ ] Ver ingresos del día (suma pagos validados)
-- [ ] Accesos rápidos: nueva cita, validar pago, ver agenda
+- [x] Ver citas del día (próximas y en curso)
+- [x] Ver pagos pendientes de validación (badge/cola)
+- [x] Ver ingresos del día (suma pagos validados)
+- [x] Accesos rápidos: nueva cita, validar pago, ver agenda
 
 ## User stories — Fase 2
 
@@ -36,13 +36,15 @@
 | Ingresos hoy | `pagos` WHERE estado = validado AND today |
 | Acciones rápidas | Links internos |
 
-## Archivos de código (planificados)
+## Archivos de código
 
 ```
 src/app/(dashboard)/page.tsx          # Dashboard home
+src/lib/dashboard/queries.ts          # Citas hoy, pagos pendientes, ingresos
 src/components/dashboard/CitasHoy.tsx
 src/components/dashboard/PagosPendientes.tsx
 src/components/dashboard/IngresosHoy.tsx
+src/components/dashboard/AccionesRapidas.tsx
 ```
 
 ## Tablas DB

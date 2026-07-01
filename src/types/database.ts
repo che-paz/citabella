@@ -55,6 +55,16 @@ export type PaqueteServicio = {
   orden: number;
 };
 
+export type PaqueteServicioDetalle = {
+  servicio_id: string;
+  orden: number;
+  nombre: string;
+};
+
+export type PaqueteConServicios = Paquete & {
+  servicios: PaqueteServicioDetalle[];
+};
+
 export type PlanSuscripcion = {
   id: string;
   tipo: PlanTipo;
@@ -76,5 +86,123 @@ export const SERVICE_CATEGORIES = [
 export type ServiceCategory = (typeof SERVICE_CATEGORIES)[number]["value"];
 
 export type AuthUser = Usuario & {
-  salon: Pick<Salon, "id" | "nombre" | "slug" | "moneda">;
+  salon: Pick<Salon, "id" | "nombre" | "slug" | "moneda" | "timezone">;
+};
+
+export type CitaEstado =
+  | "pendiente"
+  | "pendiente_validacion"
+  | "confirmada"
+  | "cancelada"
+  | "completada"
+  | "no_show";
+
+export type CitaCreadaPor = "admin" | "clienta" | "colaboradora";
+
+export type Clienta = {
+  id: string;
+  salon_id: string;
+  nombre: string;
+  telefono: string | null;
+  email: string | null;
+  fecha_nacimiento: string | null;
+  notas: string | null;
+  created_at: string;
+};
+
+export type HorarioSalon = {
+  id: string;
+  salon_id: string;
+  dia_semana: number;
+  hora_inicio: string;
+  hora_fin: string;
+};
+
+export type ExcepcionHorario = {
+  id: string;
+  salon_id: string;
+  fecha: string;
+  cerrado: boolean;
+  hora_inicio: string | null;
+  hora_fin: string | null;
+};
+
+export type Cita = {
+  id: string;
+  salon_id: string;
+  clienta_id: string;
+  servicio_id: string | null;
+  paquete_id: string | null;
+  colaboradora_id: string | null;
+  inicio: string;
+  fin: string;
+  estado: CitaEstado;
+  notas: string | null;
+  creada_por: CitaCreadaPor;
+  created_at: string;
+  updated_at: string;
+};
+
+export type CitaConDetalle = Cita & {
+  clienta: Pick<Clienta, "id" | "nombre" | "telefono">;
+  colaboradora: Pick<Usuario, "id" | "nombre"> | null;
+  servicio: Pick<Servicio, "id" | "nombre" | "duracion_minutos"> | null;
+  paquete: Pick<Paquete, "id" | "nombre" | "duracion_minutos"> | null;
+};
+
+export const CITA_ESTADO_LABELS: Record<CitaEstado, string> = {
+  pendiente: "Pendiente",
+  pendiente_validacion: "Pendiente validación",
+  confirmada: "Confirmada",
+  cancelada: "Cancelada",
+  completada: "Completada",
+  no_show: "No show",
+};
+
+export const DIA_SEMANA_LABELS = [
+  "Domingo",
+  "Lunes",
+  "Martes",
+  "Miércoles",
+  "Jueves",
+  "Viernes",
+  "Sábado",
+] as const;
+
+export type PagoMetodo = "transferencia" | "efectivo" | "fri";
+export type PagoEstado = "pendiente" | "validado" | "rechazado";
+
+export type Pago = {
+  id: string;
+  salon_id: string;
+  cita_id: string;
+  monto: number;
+  metodo: PagoMetodo;
+  comprobante_url: string | null;
+  estado: PagoEstado;
+  validado_por: string | null;
+  validado_at: string | null;
+  notas: string | null;
+  created_at: string;
+};
+
+export type SalonPublico = Pick<
+  Salon,
+  | "id"
+  | "nombre"
+  | "slug"
+  | "moneda"
+  | "timezone"
+  | "fri_link"
+  | "politica_reembolso"
+>;
+
+export type ReservaItem = {
+  tipo: "servicio" | "paquete";
+  id: string;
+  nombre: string;
+  precio: number;
+  duracion_minutos: number;
+  categoria?: string;
+  servicios?: { nombre: string }[];
 };

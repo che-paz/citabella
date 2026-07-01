@@ -25,7 +25,8 @@ export async function getAuthUser(): Promise<AuthUser | null> {
         id,
         nombre,
         slug,
-        moneda
+        moneda,
+        timezone
       )
     `
     )

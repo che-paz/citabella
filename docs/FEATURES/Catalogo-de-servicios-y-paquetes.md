@@ -2,16 +2,18 @@
 
 > **Módulo:** Core  
 > **Fase:** 1 (MVP)  
-> **Estado:** 🔴 Pendiente  
+> **Estado:** 🟢 Completado (Sprint 1.1)  
 > **Sprint objetivo:** 1.1
 
 ## User stories
 
 ### Admin
-- [ ] Crear servicio: nombre, categoría, precio, duración, descripción
-- [ ] Editar y desactivar servicio (no eliminar si tiene citas)
-- [ ] Crear paquete: nombre, servicios incluidos, precio, duración total
-- [ ] Ver catálogo organizado por categoría
+- [x] Crear servicio: nombre, categoría, precio, duración, descripción
+- [x] Editar y desactivar servicio (no eliminar si tiene citas)
+- [x] Reactivar servicio desactivado
+- [x] Crear paquete: nombre, servicios incluidos, precio, duración total
+- [x] Editar, desactivar y reactivar paquete
+- [x] Ver catálogo organizado por categoría
 
 ### Clienta (link público)
 - [ ] Ver servicios activos con precio y duración estimada
@@ -33,13 +35,14 @@
 3. Paquete muestra precio final (puede diferir de suma de servicios)
 4. Precio en GTQ con formato local
 
-## Archivos de código (planificados)
+## Archivos de código
 
 ```
-src/app/(dashboard)/catalogo/
+src/app/(dashboard)/catalogo/page.tsx
 src/components/catalogo/ServicioForm.tsx
 src/components/catalogo/PaqueteForm.tsx
 src/components/catalogo/CatalogoList.tsx
+src/lib/catalogo/actions.ts
 ```
 
 ## Tablas DB
@@ -54,3 +57,11 @@ src/components/catalogo/CatalogoList.tsx
 
 - Agenda y reservas (necesita duraciones)
 - Link público de reserva
+
+## Notas de implementación
+
+- Mutaciones vía Server Actions con validación zod
+- Desactivar = `activo=false` (soft delete); reactivar = `activo=true`
+- Colaboradora: solo lectura en UI (`isAdmin` controla botones de edición)
+- Toggle "Ver inactivos" muestra items inactivos con botón Reactivar
+- Paquetes: junction `paquete_servicios` se reemplaza (delete + insert) al editar

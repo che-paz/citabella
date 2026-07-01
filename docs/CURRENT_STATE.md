@@ -1,23 +1,23 @@
 # CITABELLA — Current State
 
 > **Última actualización:** 2026-07-01  
-> **Sprint activo:** Sprint 01 — Fundación + Catálogo (Parte B pendiente)  
-> **Fase:** Fase 0 ✅ completada | Sprint 1.1 catálogo 🔴 pendiente
+> **Sprint activo:** Sprint 1.4 ✅ (dashboard + clientas completados; deploy pendiente)  
+> **Fase:** Fase 0 ✅ | Sprint 1.1 ✅ | Sprint 02 ✅ | Sprint 1.4 ✅ (excepto deploy)
 
 ## Resumen en una línea
 
-Fase 0 operativa: login admin con Supabase Cloud, migraciones aplicadas, dashboard con nav. CRUD de catálogo pendiente.
+MVP operativo en local: catálogo, agenda, link público, validación de pagos, dashboard home y CRUD clientas. Falta deploy Vercel.
 
 ## Estado por área
 
 | Área | Estado | Notas |
 |------|--------|-------|
-| Documentación | 🟢 Al día | Estructura `docs/` completa |
-| Repositorio / código | 🟡 En progreso | Fase 0 entregada; catálogo pendiente |
-| Base de datos | 🟡 En progreso | Migraciones + seed listos; aplicar con Supabase CLI |
-| Supabase | 🟢 Operativo | Cloud configurado; login verificado con seed |
+| Documentación | 🟢 Al día | Sprint 02 + fixes documentados |
+| Repositorio / código | 🟢 MVP core | Flujo reserva + validación pagos verificado |
+| Base de datos | 🟢 Migraciones 005/006 | Aplicadas en cloud (usuario confirmó) |
+| Supabase | 🟢 Operativo | RLS público + bucket `comprobantes` + service role |
 | Deploy | 🔴 No iniciado | Vercel pendiente |
-| Prototipo UI | 🟡 Parcial | Login + dashboard nav funcionales |
+| Prototipo UI | 🟢 MVP core | Dashboard + clientas listos |
 | Marca / dominio | 🟡 Pendiente | "CitaBella" es placeholder |
 
 ## Decisiones tomadas
@@ -27,10 +27,20 @@ Fase 0 operativa: login admin con Supabase Cloud, migraciones aplicadas, dashboa
 - Disponibilidad de agenda: cálculo dinámico por duración de servicio
 - Suscripciones/planes desde MVP (founder / trial / pago)
 - Pagos MVP: comprobante manual + efectivo + instrucciones Fri (sin API)
-- **Nuevo:** `@supabase/ssr` para auth en App Router (server + middleware + browser)
-- **Nuevo:** Roles leídos desde `usuarios.rol`; RLS con helpers `get_user_salon_id()` / `get_user_rol()`
-- **Nuevo:** Solo `admin_salon` puede INSERT/UPDATE en servicios y paquetes (RLS)
-- **Nuevo:** zod v4 instalado (usa `.issues` en errores de validación)
+- `@supabase/ssr` para auth en App Router (server + middleware + browser)
+- Roles leídos desde `usuarios.rol`; RLS con helpers `get_user_salon_id()` / `get_user_rol()`
+- Solo `admin_salon` puede INSERT/UPDATE en servicios y paquetes (RLS)
+- zod v4 instalado (usa `.issues` en errores de validación)
+- Soft delete en catálogo (`activo=false`); reactivar con `activo=true`
+- Motor disponibilidad puro en `src/lib/availability/` (testeable sin DB)
+- Slots cada 15 min; timezone del salón vía `Intl` (sin dependencia extra)
+- vitest para tests unitarios del motor de disponibilidad
+- Colaboradora ve solo citas con `colaboradora_id = auth.uid()` (RLS)
+- Link público: RLS `anon` + RPC `upsert_clienta_public`
+- Reserva pública → `pendiente_validacion`; aprobar pago → `confirmada`; rechazar/cancelar → `cancelada` (libera slot)
+- Comprobantes: Storage privado + `SUPABASE_SERVICE_ROLE_KEY` en server para upload
+- Slots disponibles: query solo citas bloqueantes (`pendiente`, `pendiente_validacion`, `confirmada`)
+- Validación pagos: `/pagos` admin — aprobar/rechazar + signed URL comprobante
 
 ## Decisiones pendientes
 
@@ -38,22 +48,24 @@ Fase 0 operativa: login admin con Supabase Cloud, migraciones aplicadas, dashboa
 - [ ] Prototipo navegable validado con founders
 - [ ] Tiers y precios del plan de pago
 - [ ] WhatsApp: Meta Cloud API vs Twilio (Fase 2)
-- [ ] Fastify separado vs API routes de Next.js (evaluar si crece complejidad)
+- [ ] Deploy Vercel: dominio staging vs producción
 
 ## Bloqueadores actuales
 
-Ninguno técnico para Parte B.
+Ninguno.
 
 ## Desarrollo local
 
-- App Next.js: **puerto 3004** (`npm run dev` → http://localhost:3004)
-- Supabase: **cloud** (no requiere Docker). Scripts en `supabase/cloud-init.sql` + `seed-cloud.sql`
+- App: **puerto 3004** (`npm run dev` → http://localhost:3004)
+- Link público: http://localhost:3004/reservar/belleza-luna
+- Supabase: cloud. Seeds: `seed-cloud.sql`, `seed-cloud-agenda.sql`
+- Env requerido: `NEXT_PUBLIC_SUPABASE_*` + `SUPABASE_SERVICE_ROLE_KEY`
+- Tests: `npm test` | Build: `npm run build`
 
 ## Próximo paso inmediato
 
-1. Aplicar migraciones: `supabase db reset` (local) o push a proyecto cloud
-2. Implementar CRUD servicios (Sprint 1.1 — Parte B)
-3. Implementar CRUD paquetes
+1. **Deploy Vercel** — staging con env vars (`NEXT_PUBLIC_SUPABASE_*`, `SUPABASE_SERVICE_ROLE_KEY`)
+2. Validación founders con salón real 1 semana
 
 ## Credenciales de desarrollo (seed)
 
@@ -62,28 +74,30 @@ Ninguno técnico para Parte B.
 | Admin | admin@belleza-luna.test | Admin123! |
 | Colaboradora | maria@belleza-luna.test | Colab123! |
 
-## Estructura creada
+## Estructura clave
 
 ```
-src/app/(auth)/login/          → Login
-src/app/(dashboard)/           → Panel con nav (Catálogo, Agenda, Clientas, Pagos)
-src/lib/supabase/              → Clientes server, browser, middleware
-supabase/migrations/           → 001 schema, 002 RLS
-supabase/seed.sql              → Salón Belleza Luna + datos de prueba
+src/app/(dashboard)/page.tsx       → Dashboard home ✅
+src/app/(dashboard)/clientas/      → CRUD clientas + historial ✅
+src/app/(dashboard)/pagos/         → Cola validación comprobantes ✅
+src/app/(dashboard)/agenda/          → Calendario admin ✅
+src/app/(dashboard)/catalogo/        → CRUD servicios/paquetes ✅
+src/lib/dashboard/                 → Queries dashboard
+src/lib/clientas/                  → Queries + actions clientas
 ```
 
 ## Historial de cambios recientes
 
 | Fecha | Cambio |
 |-------|--------|
-| 2026-07-01 | Creación de documentación base del proyecto |
-| 2026-07-01 | PRD v1.0 y Roadmap técnico v1.0 analizados |
-| 2026-07-01 | **Fase 0 verificada:** Supabase Cloud + login admin en localhost:3004 |
+| 2026-07-01 | Fase 0 + Sprint 1.1 catálogo |
+| 2026-07-01 | Sprint 02A agenda admin + motor disponibilidad |
+| 2026-07-01 | Sprint 02B link público `/reservar/[slug]` |
+| 2026-07-01 | Fixes: slots ISO, upload comprobantes, rollback RPC |
+| 2026-07-01 | Panel `/pagos` validación + liberación slots al cancelar/rechazar |
+| 2026-07-01 | Dashboard home: citas hoy, pagos pendientes, ingresos del día |
+| 2026-07-01 | CRUD clientas `/clientas` + historial por clienta |
 
 ## Cómo actualizar este archivo
 
-Actualizar **al final de cada sesión de trabajo** o **al cerrar cada sprint**:
-- Cambiar estado por área
-- Mover decisiones de "pendientes" a "tomadas"
-- Registrar bloqueadores nuevos
-- Actualizar "próximo paso inmediato" (máx. 3 items)
+Actualizar **al final de cada sesión** o **al cerrar cada sprint**.
