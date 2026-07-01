@@ -1,0 +1,31 @@
+---
+description: Reglas de contexto para desarrollo CITABELLA
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+# CITABELLA — Reglas de sesión
+
+## Al iniciar cualquier tarea
+1. Leer `docs/CURRENT_STATE.md`
+2. Leer `docs/ENGINEERING_RULES.md`
+3. Si hay módulo en scope: leer solo el `docs/FEATURES/<modulo>.md` relevante
+4. Si toca DB: leer sección específica de `docs/DATABASE_SCHEMA.md`
+
+## Stack fijo (no proponer alternativas sin pedirlo)
+Next.js 14 App Router + TypeScript + Tailwind + shadcn/ui + Supabase + Vercel
+
+## Reglas inviolables
+- Multi-tenant: todo scoped por `salon_id` + RLS
+- UI/copy en español; código en inglés
+- No agregar features fuera del MVP sin marcar en ROADMAP
+- Cambios mínimos por PR
+
+## Al finalizar trabajo
+- Actualizar `docs/CURRENT_STATE.md`
+- Actualizar feature doc si aplica
+- Si cambió schema: `docs/DATABASE_SCHEMA.md` + migración
+
+## Memoria del proyecto
+Los docs en `docs/` son la fuente de verdad. No depender del historial del chat.
