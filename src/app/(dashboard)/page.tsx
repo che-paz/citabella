@@ -8,7 +8,9 @@ import {
 import { AccionesRapidas } from "@/components/dashboard/AccionesRapidas";
 import { CitasHoy } from "@/components/dashboard/CitasHoy";
 import { IngresosHoy } from "@/components/dashboard/IngresosHoy";
+import { LinkReserva } from "@/components/dashboard/LinkReserva";
 import { PagosPendientes } from "@/components/dashboard/PagosPendientes";
+import { getPublicBookingUrl } from "@/lib/utils/site-url";
 
 export default async function DashboardPage() {
   const user = await getAuthUser();
@@ -23,6 +25,8 @@ export default async function DashboardPage() {
     isAdmin ? getPagosPendientesCount(user.salon_id) : Promise.resolve(0),
     isAdmin ? getIngresosHoy(user.salon_id, timezone) : Promise.resolve(0),
   ]);
+
+  const reservaUrl = getPublicBookingUrl(user.salon.slug);
 
   return (
     <div className="space-y-6">
@@ -40,6 +44,8 @@ export default async function DashboardPage() {
         isAdmin={isAdmin}
         pagosPendientes={pagosPendientes}
       />
+
+      <LinkReserva url={reservaUrl} />
 
       {isAdmin && (
         <div className="grid gap-4 sm:grid-cols-2">

@@ -8,6 +8,7 @@ import {
   deleteComprobante,
   uploadComprobante,
 } from "@/lib/storage/comprobantes";
+import { createAnonymousClient } from "@/lib/supabase/anon";
 import { createClient } from "@/lib/supabase/server";
 import { optionalPgUuidSchema } from "@/lib/utils/validation";
 
@@ -202,7 +203,8 @@ export async function createReservaAction(
   }
 
   // Evitar duplicar si ya existe reserva pendiente en ese slot (retry tras fallo de upload)
-  const supabase = await createClient();
+  // Cliente anónimo: RLS de reserva pública aplica solo a rol anon
+  const supabase = createAnonymousClient();
   const { data: existingCita } = await supabase
     .from("citas")
     .select("id, pagos(id, comprobante_url)")

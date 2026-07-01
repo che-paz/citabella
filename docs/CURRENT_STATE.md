@@ -16,7 +16,7 @@ MVP operativo en local: catálogo, agenda, link público, validación de pagos, 
 | Repositorio / código | 🟢 MVP core | Flujo reserva + validación pagos verificado |
 | Base de datos | 🟢 Migraciones 005/006 | Aplicadas en cloud (usuario confirmó) |
 | Supabase | 🟢 Operativo | RLS público + bucket `comprobantes` + service role |
-| Deploy | 🔴 No iniciado | Vercel pendiente |
+| Deploy | 🟢 Staging Vercel | GitHub → Vercel; link reserva en dashboard |
 | Prototipo UI | 🟢 MVP core | Dashboard + clientas listos |
 | Marca / dominio | 🟡 Pendiente | "CitaBella" es placeholder |
 
