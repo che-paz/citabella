@@ -1,12 +1,12 @@
 # CITABELLA — Current State
 
 > **Última actualización:** 2026-07-01  
-> **Sprint activo:** Sprint 01 — Fundación + Catálogo  
-> **Fase:** Fase 0 completada → Sprint 1.1 (catálogo) en progreso
+> **Sprint activo:** Sprint 01 — Fundación + Catálogo (Parte B pendiente)  
+> **Fase:** Fase 0 ✅ completada | Sprint 1.1 catálogo 🔴 pendiente
 
 ## Resumen en una línea
 
-Scaffold Next.js 14 operativo con auth Supabase, migraciones multi-tenant, RLS y layout del dashboard. CRUD de catálogo pendiente (Parte B).
+Fase 0 operativa: login admin con Supabase Cloud, migraciones aplicadas, dashboard con nav. CRUD de catálogo pendiente.
 
 ## Estado por área
 
@@ -15,7 +15,7 @@ Scaffold Next.js 14 operativo con auth Supabase, migraciones multi-tenant, RLS y
 | Documentación | 🟢 Al día | Estructura `docs/` completa |
 | Repositorio / código | 🟡 En progreso | Fase 0 entregada; catálogo pendiente |
 | Base de datos | 🟡 En progreso | Migraciones + seed listos; aplicar con Supabase CLI |
-| Supabase | 🟡 En progreso | **Cloud-first** — crear proyecto en supabase.com y aplicar `cloud-init.sql` |
+| Supabase | 🟢 Operativo | Cloud configurado; login verificado con seed |
 | Deploy | 🔴 No iniciado | Vercel pendiente |
 | Prototipo UI | 🟡 Parcial | Login + dashboard nav funcionales |
 | Marca / dominio | 🟡 Pendiente | "CitaBella" es placeholder |
@@ -42,8 +42,7 @@ Scaffold Next.js 14 operativo con auth Supabase, migraciones multi-tenant, RLS y
 
 ## Bloqueadores actuales
 
-- Proyecto Supabase cloud pendiente de crear por el founder
-- Sin `.env.local` configurado
+Ninguno técnico para Parte B.
 
 ## Desarrollo local
 
@@ -79,7 +78,7 @@ supabase/seed.sql              → Salón Belleza Luna + datos de prueba
 |-------|--------|
 | 2026-07-01 | Creación de documentación base del proyecto |
 | 2026-07-01 | PRD v1.0 y Roadmap técnico v1.0 analizados |
-| 2026-07-01 | **Fase 0:** Scaffold Next.js 14, shadcn/ui, migraciones, auth, dashboard layout |
+| 2026-07-01 | **Fase 0 verificada:** Supabase Cloud + login admin en localhost:3004 |
 
 ## Cómo actualizar este archivo
 
