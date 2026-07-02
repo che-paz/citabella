@@ -18,7 +18,8 @@ MVP en Vercel. Founders pueden personalizar salón (nombre, logo, política reem
 | Supabase | 🟢 Operativo | RLS público + bucket `comprobantes` + service role |
 | Deploy | 🟢 Staging Vercel | GitHub → Vercel; link reserva en dashboard |
 | Prototipo UI | 🟢 MVP core | Dashboard + clientas listos |
-| Marca / dominio | 🟡 Pendiente | "CitaBella" es placeholder |
+| Finanzas / gastos | 🟢 MVP | `/finanzas` ingresos vs gastos + balance mes |
+| PWA | 🟢 Configurado | Manifest + iconos Gota+Check (código: CitaBella) |
 
 ## Decisiones tomadas
 
@@ -45,6 +46,9 @@ MVP en Vercel. Founders pueden personalizar salón (nombre, logo, política reem
 - `/ajustes`: perfil (nombre, contraseña); admin: nombre salón, logo, política reembolso
 - Bucket `logos-salon` (público); migración `007_salon_branding.sql`
 - Menú móvil cierra al seleccionar sección; identidad salón en sidebar (logo + nombre)
+- Link reserva: tema rosa propio (`reservar.css`) + logo vía URL pública Supabase
+- Agenda: cambio de fecha sin recargar página completa (server action)
+- PWA: `manifest.ts`, iconos en `public/icons/` (estilo Gota+Check)
 
 ## Decisiones pendientes
 
@@ -68,9 +72,10 @@ Ninguno.
 
 ## Próximo paso inmediato
 
-1. **Aplicar migración 007** en Supabase Cloud (`logo_url` + bucket `logos-salon`)
-2. Piloto founders — uso real 1 semana; recoger feedback UX
-3. Iterar según feedback (dominio propio, colaboradoras, etc.)
+1. **Aplicar migraciones 007 y 008** en Supabase Cloud (logo + gastos)
+2. Push a GitHub → redeploy Vercel
+3. Probar PWA: “Agregar a pantalla de inicio” en móvil
+4. Piloto founders — feedback UX
 
 ## Credenciales de desarrollo (seed)
 

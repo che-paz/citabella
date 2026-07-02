@@ -86,6 +86,31 @@ export const SERVICE_CATEGORIES = [
 
 export type ServiceCategory = (typeof SERVICE_CATEGORIES)[number]["value"];
 
+export type MovimientoTipo = "ingreso" | "egreso";
+
+export type MovimientoContable = {
+  id: string;
+  salon_id: string;
+  tipo: MovimientoTipo;
+  categoria: string;
+  monto: number;
+  fecha: string;
+  cita_id: string | null;
+  descripcion: string | null;
+  created_at: string;
+};
+
+export const GASTO_CATEGORIAS = [
+  { value: "insumos", label: "Insumos" },
+  { value: "renta", label: "Renta / local" },
+  { value: "nomina", label: "Nómina" },
+  { value: "servicios", label: "Servicios (luz, agua, internet)" },
+  { value: "marketing", label: "Marketing" },
+  { value: "otro", label: "Otro" },
+] as const;
+
+export type GastoCategoria = (typeof GASTO_CATEGORIAS)[number]["value"];
+
 export type AuthUser = Usuario & {
   salon: Pick<
     Salon,

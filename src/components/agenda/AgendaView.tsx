@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import {
   CalendarPlus,
@@ -10,7 +10,11 @@ import {
   Clock,
   Settings,
 } from "lucide-react";
-import { cancelCitaAction, updateCitaEstadoAction } from "@/lib/agenda/actions";
+import {
+  cancelCitaAction,
+  fetchAgendaCitasAction,
+  updateCitaEstadoAction,
+} from "@/lib/agenda/actions";
 import {
   addDaysToDateKey,
   formatAgendaTime,
@@ -24,6 +28,7 @@ import { HorariosConfig } from "@/components/agenda/HorariosConfig";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { MobileActionBar } from "@/components/ui/mobile-action-bar";
 import {
   CITA_ESTADO_LABELS,
   type CitaConDetalle,
@@ -66,7 +71,7 @@ const estadoVariant: Record<
 };
 
 export function AgendaView({
-  citas,
+  citas: initialCitas,
   clientas,
   servicios,
   paquetes,
@@ -82,15 +87,42 @@ export function AgendaView({
   const router = useRouter();
   const [view, setView] = useState<ViewMode>(initialView);
   const [dateKey, setDateKey] = useState(initialDate);
+  const [citas, setCitas] = useState(initialCitas);
   const [citaFormOpen, setCitaFormOpen] = useState(false);
   const [horariosOpen, setHorariosOpen] = useState(false);
   const [editingCita, setEditingCita] = useState<CitaConDetalle | undefined>();
   const [actionError, setActionError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [citasLoading, setCitasLoading] = useState(false);
 
   const weekStart = getWeekStartDateKey(dateKey);
   const weekDays = getWeekDateKeys(weekStart);
   const visibleDateKeys = view === "day" ? [dateKey] : weekDays;
+
+  function syncUrl(nextDate: string, nextView: ViewMode) {
+    const url = `/agenda?date=${nextDate}&view=${nextView}`;
+    window.history.replaceState(null, "", url);
+  }
+
+  function loadCitas(nextDate: string, nextView: ViewMode) {
+    setCitasLoading(true);
+    startTransition(async () => {
+      const result = await fetchAgendaCitasAction({
+        dateKey: nextDate,
+        view: nextView,
+      });
+      setCitasLoading(false);
+      if (result.error) {
+        setActionError(result.error);
+        return;
+      }
+      if (result.citas) setCitas(result.citas);
+    });
+  }
+
+  useEffect(() => {
+    setCitas(initialCitas);
+  }, [initialCitas]);
 
   function navigate(delta: number) {
     const next =
@@ -98,12 +130,21 @@ export function AgendaView({
         ? addDaysToDateKey(dateKey, delta)
         : addDaysToDateKey(weekStart, delta * 7);
     setDateKey(next);
-    router.push(`/agenda?date=${next}&view=${view}`);
+    syncUrl(next, view);
+    loadCitas(next, view);
   }
 
   function switchView(next: ViewMode) {
     setView(next);
-    router.push(`/agenda?date=${dateKey}&view=${next}`);
+    syncUrl(dateKey, next);
+    loadCitas(dateKey, next);
+  }
+
+  function goToToday() {
+    const today = getSalonDateKey(new Date(), timezone);
+    setDateKey(today);
+    syncUrl(today, view);
+    loadCitas(today, view);
   }
 
   function citasForDate(dayKey: string) {
@@ -134,7 +175,10 @@ export function AgendaView({
     startTransition(async () => {
       const result = await cancelCitaAction(citaId);
       if (result.error) setActionError(result.error);
-      else router.refresh();
+      else {
+        router.refresh();
+        loadCitas(dateKey, view);
+      }
     });
   }
 
@@ -143,38 +187,33 @@ export function AgendaView({
     startTransition(async () => {
       const result = await updateCitaEstadoAction(citaId, estado);
       if (result.error) setActionError(result.error);
-      else router.refresh();
+      else {
+        router.refresh();
+        loadCitas(dateKey, view);
+      }
     });
   }
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-1">
-          <Button variant="outline" size="icon" onClick={() => navigate(-1)}>
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <Button variant="outline" size="icon" onClick={() => navigate(1)}>
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => {
-              const today = getSalonDateKey(new Date(), timezone);
-              setDateKey(today);
-              router.push(`/agenda?date=${today}&view=${view}`);
-            }}
-          >
-            Hoy
-          </Button>
-        </div>
-
-        <div className="flex flex-wrap gap-2">
+      <div className="space-y-3">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-1">
+            <Button variant="outline" size="icon" onClick={() => navigate(-1)}>
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <Button variant="outline" size="icon" onClick={() => navigate(1)}>
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+            <Button variant="ghost" size="sm" onClick={goToToday}>
+              Hoy
+            </Button>
+          </div>
           <div className="flex rounded-lg border p-0.5">
             <Button
               variant={view === "day" ? "default" : "ghost"}
               size="sm"
+              className="px-3"
               onClick={() => switchView("day")}
             >
               Día
@@ -182,28 +221,40 @@ export function AgendaView({
             <Button
               variant={view === "week" ? "default" : "ghost"}
               size="sm"
+              className="px-3"
               onClick={() => switchView("week")}
             >
               Semana
             </Button>
           </div>
+        </div>
+
+        <MobileActionBar className="sm:justify-end">
           {isAdmin && (
-            <Button variant="outline" size="sm" onClick={() => setHorariosOpen(true)}>
-              <Settings className="mr-1 h-4 w-4" />
+            <Button
+              variant="outline"
+              className="w-full justify-center sm:w-auto"
+              onClick={() => setHorariosOpen(true)}
+            >
+              <Settings className="mr-2 h-4 w-4" />
               Horarios
             </Button>
           )}
-          <Button size="sm" onClick={openCreate}>
-            <CalendarPlus className="mr-1 h-4 w-4" />
+          <Button
+            className="w-full justify-center sm:w-auto"
+            onClick={openCreate}
+          >
+            <CalendarPlus className="mr-2 h-4 w-4" />
             Nueva cita
           </Button>
-        </div>
+        </MobileActionBar>
       </div>
 
       <p className="text-sm font-medium text-muted-foreground">
         {view === "day"
           ? formatDateKeyLabel(dateKey, timezone)
           : `${formatDateKeyLabel(weekStart, timezone)} – ${formatDateKeyLabel(weekDays[6], timezone)}`}
+        {citasLoading && " · Cargando…"}
       </p>
 
       {actionError && (

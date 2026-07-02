@@ -1,0 +1,60 @@
+.reservar-root {
+  --brand: #d9a59e;
+  --background: #fdf9f8;
+  --foreground: #3d2f2e;
+  --card: #ffffff;
+  --card-foreground: #3d2f2e;
+  --primary: #d9a59e;
+  --primary-foreground: #ffffff;
+  --secondary: #f5ebe9;
+  --secondary-foreground: #5c4543;
+  --muted: #f5ebe9;
+  --muted-foreground: #7a6563;
+  --accent: #efe0dd;
+  --accent-foreground: #5c4543;
+  --border: #ead9d6;
+  --input: #ead9d6;
+  --ring: #d9a59e;
+  --radius: 0.75rem;
+
+  min-height: 100dvh;
+  background: linear-gradient(
+    180deg,
+    #f8eeec 0%,
+    #fdf9f8 45%,
+    #ffffff 100%
+  );
+  color: var(--foreground);
+}
+
+.reservar-root .bg-primary {
+  background-color: var(--primary);
+}
+
+.reservar-root .text-primary {
+  color: var(--primary);
+}
+
+.reservar-root .text-primary-foreground {
+  color: var(--primary-foreground);
+}
+
+.reservar-root .border-primary {
+  border-color: var(--primary);
+}
+
+.reservar-root .bg-primary\/5 {
+  background-color: rgb(217 165 158 / 0.12);
+}
+
+.reservar-root .ring-primary {
+  --tw-ring-color: var(--primary);
+}
+
+.reservar-root .hover\:border-primary\/50:hover {
+  border-color: rgb(217 165 158 / 0.5);
+}
+
+.reservar-root .border-primary\/15 {
+  border-color: rgb(217 165 158 / 0.15);
+}

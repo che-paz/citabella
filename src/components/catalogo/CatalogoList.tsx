@@ -22,6 +22,7 @@ import { ServicioForm } from "@/components/catalogo/ServicioForm";
 import { PaqueteForm } from "@/components/catalogo/PaqueteForm";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { MobileActionBar } from "@/components/ui/mobile-action-bar";
 import {
   Card,
   CardContent,
@@ -142,12 +143,12 @@ export function CatalogoList({ servicios, paquetes, isAdmin }: CatalogoListProps
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex rounded-lg border p-1">
+      <div className="space-y-3">
+        <div className="grid grid-cols-2 gap-1 rounded-lg border p-1">
           <button
             type="button"
             onClick={() => setTab("servicios")}
-            className={`flex-1 rounded-md px-4 py-2 text-sm font-medium transition-colors sm:flex-none ${
+            className={`rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
               tab === "servicios"
                 ? "bg-primary text-primary-foreground"
                 : "text-muted-foreground hover:text-foreground"
@@ -158,7 +159,7 @@ export function CatalogoList({ servicios, paquetes, isAdmin }: CatalogoListProps
           <button
             type="button"
             onClick={() => setTab("paquetes")}
-            className={`flex-1 rounded-md px-4 py-2 text-sm font-medium transition-colors sm:flex-none ${
+            className={`rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
               tab === "paquetes"
                 ? "bg-primary text-primary-foreground"
                 : "text-muted-foreground hover:text-foreground"
@@ -168,7 +169,7 @@ export function CatalogoList({ servicios, paquetes, isAdmin }: CatalogoListProps
           </button>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <label className="flex cursor-pointer items-center gap-2 text-sm text-muted-foreground">
             <input
               type="checkbox"
@@ -178,17 +179,27 @@ export function CatalogoList({ servicios, paquetes, isAdmin }: CatalogoListProps
             />
             Ver inactivos
           </label>
-          {isAdmin && tab === "servicios" && (
-            <Button size="sm" onClick={openCreateServicio}>
-              <Plus className="mr-1 h-4 w-4" />
-              Nuevo servicio
-            </Button>
-          )}
-          {isAdmin && tab === "paquetes" && (
-            <Button size="sm" onClick={openCreatePaquete}>
-              <Plus className="mr-1 h-4 w-4" />
-              Nuevo paquete
-            </Button>
+          {isAdmin && (
+            <MobileActionBar className="w-full sm:w-auto">
+              {tab === "servicios" && (
+                <Button
+                  className="col-span-2 w-full justify-center sm:col-span-1 sm:w-auto"
+                  onClick={openCreateServicio}
+                >
+                  <Plus className="mr-2 h-4 w-4" />
+                  Nuevo servicio
+                </Button>
+              )}
+              {tab === "paquetes" && (
+                <Button
+                  className="col-span-2 w-full justify-center sm:col-span-1 sm:w-auto"
+                  onClick={openCreatePaquete}
+                >
+                  <Plus className="mr-2 h-4 w-4" />
+                  Nuevo paquete
+                </Button>
+              )}
+            </MobileActionBar>
           )}
         </div>
       </div>
@@ -388,30 +399,35 @@ function ServicioCard({
           )}
         </div>
         {isAdmin && servicio.activo && (
-          <div className="flex shrink-0 gap-2">
-            <Button variant="outline" size="sm" onClick={onEdit} disabled={isPending}>
-              <Pencil className="mr-1 h-3.5 w-3.5" />
+          <MobileActionBar className="w-full sm:w-auto">
+            <Button
+              variant="outline"
+              className="w-full justify-center sm:w-auto"
+              onClick={onEdit}
+              disabled={isPending}
+            >
+              <Pencil className="mr-2 h-4 w-4" />
               Editar
             </Button>
             <Button
               variant="outline"
-              size="sm"
+              className="w-full justify-center sm:w-auto"
               onClick={onDeactivate}
               disabled={isPending}
             >
-              <Ban className="mr-1 h-3.5 w-3.5" />
+              <Ban className="mr-2 h-4 w-4" />
               Desactivar
             </Button>
-          </div>
+          </MobileActionBar>
         )}
         {isAdmin && !servicio.activo && (
           <Button
             variant="outline"
-            size="sm"
+            className="w-full justify-center sm:w-auto"
             onClick={onReactivate}
             disabled={isPending}
           >
-            <RotateCcw className="mr-1 h-3.5 w-3.5" />
+            <RotateCcw className="mr-2 h-4 w-4" />
             Reactivar
           </Button>
         )}

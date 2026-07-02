@@ -12,6 +12,7 @@ import {
   Menu,
   Settings,
   Users,
+  Wallet,
 } from "lucide-react";
 import { logoutAction } from "@/lib/auth/actions";
 import { SalonBrand } from "@/components/dashboard/SalonBrand";
@@ -33,6 +34,7 @@ const navItems = [
   { href: "/clientas", label: "Clientas", icon: Users },
   { href: "/catalogo", label: "Catálogo", icon: LayoutGrid },
   { href: "/pagos", label: "Pagos", icon: CreditCard, adminOnly: true },
+  { href: "/finanzas", label: "Finanzas", icon: Wallet, adminOnly: true },
   { href: "/ajustes", label: "Ajustes", icon: Settings },
 ];
 

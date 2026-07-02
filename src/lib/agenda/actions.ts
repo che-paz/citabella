@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { requireAdminUser, requireAuthUser } from "@/lib/auth/get-user";
+import { getAgendaCitas } from "@/lib/agenda/queries";
 import { fetchAvailabilitySlots } from "@/lib/availability/queries";
 import { salonLocalToUtc } from "@/lib/availability/timezone";
 import { createClient } from "@/lib/supabase/server";
@@ -562,4 +563,30 @@ export async function updateCitaEstadoAction(
 
   revalidatePath("/agenda");
   return { success: true };
+}
+
+export async function fetchAgendaCitasAction(params: {
+  dateKey: string;
+  view: "day" | "week";
+}): Promise<{ citas?: Awaited<ReturnType<typeof getAgendaCitas>>; error?: string }> {
+  const user = await requireAuthUser();
+
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(params.dateKey)) {
+    return { error: "Fecha inválida" };
+  }
+
+  const view = params.view === "week" ? "week" : "day";
+  const timezone = user.salon.timezone ?? "America/Guatemala";
+
+  try {
+    const citas = await getAgendaCitas(
+      user.salon_id,
+      params.dateKey,
+      view,
+      timezone
+    );
+    return { citas };
+  } catch {
+    return { error: "No se pudieron cargar las citas" };
+  }
 }

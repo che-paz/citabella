@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { ReservarWizard } from "@/components/reservar/ReservarWizard";
 import { SalonBrand } from "@/components/dashboard/SalonBrand";
 import { getCatalogoPublico, getSalonBySlug } from "@/lib/reservar/queries";
+import { getSalonLogoPublicUrl } from "@/lib/storage/logos";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -27,17 +28,20 @@ export default async function ReservarPage({ params }: PageProps) {
   }
 
   const catalogo = await getCatalogoPublico(salon.id);
+  const logoSrc = getSalonLogoPublicUrl(salon.logo_url);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-primary/5 to-background">
-      <header className="border-b border-border/80 bg-card/90 backdrop-blur">
-        <div className="mx-auto max-w-lg px-4 py-6">
-          <p className="mb-3 text-sm text-muted-foreground">Reserva en línea</p>
-          <SalonBrand nombre={salon.nombre} logoUrl={salon.logo_url} />
+    <div className="min-h-screen">
+      <header className="border-b border-primary/15 bg-card/95 shadow-sm backdrop-blur">
+        <div className="mx-auto max-w-lg px-4 py-5">
+          <p className="mb-2 text-xs font-medium uppercase tracking-wide text-primary">
+            Reserva en línea
+          </p>
+          <SalonBrand nombre={salon.nombre} logoSrc={logoSrc} />
         </div>
       </header>
 
-      <main className="mx-auto max-w-lg px-4 py-6">
+      <main className="mx-auto max-w-lg px-4 py-6 pb-10">
         <ReservarWizard salon={salon} catalogo={catalogo} />
       </main>
     </div>
