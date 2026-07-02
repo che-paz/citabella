@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "CitaBella",
-    short_name: "CitaBella",
+    name: "Gota+Check",
+    short_name: "Gota+Check",
     description: "Gestión de citas y salón de belleza",
     start_url: "/",
     display: "standalone",

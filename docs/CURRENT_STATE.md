@@ -19,7 +19,7 @@ MVP en Vercel. Founders pueden personalizar salón (nombre, logo, política reem
 | Deploy | 🟢 Staging Vercel | GitHub → Vercel; link reserva en dashboard |
 | Prototipo UI | 🟢 MVP core | Dashboard + clientas listos |
 | Finanzas / gastos | 🟢 MVP | `/finanzas` ingresos vs gastos + balance mes |
-| PWA | 🟢 Configurado | Manifest + iconos desde `logogotacheck.png`; favicon/apple-touch actualizados |
+| PWA | 🟢 Configurado | Manifest + iconos Gota+Check; nombre app instalada: Gota+Check |
 
 ## Decisiones tomadas
 

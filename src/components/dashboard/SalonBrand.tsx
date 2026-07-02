@@ -34,7 +34,7 @@ export function SalonBrand({
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src="/icons/logogotacheck.png"
-          alt="CitaBella"
+          alt="Gota+Check"
           className={cn(
             "shrink-0 object-contain",
             compact ? "h-10 w-auto max-h-10" : "h-14 w-auto max-h-14"

@@ -30,7 +30,7 @@ export function LoginForm() {
   return (
     <Card className="w-full max-w-md">
       <CardHeader className="text-center">
-        <CardTitle className="text-2xl">CitaBella</CardTitle>
+        <CardTitle className="text-2xl">Gota+Check</CardTitle>
         <CardDescription>Ingresa a tu panel de salón</CardDescription>
       </CardHeader>
       <CardContent>

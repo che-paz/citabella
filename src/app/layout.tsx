@@ -5,13 +5,13 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "CitaBella",
+  title: "Gota+Check",
   description: "Panel de gestión para salones de belleza",
-  applicationName: "CitaBella",
+  applicationName: "Gota+Check",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "CitaBella",
+    title: "Gota+Check",
   },
   icons: {
     icon: [
