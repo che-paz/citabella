@@ -15,9 +15,9 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/icons/gota-check.svg", type: "image/svg+xml" },
-      { url: "/favicon.png", type: "image/png" },
+      { url: "/icons/favicon-32.png", sizes: "32x32", type: "image/png" },
       { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
     ],
     apple: "/apple-touch-icon.png",
   },
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#d9a59e",
+  themeColor: "#f4b0a6",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,

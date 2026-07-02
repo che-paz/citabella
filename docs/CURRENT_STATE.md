@@ -1,6 +1,6 @@
 # CITABELLA — Current State
 
-> **Última actualización:** 2026-07-01  
+> **Última actualización:** 2026-07-02  
 > **Sprint activo:** Piloto founders — personalización salón + UX móvil  
 > **Fase:** Fase 1 MVP ✅ | Piloto founders en curso
 
@@ -19,7 +19,7 @@ MVP en Vercel. Founders pueden personalizar salón (nombre, logo, política reem
 | Deploy | 🟢 Staging Vercel | GitHub → Vercel; link reserva en dashboard |
 | Prototipo UI | 🟢 MVP core | Dashboard + clientas listos |
 | Finanzas / gastos | 🟢 MVP | `/finanzas` ingresos vs gastos + balance mes |
-| PWA | 🟢 Configurado | Manifest + iconos Gota+Check (código: CitaBella) |
+| PWA | 🟢 Configurado | Manifest + iconos desde `logogotacheck.png`; favicon/apple-touch actualizados |
 
 ## Decisiones tomadas
 
@@ -48,7 +48,7 @@ MVP en Vercel. Founders pueden personalizar salón (nombre, logo, política reem
 - Menú móvil cierra al seleccionar sección; identidad salón en sidebar (logo + nombre)
 - Link reserva: tema rosa propio (`reservar.css`) + logo vía URL pública Supabase
 - Agenda: cambio de fecha sin recargar página completa (server action)
-- PWA: `manifest.ts`, iconos en `public/icons/` (estilo Gota+Check)
+- PWA: `manifest.ts`, iconos cuadrados generados desde `public/icons/logogotacheck.png` (asset oficial Gota+Check); paleta `#f4b0a6`
 
 ## Decisiones pendientes
 

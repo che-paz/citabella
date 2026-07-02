@@ -26,18 +26,18 @@ export function SalonBrand({
           src={src}
           alt={`Logo de ${nombre}`}
           className={cn(
-            "shrink-0 rounded-lg border border-border/60 bg-white object-cover",
-            compact ? "h-8 w-8" : "h-11 w-11"
+            "shrink-0 rounded-xl object-contain",
+            compact ? "h-9 w-9" : "h-12 w-12"
           )}
         />
       ) : (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src="/icons/icon-192.png"
+          src="/icons/logogotacheck.png"
           alt="CitaBella"
           className={cn(
-            "shrink-0 rounded-xl object-cover",
-            compact ? "h-8 w-8" : "h-11 w-11"
+            "shrink-0 object-contain",
+            compact ? "h-10 w-auto max-h-10" : "h-14 w-auto max-h-14"
           )}
         />
       )}

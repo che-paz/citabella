@@ -14,14 +14,14 @@ body {
 
 @layer base {
   :root {
-    --brand: #d9a59e;
+    --brand: #f4b0a6;
     --background: #fdf9f8;
     --foreground: #3d2f2e;
     --card: #ffffff;
     --card-foreground: #3d2f2e;
     --popover: #ffffff;
     --popover-foreground: #3d2f2e;
-    --primary: #d9a59e;
+    --primary: #f4b0a6;
     --primary-foreground: #ffffff;
     --secondary: #f5ebe9;
     --secondary-foreground: #5c4543;
@@ -32,15 +32,15 @@ body {
     --destructive: #c45c5c;
     --border: #ead9d6;
     --input: #ead9d6;
-    --ring: #d9a59e;
+    --ring: #f4b0a6;
     --sidebar: #fdf9f8;
     --sidebar-foreground: #3d2f2e;
-    --sidebar-primary: #d9a59e;
+    --sidebar-primary: #f4b0a6;
     --sidebar-primary-foreground: #ffffff;
     --sidebar-accent: #f5ebe9;
     --sidebar-accent-foreground: #5c4543;
     --sidebar-border: #ead9d6;
-    --sidebar-ring: #d9a59e;
+    --sidebar-ring: #f4b0a6;
     --radius: 0.75rem;
   }
   .dark {

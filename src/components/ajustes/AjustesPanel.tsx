@@ -217,7 +217,7 @@ export function AjustesPanel({ user, salon }: AjustesPanelProps) {
                         src={logoPreview}
                         alt="Vista previa del logo"
                         fill
-                        className="object-cover"
+                        className="object-contain p-1"
                         unoptimized
                       />
                     </div>
