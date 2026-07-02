@@ -75,9 +75,22 @@ Ninguno.
 1. **Aplicar migraciones 007 y 008** en Supabase Cloud (logo + gastos)
 2. Push a GitHub → redeploy Vercel
 3. Probar PWA: “Agregar a pantalla de inicio” en móvil
-4. Piloto founders — feedback UX
+4. Piloto founders — Ruth (Tutis) y Andrea (Galaxy) provisionadas
 
-## Credenciales de desarrollo (seed)
+## Piloto founders (activo)
+
+| Founder | Salón | Slug | Email |
+|---------|-------|------|-------|
+| Ruth Guzman | Salón Tutis | `salon-tutis` | ruth@gmail.com |
+| Andrea Juarez | Galaxy Barberia Infantil | `galaxy-barberia-infantil` | andrea@gmail.com |
+
+- Provision: `scripts/provision-founders-pilot.mjs` o `supabase/seed-founders-pilot.sql`
+- Reset datos de práctica: `supabase/reset-salon-pilot.sql`
+- Login: `/login` → contraseña temporal comunicada por canal privado (cambiar en `/ajustes`)
+- Links reserva: `/reservar/salon-tutis` y `/reservar/galaxy-barberia-infantil`
+- Catálogo/citas: vacíos al inicio; configurar en `/ajustes` y `/catalogo`
+
+## Credenciales de desarrollo (seed demo)
 
 | Rol | Email | Contraseña |
 |-----|-------|------------|
