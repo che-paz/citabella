@@ -12,6 +12,7 @@ export type Salon = {
   timezone: string;
   fri_link: string | null;
   politica_reembolso: string;
+  logo_url: string | null;
   activo: boolean;
   created_at: string;
   updated_at: string;
@@ -86,7 +87,10 @@ export const SERVICE_CATEGORIES = [
 export type ServiceCategory = (typeof SERVICE_CATEGORIES)[number]["value"];
 
 export type AuthUser = Usuario & {
-  salon: Pick<Salon, "id" | "nombre" | "slug" | "moneda" | "timezone">;
+  salon: Pick<
+    Salon,
+    "id" | "nombre" | "slug" | "moneda" | "timezone" | "logo_url"
+  >;
 };
 
 export type CitaEstado =
@@ -195,6 +199,7 @@ export type SalonPublico = Pick<
   | "timezone"
   | "fri_link"
   | "politica_reembolso"
+  | "logo_url"
 >;
 
 export type ReservaItem = {

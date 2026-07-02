@@ -26,7 +26,8 @@ export async function getAuthUser(): Promise<AuthUser | null> {
         nombre,
         slug,
         moneda,
-        timezone
+        timezone,
+        logo_url
       )
     `
     )

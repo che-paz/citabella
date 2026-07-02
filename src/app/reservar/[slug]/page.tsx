@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { ReservarWizard } from "@/components/reservar/ReservarWizard";
+import { SalonBrand } from "@/components/dashboard/SalonBrand";
 import { getCatalogoPublico, getSalonBySlug } from "@/lib/reservar/queries";
 
 type PageProps = {
@@ -28,11 +29,11 @@ export default async function ReservarPage({ params }: PageProps) {
   const catalogo = await getCatalogoPublico(salon.id);
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b bg-card">
+    <div className="min-h-screen bg-gradient-to-b from-primary/5 to-background">
+      <header className="border-b border-border/80 bg-card/90 backdrop-blur">
         <div className="mx-auto max-w-lg px-4 py-6">
-          <p className="text-sm text-muted-foreground">Reserva en línea</p>
-          <h1 className="text-2xl font-bold tracking-tight">{salon.nombre}</h1>
+          <p className="mb-3 text-sm text-muted-foreground">Reserva en línea</p>
+          <SalonBrand nombre={salon.nombre} logoUrl={salon.logo_url} />
         </div>
       </header>
 

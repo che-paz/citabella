@@ -1,12 +1,12 @@
 # CITABELLA — Current State
 
 > **Última actualización:** 2026-07-01  
-> **Sprint activo:** Sprint 1.4 ✅ cerrado — MVP Fase 1 listo para founders  
-> **Fase:** Fase 0 ✅ | Sprint 1.1 ✅ | Sprint 02 ✅ | Sprint 1.4 ✅
+> **Sprint activo:** Piloto founders — personalización salón + UX móvil  
+> **Fase:** Fase 1 MVP ✅ | Piloto founders en curso
 
 ## Resumen en una línea
 
-MVP operativo en producción (Vercel): catálogo, agenda, link público 24/7, pagos, dashboard y clientas. Listo para piloto con founders.
+MVP en Vercel. Founders pueden personalizar salón (nombre, logo, política reembolso), perfil y contraseña en `/ajustes`. UX móvil: menú se cierra al navegar.
 
 ## Estado por área
 
@@ -42,6 +42,9 @@ MVP operativo en producción (Vercel): catálogo, agenda, link público 24/7, pa
 - Slots disponibles: query solo citas bloqueantes (`pendiente`, `pendiente_validacion`, `confirmada`)
 - Link de reserva visible en dashboard (`LinkReserva`) + URL production Vercel
 - Reserva pública usa cliente Supabase anónimo (RLS `anon`)
+- `/ajustes`: perfil (nombre, contraseña); admin: nombre salón, logo, política reembolso
+- Bucket `logos-salon` (público); migración `007_salon_branding.sql`
+- Menú móvil cierra al seleccionar sección; identidad salón en sidebar (logo + nombre)
 
 ## Decisiones pendientes
 
@@ -65,9 +68,9 @@ Ninguno.
 
 ## Próximo paso inmediato
 
-1. **Cierre MVP Fase 1** — checklist founders (1 semana operando solo con CITABELLA)
-2. **Should-have pendientes** — planes founder/trial en UI, política reembolso visible, dominio propio
-3. **Fase 2** (post-piloto) — contabilidad, WhatsApp, fotos servicio (ver `ROADMAP.md`)
+1. **Aplicar migración 007** en Supabase Cloud (`logo_url` + bucket `logos-salon`)
+2. Piloto founders — uso real 1 semana; recoger feedback UX
+3. Iterar según feedback (dominio propio, colaboradoras, etc.)
 
 ## Credenciales de desarrollo (seed)
 
@@ -85,7 +88,7 @@ src/app/(dashboard)/pagos/         → Cola validación comprobantes ✅
 src/app/(dashboard)/agenda/          → Calendario admin ✅
 src/app/(dashboard)/catalogo/        → CRUD servicios/paquetes ✅
 src/lib/dashboard/                 → Queries dashboard
-src/lib/clientas/                  → Queries + actions clientas
+src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 ```
 
 ## Historial de cambios recientes
@@ -98,7 +101,7 @@ src/lib/clientas/                  → Queries + actions clientas
 | 2026-07-01 | Fixes: slots ISO, upload comprobantes, rollback RPC |
 | 2026-07-01 | Panel `/pagos` validación + liberación slots al cancelar/rechazar |
 | 2026-07-01 | Dashboard home: citas hoy, pagos pendientes, ingresos del día |
-| 2026-07-01 | Deploy Vercel + link reserva público verificado en móvil |
+| 2026-07-01 | Ajustes founders: logo, perfil, contraseña, menú móvil, estilos |
 
 ## Cómo actualizar este archivo
 

@@ -8,7 +8,7 @@ export async function getSalonBySlug(
   const { data } = await supabase
     .from("salones")
     .select(
-      "id, nombre, slug, moneda, timezone, fri_link, politica_reembolso"
+      "id, nombre, slug, moneda, timezone, fri_link, politica_reembolso, logo_url"
     )
     .eq("slug", slug)
     .eq("activo", true)
