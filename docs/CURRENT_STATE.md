@@ -1,12 +1,12 @@
 # CITABELLA — Current State
 
 > **Última actualización:** 2026-07-01  
-> **Sprint activo:** Sprint 1.4 ✅ (dashboard + clientas completados; deploy pendiente)  
-> **Fase:** Fase 0 ✅ | Sprint 1.1 ✅ | Sprint 02 ✅ | Sprint 1.4 ✅ (excepto deploy)
+> **Sprint activo:** Sprint 1.4 ✅ cerrado — MVP Fase 1 listo para founders  
+> **Fase:** Fase 0 ✅ | Sprint 1.1 ✅ | Sprint 02 ✅ | Sprint 1.4 ✅
 
 ## Resumen en una línea
 
-MVP operativo en local: catálogo, agenda, link público, validación de pagos, dashboard home y CRUD clientas. Falta deploy Vercel.
+MVP operativo en producción (Vercel): catálogo, agenda, link público 24/7, pagos, dashboard y clientas. Listo para piloto con founders.
 
 ## Estado por área
 
@@ -40,7 +40,8 @@ MVP operativo en local: catálogo, agenda, link público, validación de pagos, 
 - Reserva pública → `pendiente_validacion`; aprobar pago → `confirmada`; rechazar/cancelar → `cancelada` (libera slot)
 - Comprobantes: Storage privado + `SUPABASE_SERVICE_ROLE_KEY` en server para upload
 - Slots disponibles: query solo citas bloqueantes (`pendiente`, `pendiente_validacion`, `confirmada`)
-- Validación pagos: `/pagos` admin — aprobar/rechazar + signed URL comprobante
+- Link de reserva visible en dashboard (`LinkReserva`) + URL production Vercel
+- Reserva pública usa cliente Supabase anónimo (RLS `anon`)
 
 ## Decisiones pendientes
 
@@ -48,7 +49,7 @@ MVP operativo en local: catálogo, agenda, link público, validación de pagos, 
 - [ ] Prototipo navegable validado con founders
 - [ ] Tiers y precios del plan de pago
 - [ ] WhatsApp: Meta Cloud API vs Twilio (Fase 2)
-- [ ] Deploy Vercel: dominio staging vs producción
+- [ ] Dominio propio (`NEXT_PUBLIC_SITE_URL`) vs `*.vercel.app`
 
 ## Bloqueadores actuales
 
@@ -64,8 +65,9 @@ Ninguno.
 
 ## Próximo paso inmediato
 
-1. **Deploy Vercel** — staging con env vars (`NEXT_PUBLIC_SUPABASE_*`, `SUPABASE_SERVICE_ROLE_KEY`)
-2. Validación founders con salón real 1 semana
+1. **Cierre MVP Fase 1** — checklist founders (1 semana operando solo con CITABELLA)
+2. **Should-have pendientes** — planes founder/trial en UI, política reembolso visible, dominio propio
+3. **Fase 2** (post-piloto) — contabilidad, WhatsApp, fotos servicio (ver `ROADMAP.md`)
 
 ## Credenciales de desarrollo (seed)
 
@@ -96,7 +98,7 @@ src/lib/clientas/                  → Queries + actions clientas
 | 2026-07-01 | Fixes: slots ISO, upload comprobantes, rollback RPC |
 | 2026-07-01 | Panel `/pagos` validación + liberación slots al cancelar/rechazar |
 | 2026-07-01 | Dashboard home: citas hoy, pagos pendientes, ingresos del día |
-| 2026-07-01 | CRUD clientas `/clientas` + historial por clienta |
+| 2026-07-01 | Deploy Vercel + link reserva público verificado en móvil |
 
 ## Cómo actualizar este archivo
 
