@@ -86,9 +86,13 @@ export function ClientaForm({ clienta, open, onOpenChange }: ClientaFormProps) {
               name="telefono"
               type="tel"
               defaultValue={clienta?.telefono ?? ""}
-              placeholder="50212345678"
+              placeholder="55501234"
+              inputMode="numeric"
               required
             />
+            <p className="text-xs text-muted-foreground">
+              8 dígitos de Guatemala (ej. 55501234).
+            </p>
           </div>
 
           <div className="space-y-2">

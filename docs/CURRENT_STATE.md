@@ -1,12 +1,12 @@
 # CITABELLA — Current State
 
-> **Última actualización:** 2026-07-02  
+> **Última actualización:** 2026-07-03  
 > **Sprint activo:** Piloto founders — personalización salón + UX móvil  
 > **Fase:** Fase 1 MVP ✅ | Piloto founders en curso
 
 ## Resumen en una línea
 
-MVP en Vercel. Founders pueden personalizar salón (nombre, logo, política reembolso), perfil y contraseña en `/ajustes`. UX móvil: menú se cierra al navegar.
+MVP en Vercel. Piloto founders activo (Tutis + Galaxy). Slots en hora exacta, WhatsApp manual en pagos, teléfono validado en reserva.
 
 ## Estado por área
 
@@ -48,7 +48,7 @@ MVP en Vercel. Founders pueden personalizar salón (nombre, logo, política reem
 - Menú móvil cierra al seleccionar sección; identidad salón en sidebar (logo + nombre)
 - Link reserva: tema rosa propio (`reservar.css`) + logo vía URL pública Supabase
 - Agenda: cambio de fecha sin recargar página completa (server action)
-- PWA: `manifest.ts`, iconos cuadrados generados desde `public/icons/logogotacheck.png` (asset oficial Gota+Check); paleta `#f4b0a6`
+- Piloto founders: slots `:00` (Tutis + Galaxy); WhatsApp manual en `/pagos`; teléfono GT validado en reserva
 
 ## Decisiones pendientes
 
@@ -72,10 +72,9 @@ Ninguno.
 
 ## Próximo paso inmediato
 
-1. **Aplicar migraciones 007 y 008** en Supabase Cloud (logo + gastos)
-2. Push a GitHub → redeploy Vercel
-3. Probar PWA: “Agregar a pantalla de inicio” en móvil
-4. Piloto founders — Ruth (Tutis) y Andrea (Galaxy) provisionadas
+1. **Aplicar migración 009** en Supabase Cloud (`slot_step_minutes`) — opcional; código ya usa fallback por slug
+2. Web Push para nuevas reservas (founders)
+3. Fotos en historial de clienta (Fase 1.5)
 
 ## Piloto founders (activo)
 
@@ -119,7 +118,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 | 2026-07-01 | Fixes: slots ISO, upload comprobantes, rollback RPC |
 | 2026-07-01 | Panel `/pagos` validación + liberación slots al cancelar/rechazar |
 | 2026-07-01 | Dashboard home: citas hoy, pagos pendientes, ingresos del día |
-| 2026-07-01 | Ajustes founders: logo, perfil, contraseña, menú móvil, estilos |
+| 2026-07-03 | Sprint piloto: slots hora exacta, WhatsApp manual en pagos, teléfono GT |
 
 ## Cómo actualizar este archivo
 

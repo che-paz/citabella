@@ -30,6 +30,14 @@ function getLocalParts(date: Date, timezone: string): LocalParts {
   };
 }
 
+export function getSalonLocalMinute(date: Date, timezone: string): number {
+  return getLocalParts(date, timezone).minute;
+}
+
+export function isSalonOnTheHour(date: Date, timezone: string): boolean {
+  return getSalonLocalMinute(date, timezone) === 0;
+}
+
 export function getSalonDateKey(date: Date, timezone: string): string {
   return new Intl.DateTimeFormat("en-CA", { timeZone: timezone }).format(date);
 }

@@ -46,6 +46,7 @@ export default async function PagosPage() {
       <ValidacionCola
         pagos={pagos}
         timezone={timezone}
+        salonNombre={user.salon.nombre}
         comprobanteUrls={comprobanteUrls}
       />
     </div>

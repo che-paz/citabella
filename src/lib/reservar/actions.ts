@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 import { fetchAvailabilitySlots } from "@/lib/availability/queries";
+import { resolveSlotStepMinutes } from "@/lib/availability/salon-config";
 import { getSalonDateKey } from "@/lib/availability/timezone";
 import { getSalonBySlug } from "@/lib/reservar/queries";
 import {
@@ -11,6 +12,7 @@ import {
 import { createAnonymousClient } from "@/lib/supabase/anon";
 import { createClient } from "@/lib/supabase/server";
 import { optionalPgUuidSchema } from "@/lib/utils/validation";
+import { normalizeGuatemalaPhone } from "@/lib/utils/phone";
 
 export type ReservarActionState = {
   error?: string;
@@ -30,7 +32,11 @@ const reservaSchema = z
       .string()
       .min(8, "Teléfono inválido")
       .max(20)
-      .transform((v) => v.trim()),
+      .transform((v) => v.trim())
+      .refine((v) => normalizeGuatemalaPhone(v) !== null, {
+        message: "Teléfono inválido. Usa 8 dígitos de Guatemala (ej. 55501234).",
+      })
+      .transform((v) => normalizeGuatemalaPhone(v)!),
     metodo: z.enum(["transferencia", "efectivo", "fri"], {
       message: "Método de pago inválido",
     }),
@@ -109,6 +115,7 @@ export async function getPublicSlotsAction(params: {
       date: new Date(`${params.fecha}T12:00:00`),
       timezone: salon.timezone,
       duracionMinutos: item.duracion,
+      slotStepMinutes: resolveSlotStepMinutes(salon),
     });
 
     const dateKey = params.fecha;
@@ -187,6 +194,7 @@ export async function createReservaAction(
     date: new Date(`${fecha}T12:00:00`),
     timezone: salon.timezone,
     duracionMinutos: item.duracion,
+    slotStepMinutes: resolveSlotStepMinutes(salon),
   });
 
   const now = Date.now();

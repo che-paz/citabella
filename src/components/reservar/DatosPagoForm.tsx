@@ -112,10 +112,14 @@ export function DatosPagoForm({
             type="tel"
             value={telefono}
             onChange={(e) => onTelefonoChange(e.target.value)}
-            placeholder="50212345678"
+            placeholder="55501234"
             required
             autoComplete="tel"
+            inputMode="numeric"
           />
+          <p className="text-xs text-muted-foreground">
+            8 dígitos de Guatemala. Te avisaremos por WhatsApp sobre tu cita.
+          </p>
         </div>
       </div>
 

@@ -9,6 +9,7 @@ import {
   endOfSalonDayUtc,
   getSalonDateKey,
   getSalonDayOfWeek,
+  isSalonOnTheHour,
   salonLocalToUtc,
   startOfSalonDayUtc,
 } from "./timezone";
@@ -131,7 +132,13 @@ export function computeAvailability(input: AvailabilityInput): TimeRange[] {
   }));
 
   const available = subtractBusyRanges(workingRanges, busyRanges);
-  return findSlotsInRanges(available, duracionMinutos, slotStepMinutes);
+  let slots = findSlotsInRanges(available, duracionMinutos, slotStepMinutes);
+
+  if (slotStepMinutes >= 60) {
+    slots = slots.filter((s) => isSalonOnTheHour(s.inicio, timezone));
+  }
+
+  return slots;
 }
 
 export function isSlotAvailable(

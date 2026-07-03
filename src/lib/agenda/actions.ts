@@ -5,6 +5,7 @@ import { z } from "zod";
 import { requireAdminUser, requireAuthUser } from "@/lib/auth/get-user";
 import { getAgendaCitas } from "@/lib/agenda/queries";
 import { fetchAvailabilitySlots } from "@/lib/availability/queries";
+import { resolveSlotStepMinutes } from "@/lib/availability/salon-config";
 import { salonLocalToUtc } from "@/lib/availability/timezone";
 import { createClient } from "@/lib/supabase/server";
 import { optionalPgUuidSchema, pgUuidSchema } from "@/lib/utils/validation";
@@ -250,6 +251,7 @@ export async function getAvailableSlotsAction(params: {
       duracionMinutos: params.duracionMinutos,
       colaboradoraId: params.colaboradoraId,
       excludeCitaId: params.excludeCitaId,
+      slotStepMinutes: resolveSlotStepMinutes(user.salon),
     });
 
     return {

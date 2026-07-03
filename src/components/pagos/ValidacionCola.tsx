@@ -9,11 +9,16 @@ import {
 } from "@/lib/pagos/actions";
 import { formatAgendaDate, formatAgendaTime } from "@/lib/agenda/dates";
 import { formatQuetzales } from "@/lib/utils/format";
+import { formatGuatemalaPhoneDisplay } from "@/lib/utils/phone";
+import {
+  buildCitaConfirmadaWhatsAppUrl,
+  buildCitaRechazadaWhatsAppUrl,
+} from "@/lib/whatsapp/messages";
 import type { PagoPendiente } from "@/lib/pagos/queries";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Banknote, Check, ExternalLink, X } from "lucide-react";
+import { Banknote, Check, ExternalLink, MessageCircle, X } from "lucide-react";
 
 const METODO_LABELS: Record<string, string> = {
   transferencia: "Transferencia",
@@ -24,12 +29,14 @@ const METODO_LABELS: Record<string, string> = {
 type ValidacionColaProps = {
   pagos: PagoPendiente[];
   timezone: string;
+  salonNombre: string;
   comprobanteUrls: Record<string, string | null>;
 };
 
 export function ValidacionCola({
   pagos,
   timezone,
+  salonNombre,
   comprobanteUrls,
 }: ValidacionColaProps) {
   const router = useRouter();
@@ -72,6 +79,20 @@ export function ValidacionCola({
           ? comprobanteUrls[pago.comprobante_url]
           : null;
 
+        const whatsappCtx = {
+          salonNombre,
+          clientaNombre: pago.cita.clienta.nombre,
+          telefono: pago.cita.clienta.telefono,
+          servicioNombre,
+          inicioIso: pago.cita.inicio,
+          timezone,
+        };
+        const whatsappConfirmUrl = buildCitaConfirmadaWhatsAppUrl(whatsappCtx);
+        const whatsappRejectUrl = buildCitaRechazadaWhatsAppUrl(whatsappCtx);
+        const telefonoDisplay = pago.cita.clienta.telefono
+          ? formatGuatemalaPhoneDisplay(pago.cita.clienta.telefono)
+          : "Sin teléfono";
+
         return (
           <Card key={pago.id}>
             <CardHeader className="pb-3">
@@ -81,7 +102,7 @@ export function ValidacionCola({
                     {pago.cita.clienta.nombre}
                   </CardTitle>
                   <p className="text-sm text-muted-foreground">
-                    {pago.cita.clienta.telefono}
+                    {telefonoDisplay}
                   </p>
                 </div>
                 <Badge variant="secondary">Pendiente</Badge>
@@ -153,8 +174,41 @@ export function ValidacionCola({
                   Rechazar
                 </Button>
               </div>
+
+              <div className="flex flex-wrap gap-2 border-t pt-3">
+                {whatsappConfirmUrl ? (
+                  <Button size="sm" variant="secondary" asChild>
+                    <a
+                      href={whatsappConfirmUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <MessageCircle className="h-4 w-4 mr-1" />
+                      WhatsApp — confirmada
+                    </a>
+                  </Button>
+                ) : (
+                  <p className="text-xs text-muted-foreground">
+                    Sin teléfono válido para WhatsApp — llama a la clienta para
+                    avisar.
+                  </p>
+                )}
+                {whatsappRejectUrl && (
+                  <Button size="sm" variant="outline" asChild>
+                    <a
+                      href={whatsappRejectUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <MessageCircle className="h-4 w-4 mr-1" />
+                      WhatsApp — rechazada
+                    </a>
+                  </Button>
+                )}
+              </div>
               <p className="text-xs text-muted-foreground">
-                Rechazar cancela la cita y libera el horario para nuevas reservas.
+                Primero aprueba o rechaza en el sistema, luego envía el aviso por
+                WhatsApp. Rechazar cancela la cita y libera el horario.
               </p>
             </CardContent>
           </Card>

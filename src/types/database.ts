@@ -13,6 +13,7 @@ export type Salon = {
   fri_link: string | null;
   politica_reembolso: string;
   logo_url: string | null;
+  slot_step_minutes?: number;
   activo: boolean;
   created_at: string;
   updated_at: string;
@@ -115,7 +116,7 @@ export type AuthUser = Usuario & {
   salon: Pick<
     Salon,
     "id" | "nombre" | "slug" | "moneda" | "timezone" | "logo_url"
-  >;
+  > & { slot_step_minutes?: number };
 };
 
 export type CitaEstado =
@@ -225,6 +226,7 @@ export type SalonPublico = Pick<
   | "fri_link"
   | "politica_reembolso"
   | "logo_url"
+  | "slot_step_minutes"
 >;
 
 export type ReservaItem = {

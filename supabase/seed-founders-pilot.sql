@@ -8,26 +8,29 @@
 -- Horarios por defecto: Lun–Vie 09:00–18:00, Sáb 09:00–14:00
 -- Catálogo y citas: vacíos (ellas lo arman en /catalogo)
 
-INSERT INTO salones (id, nombre, slug, plan_tipo, politica_reembolso) VALUES
+INSERT INTO salones (id, nombre, slug, plan_tipo, politica_reembolso, slot_step_minutes) VALUES
   (
     '22222222-2222-2222-2222-222222222201',
     'Salón Tutis',
     'salon-tutis',
     'founder',
-    'Cancelación con 24 horas de anticipación para reembolso del anticipo.'
+    'Cancelación con 24 horas de anticipación para reembolso del anticipo.',
+    60
   ),
   (
     '22222222-2222-2222-2222-222222222202',
     'Galaxy Barberia Infantil',
     'galaxy-barberia-infantil',
     'founder',
-    'Cancelación con 24 horas de anticipación para reembolso del anticipo.'
+    'Cancelación con 24 horas de anticipación para reembolso del anticipo.',
+    60
   )
 ON CONFLICT (id) DO UPDATE SET
   nombre = EXCLUDED.nombre,
   slug = EXCLUDED.slug,
   plan_tipo = EXCLUDED.plan_tipo,
-  politica_reembolso = EXCLUDED.politica_reembolso;
+  politica_reembolso = EXCLUDED.politica_reembolso,
+  slot_step_minutes = EXCLUDED.slot_step_minutes;
 
 INSERT INTO usuarios (id, salon_id, email, nombre, rol)
 SELECT

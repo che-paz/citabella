@@ -4,7 +4,7 @@ import {
   type AvailabilityInput,
   type CitaOcupadaInput,
 } from "./engine";
-import { BLOCKING_CITA_ESTADOS } from "./slots";
+import { BLOCKING_CITA_ESTADOS, DEFAULT_SLOT_STEP_MINUTES } from "./slots";
 import { getSalonDateKey, startOfSalonDayUtc, endOfSalonDayUtc } from "./timezone";
 import type { TimeRange } from "./slots";
 
@@ -15,6 +15,7 @@ export async function fetchAvailabilitySlots(params: {
   duracionMinutos: number;
   colaboradoraId?: string;
   excludeCitaId?: string;
+  slotStepMinutes?: number;
 }): Promise<TimeRange[]> {
   const supabase = await createClient();
   const dateKey = getSalonDateKey(params.date, params.timezone);
@@ -58,6 +59,7 @@ export async function fetchAvailabilitySlots(params: {
     citas,
     colaboradoraId: params.colaboradoraId,
     excludeCitaId: params.excludeCitaId,
+    slotStepMinutes: params.slotStepMinutes ?? DEFAULT_SLOT_STEP_MINUTES,
   };
 
   return computeAvailability(input);

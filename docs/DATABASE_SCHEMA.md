@@ -34,6 +34,7 @@ salones ──┬── usuarios
 | timezone | TEXT DEFAULT 'America/Guatemala' | |
 | fri_link | TEXT NULL | QR/instrucciones Fri |
 | logo_url | TEXT NULL | Path en Storage `logos-salon` |
+| slot_step_minutes | INT DEFAULT 15 | Intervalo slots reserva: 15, 30 o 60 (`:00` only) |
 | politica_reembolso | TEXT | Visible en reserva |
 | activo | BOOLEAN DEFAULT true | |
 | created_at | TIMESTAMPTZ | |
