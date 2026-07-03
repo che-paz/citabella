@@ -18,7 +18,7 @@ import type { PagoPendiente } from "@/lib/pagos/queries";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Banknote, Check, ExternalLink, MessageCircle, X } from "lucide-react";
+import { Banknote, ExternalLink, MessageCircle, X } from "lucide-react";
 
 const METODO_LABELS: Record<string, string> = {
   transferencia: "Transferencia",
@@ -43,11 +43,15 @@ export function ValidacionCola({
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
-  function handleAction(
+  function handleActionWithWhatsApp(
+    whatsappUrl: string | null,
     action: (id: string) => Promise<{ error?: string; success?: boolean }>,
     pagoId: string
   ) {
     setError(null);
+    if (whatsappUrl) {
+      window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+    }
     startTransition(async () => {
       const result = await action(pagoId);
       if (result.error) {
@@ -159,56 +163,45 @@ export function ValidacionCola({
                 <Button
                   size="sm"
                   disabled={pending}
-                  onClick={() => handleAction(validarPagoAction, pago.id)}
+                  onClick={() =>
+                    handleActionWithWhatsApp(
+                      whatsappConfirmUrl,
+                      validarPagoAction,
+                      pago.id
+                    )
+                  }
                 >
-                  <Check className="h-4 w-4 mr-1" />
-                  {pago.metodo === "efectivo" ? "Confirmar cita" : "Aprobar pago"}
+                  <MessageCircle className="h-4 w-4 mr-1" />
+                  {whatsappConfirmUrl
+                    ? "Confirmar y avisar por WhatsApp"
+                    : pago.metodo === "efectivo"
+                      ? "Confirmar cita (sin WhatsApp)"
+                      : "Aprobar pago (sin WhatsApp)"}
                 </Button>
                 <Button
                   size="sm"
                   variant="outline"
                   disabled={pending}
-                  onClick={() => handleAction(rechazarPagoAction, pago.id)}
+                  onClick={() =>
+                    handleActionWithWhatsApp(
+                      whatsappRejectUrl,
+                      rechazarPagoAction,
+                      pago.id
+                    )
+                  }
                 >
                   <X className="h-4 w-4 mr-1" />
-                  Rechazar
+                  {whatsappRejectUrl
+                    ? "Rechazar y avisar por WhatsApp"
+                    : "Rechazar (sin WhatsApp)"}
                 </Button>
               </div>
-
-              <div className="flex flex-wrap gap-2 border-t pt-3">
-                {whatsappConfirmUrl ? (
-                  <Button size="sm" variant="secondary" asChild>
-                    <a
-                      href={whatsappConfirmUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <MessageCircle className="h-4 w-4 mr-1" />
-                      WhatsApp — confirmada
-                    </a>
-                  </Button>
-                ) : (
-                  <p className="text-xs text-muted-foreground">
-                    Sin teléfono válido para WhatsApp — llama a la clienta para
-                    avisar.
-                  </p>
-                )}
-                {whatsappRejectUrl && (
-                  <Button size="sm" variant="outline" asChild>
-                    <a
-                      href={whatsappRejectUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <MessageCircle className="h-4 w-4 mr-1" />
-                      WhatsApp — rechazada
-                    </a>
-                  </Button>
-                )}
-              </div>
               <p className="text-xs text-muted-foreground">
-                Primero aprueba o rechaza en el sistema, luego envía el aviso por
-                WhatsApp. Rechazar cancela la cita y libera el horario.
+                {whatsappConfirmUrl
+                  ? "Se abrirá WhatsApp con el mensaje; envíalo a tu clienta. La cita se actualiza en el sistema al mismo tiempo."
+                  : "Sin teléfono válido para WhatsApp — confirma o rechaza aquí y llama a la clienta para avisar."}
+                {" "}
+                Rechazar cancela la cita y libera el horario.
               </p>
             </CardContent>
           </Card>
