@@ -178,6 +178,7 @@ export type CitaConDetalle = Cita & {
   colaboradora: Pick<Usuario, "id" | "nombre"> | null;
   servicio: Pick<Servicio, "id" | "nombre" | "duracion_minutos"> | null;
   paquete: Pick<Paquete, "id" | "nombre" | "duracion_minutos"> | null;
+  pago?: Pick<Pago, "metodo" | "estado"> | null;
 };
 
 export const CITA_ESTADO_LABELS: Record<CitaEstado, string> = {
@@ -200,7 +201,26 @@ export const DIA_SEMANA_LABELS = [
 ] as const;
 
 export type PagoMetodo = "transferencia" | "efectivo" | "fri";
-export type PagoEstado = "pendiente" | "validado" | "rechazado";
+export type PagoEstado =
+  | "pendiente"
+  | "asegurado"
+  | "cobrado"
+  | "validado"
+  | "rechazado";
+
+export const PAGO_METODO_LABELS: Record<PagoMetodo, string> = {
+  transferencia: "Transferencia",
+  efectivo: "Efectivo",
+  fri: "Fri / depósito",
+};
+
+export const PAGO_ESTADO_LABELS: Record<PagoEstado, string> = {
+  pendiente: "Pendiente de validar",
+  asegurado: "Por cobrar",
+  cobrado: "Cobrado",
+  validado: "Cobrado",
+  rechazado: "Rechazado",
+};
 
 export type Pago = {
   id: string;
@@ -212,6 +232,8 @@ export type Pago = {
   estado: PagoEstado;
   validado_por: string | null;
   validado_at: string | null;
+  asegurado_at: string | null;
+  cobrado_at: string | null;
   notas: string | null;
   created_at: string;
 };

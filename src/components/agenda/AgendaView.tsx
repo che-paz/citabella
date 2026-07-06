@@ -1,36 +1,40 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import {
   CalendarPlus,
   ChevronLeft,
   ChevronRight,
-  Clock,
   Settings,
 } from "lucide-react";
 import {
   cancelCitaAction,
   fetchAgendaCitasAction,
+  reactivarCitaAction,
   updateCitaEstadoAction,
 } from "@/lib/agenda/actions";
 import {
   addDaysToDateKey,
-  formatAgendaTime,
+  addMonthsToDateKey,
   formatDateKeyLabel,
+  formatMonthYearLabel,
+  getMonthStartDateKey,
   getSalonDateKey,
   getWeekDateKeys,
   getWeekStartDateKey,
 } from "@/lib/agenda/dates";
 import { CitaForm } from "@/components/agenda/CitaForm";
+import { AgendaCitaCard } from "@/components/agenda/AgendaCitaCard";
 import { HorariosConfig } from "@/components/agenda/HorariosConfig";
-import { Badge } from "@/components/ui/badge";
+import {
+  buildMonthSummariesFromCitas,
+  MonthCalendar,
+} from "@/components/ui/month-calendar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { MobileActionBar } from "@/components/ui/mobile-action-bar";
 import {
-  CITA_ESTADO_LABELS,
   type CitaConDetalle,
   type Clienta,
   type ExcepcionHorario,
@@ -41,7 +45,7 @@ import {
 } from "@/types/database";
 import { cn } from "@/lib/utils";
 
-type ViewMode = "day" | "week";
+type ViewMode = "day" | "week" | "month";
 
 type AgendaViewProps = {
   citas: CitaConDetalle[];
@@ -56,18 +60,6 @@ type AgendaViewProps = {
   currentUserId: string;
   initialDate: string;
   initialView: ViewMode;
-};
-
-const estadoVariant: Record<
-  string,
-  "default" | "secondary" | "outline" | "destructive"
-> = {
-  confirmada: "default",
-  pendiente: "secondary",
-  pendiente_validacion: "secondary",
-  cancelada: "outline",
-  completada: "outline",
-  no_show: "destructive",
 };
 
 export function AgendaView({
@@ -97,7 +89,9 @@ export function AgendaView({
 
   const weekStart = getWeekStartDateKey(dateKey);
   const weekDays = getWeekDateKeys(weekStart);
-  const visibleDateKeys = view === "day" ? [dateKey] : weekDays;
+  const visibleDateKeys =
+    view === "week" ? weekDays : [dateKey];
+  const markedDates = buildMonthSummariesFromCitas(citas, timezone);
 
   function syncUrl(nextDate: string, nextView: ViewMode) {
     const url = `/agenda?date=${nextDate}&view=${nextView}`;
@@ -128,10 +122,23 @@ export function AgendaView({
     const next =
       view === "day"
         ? addDaysToDateKey(dateKey, delta)
-        : addDaysToDateKey(weekStart, delta * 7);
+        : view === "week"
+          ? addDaysToDateKey(weekStart, delta * 7)
+          : addMonthsToDateKey(dateKey, delta);
     setDateKey(next);
     syncUrl(next, view);
     loadCitas(next, view);
+  }
+
+  function selectDate(next: string) {
+    const monthChanged =
+      view === "month" &&
+      getMonthStartDateKey(next) !== getMonthStartDateKey(dateKey);
+    setDateKey(next);
+    syncUrl(next, view);
+    if (monthChanged) {
+      loadCitas(next, view);
+    }
   }
 
   function switchView(next: ViewMode) {
@@ -194,17 +201,33 @@ export function AgendaView({
     });
   }
 
+  function handleReactivar(citaId: string) {
+    setActionError(null);
+    startTransition(async () => {
+      const result = await reactivarCitaAction(citaId);
+      if (result.error) setActionError(result.error);
+      else {
+        router.refresh();
+        loadCitas(dateKey, view);
+      }
+    });
+  }
+
   return (
     <div className="space-y-4">
       <div className="space-y-3">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-1">
-            <Button variant="outline" size="icon" onClick={() => navigate(-1)}>
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-            <Button variant="outline" size="icon" onClick={() => navigate(1)}>
-              <ChevronRight className="h-4 w-4" />
-            </Button>
+            {view !== "month" && (
+              <>
+                <Button variant="outline" size="icon" onClick={() => navigate(-1)}>
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <Button variant="outline" size="icon" onClick={() => navigate(1)}>
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </>
+            )}
             <Button variant="ghost" size="sm" onClick={goToToday}>
               Hoy
             </Button>
@@ -225,6 +248,14 @@ export function AgendaView({
               onClick={() => switchView("week")}
             >
               Semana
+            </Button>
+            <Button
+              variant={view === "month" ? "default" : "ghost"}
+              size="sm"
+              className="px-3"
+              onClick={() => switchView("month")}
+            >
+              Mes
             </Button>
           </div>
         </div>
@@ -253,9 +284,26 @@ export function AgendaView({
       <p className="text-sm font-medium text-muted-foreground">
         {view === "day"
           ? formatDateKeyLabel(dateKey, timezone)
-          : `${formatDateKeyLabel(weekStart, timezone)} – ${formatDateKeyLabel(weekDays[6], timezone)}`}
+          : view === "week"
+            ? `${formatDateKeyLabel(weekStart, timezone)} – ${formatDateKeyLabel(weekDays[6], timezone)}`
+            : formatMonthYearLabel(dateKey, timezone)}
         {citasLoading && " · Cargando…"}
       </p>
+
+      {view === "month" && (
+        <MonthCalendar
+          timezone={timezone}
+          selectedDateKey={dateKey}
+          onSelectDate={selectDate}
+          daySummaries={markedDates}
+        />
+      )}
+
+      {view === "month" && (
+        <p className="text-sm font-medium capitalize">
+          {formatDateKeyLabel(dateKey, timezone)}
+        </p>
+      )}
 
       {actionError && (
         <p className="text-sm text-destructive">{actionError}</p>
@@ -263,8 +311,10 @@ export function AgendaView({
 
       <div
         className={cn(
-          "grid gap-3",
-          view === "week" && "md:grid-cols-7"
+          "gap-3",
+          view === "week"
+            ? "flex overflow-x-auto pb-2 lg:grid lg:grid-cols-7 lg:overflow-visible"
+            : "grid"
         )}
       >
         {visibleDateKeys.map((dayKey) => {
@@ -272,7 +322,13 @@ export function AgendaView({
           const isToday = dayKey === getSalonDateKey(new Date(), timezone);
 
           return (
-            <div key={dayKey} className="min-w-0 space-y-2">
+            <div
+              key={dayKey}
+              className={cn(
+                "min-w-0 space-y-2",
+                view === "week" && "w-[11.5rem] shrink-0 lg:w-auto"
+              )}
+            >
               {view === "week" && (
                 <div
                   className={cn(
@@ -292,85 +348,18 @@ export function AgendaView({
                 </Card>
               ) : (
                 dayCitas.map((cita) => (
-                  <Card key={cita.id} className="overflow-hidden">
-                    <CardContent className="space-y-2 p-3">
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="min-w-0">
-                          <p className="truncate font-medium">{cita.clienta.nombre}</p>
-                          <p className="flex items-center gap-1 text-xs text-muted-foreground">
-                            <Clock className="h-3 w-3" />
-                            {formatAgendaTime(cita.inicio, timezone)} –{" "}
-                            {formatAgendaTime(cita.fin, timezone)}
-                          </p>
-                        </div>
-                        <Badge variant={estadoVariant[cita.estado] ?? "outline"}>
-                          {CITA_ESTADO_LABELS[cita.estado]}
-                        </Badge>
-                      </div>
-
-                      <p className="text-sm">
-                        {cita.servicio?.nombre ?? cita.paquete?.nombre}
-                      </p>
-
-                      {cita.colaboradora && (
-                        <p className="text-xs text-muted-foreground">
-                          {cita.colaboradora.nombre}
-                        </p>
-                      )}
-
-                      {!["cancelada", "completada", "no_show"].includes(
-                        cita.estado
-                      ) && (
-                        <div className="flex flex-wrap gap-1 pt-1">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => openEdit(cita)}
-                            disabled={isPending}
-                          >
-                            Reagendar
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleCancel(cita.id)}
-                            disabled={isPending}
-                          >
-                            Cancelar
-                          </Button>
-                          {cita.estado === "pendiente_validacion" && isAdmin && (
-                            <Button variant="secondary" size="sm" asChild>
-                              <Link href="/pagos">Validar pago</Link>
-                            </Button>
-                          )}
-                          {cita.estado === "pendiente" && (
-                            <Button
-                              variant="secondary"
-                              size="sm"
-                              onClick={() =>
-                                handleEstado(cita.id, "confirmada")
-                              }
-                              disabled={isPending}
-                            >
-                              Confirmar
-                            </Button>
-                          )}
-                          {cita.estado === "confirmada" && (
-                            <Button
-                              variant="secondary"
-                              size="sm"
-                              onClick={() =>
-                                handleEstado(cita.id, "completada")
-                              }
-                              disabled={isPending}
-                            >
-                              Completar
-                            </Button>
-                          )}
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
+                  <AgendaCitaCard
+                    key={cita.id}
+                    cita={cita}
+                    timezone={timezone}
+                    isAdmin={isAdmin}
+                    isPending={isPending}
+                    compact={view === "week"}
+                    onEdit={openEdit}
+                    onCancel={handleCancel}
+                    onEstado={handleEstado}
+                    onReactivar={handleReactivar}
+                  />
                 ))
               )}
             </div>

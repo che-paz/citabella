@@ -87,7 +87,7 @@ export function CatalogoPicker({
       )}
 
       <Button
-        className="w-full"
+        className="reservar-cta w-full"
         size="lg"
         disabled={!selected}
         onClick={onContinue}

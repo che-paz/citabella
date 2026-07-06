@@ -31,6 +31,7 @@ type SalonSettings = {
   slug: string;
   logo_url: string | null;
   politica_reembolso: string;
+  slot_step_minutes?: number | null;
 };
 
 type AjustesPanelProps = {
@@ -180,6 +181,25 @@ export function AjustesPanel({ user, salon }: AjustesPanelProps) {
                     El enlace público usa el identificador{" "}
                     <code className="rounded bg-muted px-1">{salon.slug}</code>.
                     Compártelo desde Inicio.
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="slot_step_minutes">
+                    Intervalo entre citas en reserva
+                  </Label>
+                  <select
+                    id="slot_step_minutes"
+                    name="slot_step_minutes"
+                    defaultValue={String(salon.slot_step_minutes ?? 60)}
+                    className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  >
+                    <option value="60">Cada hora exacta (9:00, 10:00…)</option>
+                    <option value="30">Cada 30 minutos</option>
+                    <option value="15">Cada 15 minutos</option>
+                  </select>
+                  <p className="text-xs text-muted-foreground">
+                    Define cómo aparecen los horarios en tu link de reserva y al
+                    crear citas.
                   </p>
                 </div>
                 <div className="space-y-2">

@@ -1,5 +1,3 @@
-import { DEFAULT_SLOT_STEP_MINUTES } from "@/lib/availability/slots";
-
 /** Piloto founders — hora exacta hasta que `slot_step_minutes` exista en DB. */
 const ON_THE_HOUR_SLUGS = new Set([
   "salon-tutis",
@@ -19,5 +17,5 @@ export function resolveSlotStepMinutes(salon: {
   if (ON_THE_HOUR_SLUGS.has(salon.slug)) {
     return 60;
   }
-  return DEFAULT_SLOT_STEP_MINUTES;
+  return 60;
 }

@@ -3,12 +3,17 @@ import type { Salon } from "@/types/database";
 
 export async function getSalonSettings(
   salonId: string
-): Promise<Pick<Salon, "id" | "nombre" | "slug" | "logo_url" | "politica_reembolso"> | null> {
+): Promise<
+  Pick<
+    Salon,
+    "id" | "nombre" | "slug" | "logo_url" | "politica_reembolso" | "slot_step_minutes"
+  > | null
+> {
   const supabase = await createClient();
 
   const { data } = await supabase
     .from("salones")
-    .select("id, nombre, slug, logo_url, politica_reembolso")
+    .select("id, nombre, slug, logo_url, politica_reembolso, slot_step_minutes")
     .eq("id", salonId)
     .single();
 

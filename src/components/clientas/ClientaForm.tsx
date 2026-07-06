@@ -7,6 +7,7 @@ import {
   createClientaAction,
   updateClientaAction,
 } from "@/lib/clientas/actions";
+import { PHONE_INPUT_HINT, PHONE_INPUT_PLACEHOLDER } from "@/lib/utils/phone";
 import type { Clienta } from "@/types/database";
 import { Button } from "@/components/ui/button";
 import {
@@ -86,13 +87,11 @@ export function ClientaForm({ clienta, open, onOpenChange }: ClientaFormProps) {
               name="telefono"
               type="tel"
               defaultValue={clienta?.telefono ?? ""}
-              placeholder="55501234"
+              placeholder={PHONE_INPUT_PLACEHOLDER}
               inputMode="numeric"
               required
             />
-            <p className="text-xs text-muted-foreground">
-              8 dígitos de Guatemala (ej. 55501234).
-            </p>
+            <p className="text-xs text-muted-foreground">{PHONE_INPUT_HINT}</p>
           </div>
 
           <div className="space-y-2">

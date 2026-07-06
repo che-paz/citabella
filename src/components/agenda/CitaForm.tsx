@@ -9,7 +9,7 @@ import {
   rescheduleCitaAction,
   type AgendaActionState,
 } from "@/lib/agenda/actions";
-import { formatAgendaTime, getSalonDateKey } from "@/lib/agenda/dates";
+import { formatAgendaTime, getSalonDateKey, maxBookingDateKey, todayDateKey } from "@/lib/agenda/dates";
 import { formatDuration } from "@/lib/utils/format";
 import type {
   CitaConDetalle,
@@ -114,6 +114,9 @@ export function CitaForm({
     currentUserId,
     timezone
   );
+
+  const minDate = todayDateKey(timezone);
+  const maxDate = maxBookingDateKey(timezone, 3);
 
   const [tipo, setTipo] = useState<"servicio" | "paquete">(initial.tipo);
   const [servicioId, setServicioId] = useState(initial.servicioId);
@@ -302,6 +305,8 @@ export function CitaForm({
                 name="fecha"
                 type="date"
                 value={fecha}
+                min={minDate}
+                max={maxDate}
                 onChange={(e) => setFecha(e.target.value)}
                 required
               />

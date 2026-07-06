@@ -127,9 +127,11 @@ salones ──┬── usuarios
 | monto | DECIMAL(10,2) | |
 | metodo | ENUM | `transferencia`, `efectivo`, `fri` |
 | comprobante_url | TEXT NULL | Supabase Storage path |
-| estado | ENUM | `pendiente`, `validado`, `rechazado` |
-| validado_por | UUID FK → usuarios NULL | |
-| validado_at | TIMESTAMPTZ NULL | |
+| estado | ENUM | `pendiente`, `asegurado`, `cobrado`, `validado` (legacy), `rechazado` |
+| validado_por | UUID FK → usuarios NULL | Admin que confirmó/rechazó |
+| validado_at | TIMESTAMPTZ NULL | Legacy; rechazos |
+| asegurado_at | TIMESTAMPTZ NULL | Confirmación de reserva (no ingreso) |
+| cobrado_at | TIMESTAMPTZ NULL | Ingreso reconocido (cita completada) |
 | notas | TEXT | |
 | created_at | TIMESTAMPTZ | |
 

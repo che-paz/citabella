@@ -2,6 +2,8 @@ import Link from "next/link";
 import { formatAgendaDate, formatAgendaTime } from "@/lib/agenda/dates";
 import {
   CITA_ESTADO_LABELS,
+  PAGO_ESTADO_LABELS,
+  PAGO_METODO_LABELS,
   type CitaConDetalle,
   type CitaEstado,
 } from "@/types/database";
@@ -60,6 +62,12 @@ export function HistorialCitas({
                 {showColaboradora && cita.colaboradora && (
                   <p className="text-sm text-muted-foreground">
                     Con {cita.colaboradora.nombre}
+                  </p>
+                )}
+                {cita.pago && (
+                  <p className="text-sm text-muted-foreground">
+                    {PAGO_METODO_LABELS[cita.pago.metodo]} ·{" "}
+                    {PAGO_ESTADO_LABELS[cita.pago.estado]}
                   </p>
                 )}
               </div>

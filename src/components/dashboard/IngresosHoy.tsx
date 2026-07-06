@@ -20,7 +20,7 @@ export function IngresosHoy({ total }: IngresosHoyProps) {
           {formatQuetzales(total)}
         </p>
         <p className="mt-2 text-sm text-muted-foreground">
-          Suma de pagos validados hoy.
+          Suma de pagos cobrados hoy.
         </p>
       </CardContent>
     </Card>

@@ -53,7 +53,8 @@ export async function getClientaCitas(
       clienta:clientas ( id, nombre, telefono ),
       colaboradora:usuarios ( id, nombre ),
       servicio:servicios ( id, nombre, duracion_minutos ),
-      paquete:paquetes ( id, nombre, duracion_minutos )
+      paquete:paquetes ( id, nombre, duracion_minutos ),
+      pagos ( metodo, estado )
     `
     )
     .eq("salon_id", salonId)
@@ -67,6 +68,8 @@ export async function getClientaCitas(
       : c.colaboradora;
     const servicio = Array.isArray(c.servicio) ? c.servicio[0] : c.servicio;
     const paquete = Array.isArray(c.paquete) ? c.paquete[0] : c.paquete;
+    const pagosRaw = Array.isArray(c.pagos) ? c.pagos : c.pagos ? [c.pagos] : [];
+    const pago = pagosRaw[0] ?? null;
 
     return {
       id: c.id,
@@ -90,6 +93,9 @@ export async function getClientaCitas(
       colaboradora: colaboradora ?? null,
       servicio: servicio ?? null,
       paquete: paquete ?? null,
+      pago: pago
+        ? { metodo: pago.metodo, estado: pago.estado }
+        : null,
     };
   });
 }

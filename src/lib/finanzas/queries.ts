@@ -46,12 +46,20 @@ export async function getResumenFinanciero(
   const supabase = await createClient();
   const { start, end, startDate, endDate, label } = monthBounds(timezone);
 
-  const [pagosRes, movimientosRes] = await Promise.all([
+  const [cobradosRes, legacyRes, movimientosRes] = await Promise.all([
+    supabase
+      .from("pagos")
+      .select("monto")
+      .eq("salon_id", salonId)
+      .eq("estado", "cobrado")
+      .gte("cobrado_at", start)
+      .lt("cobrado_at", end),
     supabase
       .from("pagos")
       .select("monto")
       .eq("salon_id", salonId)
       .eq("estado", "validado")
+      .is("cobrado_at", null)
       .gte("validado_at", start)
       .lt("validado_at", end),
     supabase
@@ -62,10 +70,9 @@ export async function getResumenFinanciero(
       .lte("fecha", endDate),
   ]);
 
-  const ingresosPagos = (pagosRes.data ?? []).reduce(
-    (s, p) => s + Number(p.monto),
-    0
-  );
+  const ingresosPagos =
+    (cobradosRes.data ?? []).reduce((s, p) => s + Number(p.monto), 0) +
+    (legacyRes.data ?? []).reduce((s, p) => s + Number(p.monto), 0);
 
   const movimientos = movimientosRes.data ?? [];
   const ingresosManuales = movimientos

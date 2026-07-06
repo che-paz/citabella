@@ -33,15 +33,15 @@ export async function validarPagoAction(
   const { error: pagoError } = await supabase
     .from("pagos")
     .update({
-      estado: "validado",
+      estado: "asegurado",
+      asegurado_at: new Date().toISOString(),
       validado_por: user.id,
-      validado_at: new Date().toISOString(),
     })
     .eq("id", pagoId)
     .eq("salon_id", user.salon_id);
 
   if (pagoError) {
-    return { error: "No se pudo validar el pago" };
+    return { error: "No se pudo confirmar el pago" };
   }
 
   const { error: citaError } = await supabase
@@ -51,7 +51,7 @@ export async function validarPagoAction(
     .eq("salon_id", user.salon_id);
 
   if (citaError) {
-    return { error: "Pago validado pero no se pudo confirmar la cita" };
+    return { error: "Pago confirmado pero no se pudo confirmar la cita" };
   }
 
   revalidatePath("/pagos");

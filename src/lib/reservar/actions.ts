@@ -12,7 +12,7 @@ import {
 import { createAnonymousClient } from "@/lib/supabase/anon";
 import { createClient } from "@/lib/supabase/server";
 import { optionalPgUuidSchema } from "@/lib/utils/validation";
-import { normalizeGuatemalaPhone } from "@/lib/utils/phone";
+import { normalizePhone } from "@/lib/utils/phone";
 
 export type ReservarActionState = {
   error?: string;
@@ -33,10 +33,11 @@ const reservaSchema = z
       .min(8, "Teléfono inválido")
       .max(20)
       .transform((v) => v.trim())
-      .refine((v) => normalizeGuatemalaPhone(v) !== null, {
-        message: "Teléfono inválido. Usa 8 dígitos de Guatemala (ej. 55501234).",
+      .refine((v) => normalizePhone(v) !== null, {
+        message:
+          "Teléfono inválido. Usa 8 dígitos de Guatemala, Honduras o El Salvador.",
       })
-      .transform((v) => normalizeGuatemalaPhone(v)!),
+      .transform((v) => normalizePhone(v)!),
     metodo: z.enum(["transferencia", "efectivo", "fri"], {
       message: "Método de pago inválido",
     }),

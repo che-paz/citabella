@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { formatAgendaDate } from "@/lib/agenda/dates";
 import { formatQuetzales } from "@/lib/utils/format";
+import { PHONE_INPUT_HINT, PHONE_INPUT_PLACEHOLDER } from "@/lib/utils/phone";
 import type { PagoMetodo, ReservaItem, SalonPublico } from "@/types/database";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -112,13 +113,13 @@ export function DatosPagoForm({
             type="tel"
             value={telefono}
             onChange={(e) => onTelefonoChange(e.target.value)}
-            placeholder="55501234"
+            placeholder={PHONE_INPUT_PLACEHOLDER}
             required
             autoComplete="tel"
             inputMode="numeric"
           />
           <p className="text-xs text-muted-foreground">
-            8 dígitos de Guatemala. Te avisaremos por WhatsApp sobre tu cita.
+            {PHONE_INPUT_HINT} Te avisaremos por WhatsApp.
           </p>
         </div>
       </div>
@@ -207,7 +208,7 @@ export function DatosPagoForm({
         </Button>
         <Button
           type="button"
-          className="flex-1"
+          className="reservar-cta flex-1"
           onClick={onSubmit}
           disabled={submitting || !nombre.trim() || telefono.length < 8}
         >

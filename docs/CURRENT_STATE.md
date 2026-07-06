@@ -1,12 +1,12 @@
 # CITABELLA — Current State
 
-> **Última actualización:** 2026-07-03  
-> **Sprint activo:** Piloto founders — personalización salón + UX móvil  
+> **Última actualización:** 2026-07-06  
+> **Sprint activo:** Founders 02 — Sprints A/B/C en código; migración 010 pendiente en cloud  
 > **Fase:** Fase 1 MVP ✅ | Piloto founders en curso
 
 ## Resumen en una línea
 
-MVP en Vercel. Piloto founders activo (Tutis + Galaxy). Slots en hora exacta, WhatsApp manual en pagos, teléfono validado en reserva.
+MVP en Vercel. Piloto founders (Tutis + Galaxy). Sprint Founders 02 completo: reserva 3 meses, teléfonos CA, pago asegurado/cobrado, vista mes.
 
 ## Estado por área
 
@@ -14,7 +14,7 @@ MVP en Vercel. Piloto founders activo (Tutis + Galaxy). Slots en hora exacta, Wh
 |------|--------|-------|
 | Documentación | 🟢 Al día | Sprint 02 + fixes documentados |
 | Repositorio / código | 🟢 MVP core | Flujo reserva + validación pagos verificado |
-| Base de datos | 🟢 Migraciones 005/006 | Aplicadas en cloud (usuario confirmó) |
+| Base de datos | 🟡 Migración 010 pendiente | `asegurado`/`cobrado` en código; aplicar `010_pago_asegurado_cobrado.sql` en cloud |
 | Supabase | 🟢 Operativo | RLS público + bucket `comprobantes` + service role |
 | Deploy | 🟢 Staging Vercel | GitHub → Vercel; link reserva en dashboard |
 | Prototipo UI | 🟢 MVP core | Dashboard + clientas listos |
@@ -48,7 +48,10 @@ MVP en Vercel. Piloto founders activo (Tutis + Galaxy). Slots en hora exacta, Wh
 - Menú móvil cierra al seleccionar sección; identidad salón en sidebar (logo + nombre)
 - Link reserva: tema rosa propio (`reservar.css`) + logo vía URL pública Supabase
 - Agenda: cambio de fecha sin recargar página completa (server action)
-- Piloto founders: slots `:00` (Tutis + Galaxy); WhatsApp manual en `/pagos`; teléfono GT validado en reserva
+- Piloto founders: slots `:00` (Tutis + Galaxy); WhatsApp manual en `/pagos`; teléfonos GT/HN/SV
+- Sprint Founders 02A: horizonte reserva 3 meses; CTAs reserva más visibles
+- Sprint Founders 02B: pago `asegurado` al confirmar, `cobrado` al completar; reactivar cita admin
+- Sprint Founders 02C: vista mes en agenda admin + calendario mensual en reserva pública
 
 ## Decisiones pendientes
 
@@ -72,9 +75,9 @@ Ninguno.
 
 ## Próximo paso inmediato
 
-1. **Aplicar migración 009** en Supabase Cloud (`slot_step_minutes`) — opcional; código ya usa fallback por slug
-2. Web Push para nuevas reservas (founders)
-3. Fotos en historial de clienta (Fase 1.5)
+1. **Aplicar migración 010** en Supabase Cloud (`asegurado`/`cobrado`) — requerido para Sprint B en producción
+2. Comunicar a founders el cambio de ingresos (confirmar ≠ cobrar)
+3. Web Push para nuevas reservas (founders)
 
 ## Piloto founders (activo)
 
@@ -118,6 +121,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 | 2026-07-01 | Fixes: slots ISO, upload comprobantes, rollback RPC |
 | 2026-07-01 | Panel `/pagos` validación + liberación slots al cancelar/rechazar |
 | 2026-07-01 | Dashboard home: citas hoy, pagos pendientes, ingresos del día |
+| 2026-07-06 | Sprint Founders 02A/B: 3 meses reserva, teléfonos CA, pago asegurado/cobrado, reactivar cita |
 | 2026-07-03 | Sprint piloto: slots hora exacta, WhatsApp manual en pagos, teléfono GT |
 
 ## Cómo actualizar este archivo

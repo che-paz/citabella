@@ -92,9 +92,46 @@ export async function getIngresosHoy(
     .from("pagos")
     .select("monto")
     .eq("salon_id", salonId)
+    .eq("estado", "cobrado")
+    .gte("cobrado_at", start)
+    .lt("cobrado_at", end);
+
+  const legacy = await supabase
+    .from("pagos")
+    .select("monto")
+    .eq("salon_id", salonId)
     .eq("estado", "validado")
+    .is("cobrado_at", null)
     .gte("validado_at", start)
     .lt("validado_at", end);
 
-  return (data ?? []).reduce((sum, p) => sum + Number(p.monto), 0);
+  const total =
+    (data ?? []).reduce((sum, p) => sum + Number(p.monto), 0) +
+    (legacy.data ?? []).reduce((sum, p) => sum + Number(p.monto), 0);
+
+  return total;
+}
+
+/** Anticipos confirmados pero aún no cobrados al completar la cita. */
+export async function getPorCobrarTotal(salonId: string): Promise<number> {
+  const supabase = await createClient();
+
+  const [aseguradoRes, legacyRes] = await Promise.all([
+    supabase
+      .from("pagos")
+      .select("monto")
+      .eq("salon_id", salonId)
+      .eq("estado", "asegurado"),
+    supabase
+      .from("pagos")
+      .select("monto")
+      .eq("salon_id", salonId)
+      .eq("estado", "validado")
+      .is("cobrado_at", null),
+  ]);
+
+  return (
+    (aseguradoRes.data ?? []).reduce((s, p) => s + Number(p.monto), 0) +
+    (legacyRes.data ?? []).reduce((s, p) => s + Number(p.monto), 0)
+  );
 }

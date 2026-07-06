@@ -32,6 +32,7 @@ type FinanzasPanelProps = {
   resumen: ResumenFinanciero;
   movimientos: MovimientoContable[];
   timezone: string;
+  porCobrar: number;
 };
 
 function SubmitGasto() {
@@ -51,6 +52,7 @@ export function FinanzasPanel({
   resumen,
   movimientos,
   timezone,
+  porCobrar,
 }: FinanzasPanelProps) {
   const router = useRouter();
   const [state, formAction] = useFormState(createGastoAction, {});
@@ -64,6 +66,19 @@ export function FinanzasPanel({
 
   return (
     <div className="space-y-6">
+      <Card className="border-amber-200/80 bg-amber-50/50 dark:border-amber-900/50 dark:bg-amber-950/20">
+        <CardHeader className="pb-2">
+          <CardDescription>Por cobrar (no disponible para gastar)</CardDescription>
+          <CardTitle className="text-2xl tabular-nums text-amber-900 dark:text-amber-100">
+            {formatQuetzales(porCobrar)}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="text-xs text-muted-foreground">
+          Anticipos de citas confirmadas. Pasa a ingreso al marcar completada y
+          cobrada.
+        </CardContent>
+      </Card>
+
       <div className="grid gap-3 sm:grid-cols-3">
         <Card>
           <CardHeader className="pb-2">
@@ -73,7 +88,7 @@ export function FinanzasPanel({
             </CardTitle>
           </CardHeader>
           <CardContent className="text-xs text-muted-foreground">
-            Pagos validados: {formatQuetzales(resumen.ingresosPagos)}
+            Pagos cobrados: {formatQuetzales(resumen.ingresosPagos)}
           </CardContent>
         </Card>
         <Card>

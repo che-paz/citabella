@@ -21,7 +21,12 @@ export default async function AgendaPage({ searchParams }: PageProps) {
       ? searchParams.date
       : todayDateKey(timezone);
 
-  const view = searchParams.view === "week" ? "week" : "day";
+  const view =
+    searchParams.view === "week"
+      ? "week"
+      : searchParams.view === "month"
+        ? "month"
+        : "day";
 
   const [
     citas,

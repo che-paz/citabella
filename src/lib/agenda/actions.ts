@@ -5,6 +5,8 @@ import { z } from "zod";
 import { requireAdminUser, requireAuthUser } from "@/lib/auth/get-user";
 import { getAgendaCitas } from "@/lib/agenda/queries";
 import { fetchAvailabilitySlots } from "@/lib/availability/queries";
+import { validateNoOverlap } from "@/lib/availability/engine";
+import { BLOCKING_CITA_ESTADOS } from "@/lib/availability/slots";
 import { resolveSlotStepMinutes } from "@/lib/availability/salon-config";
 import { salonLocalToUtc } from "@/lib/availability/timezone";
 import { createClient } from "@/lib/supabase/server";
@@ -563,13 +565,103 @@ export async function updateCitaEstadoAction(
     return { error: "No se pudo actualizar el estado" };
   }
 
+  if (estado === "completada") {
+    const now = new Date().toISOString();
+    await supabase
+      .from("pagos")
+      .update({
+        estado: "cobrado",
+        cobrado_at: now,
+      })
+      .eq("cita_id", citaId)
+      .eq("salon_id", user.salon_id)
+      .in("estado", ["asegurado", "validado"]);
+  }
+
   revalidatePath("/agenda");
+  revalidatePath("/");
+  revalidatePath("/finanzas");
+  return { success: true };
+}
+
+export async function reactivarCitaAction(
+  citaId: string
+): Promise<AgendaActionState> {
+  const user = await requireAdminUser();
+  const supabase = await createClient();
+
+  const { data: cita } = await supabase
+    .from("citas")
+    .select("id, estado, inicio, fin, colaboradora_id")
+    .eq("id", citaId)
+    .eq("salon_id", user.salon_id)
+    .single();
+
+  if (!cita) {
+    return { error: "Cita no encontrada" };
+  }
+
+  if (cita.estado !== "completada" && cita.estado !== "cancelada") {
+    return { error: "Solo se pueden reactivar citas completadas o canceladas" };
+  }
+
+  if (cita.estado === "cancelada") {
+    const { data: overlapping } = await supabase
+      .from("citas")
+      .select("id, inicio, fin, colaboradora_id, estado")
+      .eq("salon_id", user.salon_id)
+      .in("estado", [...BLOCKING_CITA_ESTADOS])
+      .neq("id", citaId)
+      .lt("inicio", cita.fin)
+      .gt("fin", cita.inicio);
+
+    const slotFree = validateNoOverlap(
+      { inicio: new Date(cita.inicio), fin: new Date(cita.fin) },
+      (overlapping ?? []).map((c) => ({
+        id: c.id,
+        inicio: new Date(c.inicio),
+        fin: new Date(c.fin),
+        colaboradora_id: c.colaboradora_id,
+        estado: c.estado,
+      })),
+      cita.colaboradora_id,
+      citaId
+    );
+
+    if (!slotFree) {
+      return { error: "El horario ya está ocupado; no se puede reactivar" };
+    }
+  }
+
+  const { error: citaError } = await supabase
+    .from("citas")
+    .update({ estado: "confirmada" })
+    .eq("id", citaId)
+    .eq("salon_id", user.salon_id);
+
+  if (citaError) {
+    return { error: "No se pudo reactivar la cita" };
+  }
+
+  await supabase
+    .from("pagos")
+    .update({
+      estado: "asegurado",
+      asegurado_at: new Date().toISOString(),
+      cobrado_at: null,
+    })
+    .eq("cita_id", citaId)
+    .eq("salon_id", user.salon_id)
+    .in("estado", ["cobrado", "rechazado"]);
+
+  revalidatePath("/agenda");
+  revalidatePath("/clientas");
   return { success: true };
 }
 
 export async function fetchAgendaCitasAction(params: {
   dateKey: string;
-  view: "day" | "week";
+  view: "day" | "week" | "month";
 }): Promise<{ citas?: Awaited<ReturnType<typeof getAgendaCitas>>; error?: string }> {
   const user = await requireAuthUser();
 
@@ -577,7 +669,12 @@ export async function fetchAgendaCitasAction(params: {
     return { error: "Fecha inválida" };
   }
 
-  const view = params.view === "week" ? "week" : "day";
+  const view =
+    params.view === "week"
+      ? "week"
+      : params.view === "month"
+        ? "month"
+        : "day";
   const timezone = user.salon.timezone ?? "America/Guatemala";
 
   try {

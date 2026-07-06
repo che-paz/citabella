@@ -1,25 +1,29 @@
 import { describe, expect, it } from "vitest";
 import {
-  formatGuatemalaPhoneDisplay,
-  normalizeGuatemalaPhone,
+  formatPhoneDisplay,
+  normalizePhone,
   phoneToWhatsAppDigits,
 } from "./phone";
 
-describe("normalizeGuatemalaPhone", () => {
-  it("accepts 8-digit local numbers", () => {
-    expect(normalizeGuatemalaPhone("55501234")).toBe("50255501234");
-    expect(normalizeGuatemalaPhone("5550-1234")).toBe("50255501234");
+describe("normalizePhone", () => {
+  it("accepts Guatemala numbers", () => {
+    expect(normalizePhone("55501234")).toBe("50255501234");
+    expect(normalizePhone("50255501234")).toBe("50255501234");
   });
 
-  it("accepts 502 prefix", () => {
-    expect(normalizeGuatemalaPhone("50255501234")).toBe("50255501234");
-    expect(normalizeGuatemalaPhone("+502 5550 1234")).toBe("50255501234");
+  it("accepts Honduras numbers", () => {
+    expect(normalizePhone("99901234")).toBe("50499901234");
+    expect(normalizePhone("50499901234")).toBe("50499901234");
+  });
+
+  it("accepts El Salvador numbers", () => {
+    expect(normalizePhone("50371234567")).toBe("50371234567");
+    expect(normalizePhone("503 7123-4567")).toBe("50371234567");
   });
 
   it("rejects invalid numbers", () => {
-    expect(normalizeGuatemalaPhone("123")).toBeNull();
-    expect(normalizeGuatemalaPhone("123456789")).toBeNull();
-    expect(normalizeGuatemalaPhone("155501234")).toBeNull();
+    expect(normalizePhone("123")).toBeNull();
+    expect(normalizePhone("155501234")).toBeNull();
   });
 });
 
@@ -29,8 +33,8 @@ describe("phoneToWhatsAppDigits", () => {
   });
 });
 
-describe("formatGuatemalaPhoneDisplay", () => {
-  it("formats for display", () => {
-    expect(formatGuatemalaPhoneDisplay("50255501234")).toBe("5550-1234");
+describe("formatPhoneDisplay", () => {
+  it("formats with country code", () => {
+    expect(formatPhoneDisplay("50255501234")).toBe("+502 5550-1234");
   });
 });

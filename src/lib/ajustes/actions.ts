@@ -36,6 +36,9 @@ const salonSchema = z.object({
     .max(2000)
     .optional()
     .transform((v) => v?.trim() ?? ""),
+  slot_step_minutes: z.coerce
+    .number()
+    .refine((v) => [15, 30, 60].includes(v), "Intervalo inválido"),
 });
 
 export async function updatePerfilAction(
@@ -100,6 +103,7 @@ export async function updateSalonAction(
   const parsed = salonSchema.safeParse({
     nombre: formData.get("nombre"),
     politica_reembolso: formData.get("politica_reembolso") ?? "",
+    slot_step_minutes: formData.get("slot_step_minutes") ?? "60",
   });
 
   if (!parsed.success) {
@@ -112,6 +116,7 @@ export async function updateSalonAction(
     .update({
       nombre: parsed.data.nombre,
       politica_reembolso: parsed.data.politica_reembolso,
+      slot_step_minutes: parsed.data.slot_step_minutes,
     })
     .eq("id", user.salon_id);
 
@@ -121,6 +126,7 @@ export async function updateSalonAction(
 
   revalidatePath("/", "layout");
   revalidatePath("/ajustes");
+  revalidatePath("/agenda");
   revalidatePath(`/reservar/${user.salon.slug}`);
   return { success: true, message: "Salón actualizado" };
 }

@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { addDaysToDateKey, todayDateKey } from "@/lib/agenda/dates";
-import { formatAgendaTime, formatDateKeyLabel } from "@/lib/agenda/dates";
+import { maxBookingDateKey, todayDateKey } from "@/lib/agenda/dates";
+import { formatAgendaTime } from "@/lib/agenda/dates";
 import { getPublicSlotsAction } from "@/lib/reservar/actions";
 import type { ReservaItem } from "@/types/database";
+import { MonthCalendar } from "@/components/ui/month-calendar";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 type SlotPickerProps = {
   slug: string;
@@ -36,7 +37,7 @@ export function SlotPicker({
   const [error, setError] = useState<string | null>(null);
 
   const today = todayDateKey(timezone);
-  const maxDate = addDaysToDateKey(today, 60);
+  const maxDate = maxBookingDateKey(timezone, 3);
 
   useEffect(() => {
     let cancelled = false;
@@ -81,13 +82,6 @@ export function SlotPicker({
 
   const slotStillValid = slots.some((s) => s.inicio === slotInicio);
 
-  function shiftDate(days: number) {
-    const next = addDaysToDateKey(fecha, days);
-    if (next < today || next > maxDate) return;
-    onFechaChange(next);
-    onSlotChange("", "");
-  }
-
   return (
     <div className="space-y-6">
       <div>
@@ -97,29 +91,17 @@ export function SlotPicker({
         </p>
       </div>
 
-      <div className="flex items-center justify-between rounded-lg border p-2">
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          disabled={fecha <= today}
-          onClick={() => shiftDate(-1)}
-        >
-          <ChevronLeft className="h-5 w-5" />
-        </Button>
-        <span className="font-medium capitalize">
-          {formatDateKeyLabel(fecha, timezone)}
-        </span>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          disabled={fecha >= maxDate}
-          onClick={() => shiftDate(1)}
-        >
-          <ChevronRight className="h-5 w-5" />
-        </Button>
-      </div>
+      <MonthCalendar
+        timezone={timezone}
+        selectedDateKey={fecha}
+        onSelectDate={(next) => {
+          onFechaChange(next);
+          onSlotChange("", "");
+        }}
+        minDate={today}
+        maxDate={maxDate}
+        className="rounded-lg border p-3"
+      />
 
       {loading ? (
         <div className="flex justify-center py-12">
@@ -156,7 +138,7 @@ export function SlotPicker({
         </Button>
         <Button
           type="button"
-          className="flex-1"
+          className="reservar-cta flex-1"
           disabled={!slotInicio || !slotStillValid}
           onClick={onContinue}
         >

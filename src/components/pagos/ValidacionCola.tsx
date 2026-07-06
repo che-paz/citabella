@@ -9,7 +9,7 @@ import {
 } from "@/lib/pagos/actions";
 import { formatAgendaDate, formatAgendaTime } from "@/lib/agenda/dates";
 import { formatQuetzales } from "@/lib/utils/format";
-import { formatGuatemalaPhoneDisplay } from "@/lib/utils/phone";
+import { formatPhoneDisplay } from "@/lib/utils/phone";
 import {
   buildCitaConfirmadaWhatsAppUrl,
   buildCitaRechazadaWhatsAppUrl,
@@ -94,7 +94,7 @@ export function ValidacionCola({
         const whatsappConfirmUrl = buildCitaConfirmadaWhatsAppUrl(whatsappCtx);
         const whatsappRejectUrl = buildCitaRechazadaWhatsAppUrl(whatsappCtx);
         const telefonoDisplay = pago.cita.clienta.telefono
-          ? formatGuatemalaPhoneDisplay(pago.cita.clienta.telefono)
+          ? formatPhoneDisplay(pago.cita.clienta.telefono)
           : "Sin teléfono";
 
         return (

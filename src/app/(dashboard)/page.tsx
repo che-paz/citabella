@@ -4,10 +4,12 @@ import {
   getCitasHoy,
   getIngresosHoy,
   getPagosPendientesCount,
+  getPorCobrarTotal,
 } from "@/lib/dashboard/queries";
 import { AccionesRapidas } from "@/components/dashboard/AccionesRapidas";
 import { CitasHoy } from "@/components/dashboard/CitasHoy";
 import { IngresosHoy } from "@/components/dashboard/IngresosHoy";
+import { PorCobrar } from "@/components/dashboard/PorCobrar";
 import { LinkReserva } from "@/components/dashboard/LinkReserva";
 import { PagosPendientes } from "@/components/dashboard/PagosPendientes";
 import { getPublicBookingUrl } from "@/lib/utils/site-url";
@@ -20,10 +22,11 @@ export default async function DashboardPage() {
   const isAdmin = user.rol === "admin_salon";
   const dateKey = todayDateKey(timezone);
 
-  const [citas, pagosPendientes, ingresosHoy] = await Promise.all([
+  const [citas, pagosPendientes, ingresosHoy, porCobrar] = await Promise.all([
     getCitasHoy(user.salon_id, timezone),
     isAdmin ? getPagosPendientesCount(user.salon_id) : Promise.resolve(0),
     isAdmin ? getIngresosHoy(user.salon_id, timezone) : Promise.resolve(0),
+    isAdmin ? getPorCobrarTotal(user.salon_id) : Promise.resolve(0),
   ]);
 
   const reservaUrl = getPublicBookingUrl(user.salon.slug);
@@ -48,8 +51,9 @@ export default async function DashboardPage() {
       <LinkReserva url={reservaUrl} />
 
       {isAdmin && (
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <PagosPendientes count={pagosPendientes} />
+          <PorCobrar total={porCobrar} />
           <IngresosHoy total={ingresosHoy} />
         </div>
       )}
