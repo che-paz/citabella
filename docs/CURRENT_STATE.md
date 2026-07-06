@@ -19,7 +19,7 @@ MVP en Vercel. Piloto founders (Tutis + Galaxy). Sprint Founders 02 completo: re
 | Deploy | 🟢 Staging Vercel | GitHub → Vercel; link reserva en dashboard |
 | Prototipo UI | 🟢 MVP core | Dashboard + clientas listos |
 | Finanzas / gastos | 🟢 MVP | `/finanzas` ingresos vs gastos + balance mes |
-| PWA | 🟢 Configurado | Manifest + iconos Gota+Check; Web Push en ajustes (requiere VAPID + migración 012) |
+| PWA | 🟢 Operativo | Web Push por dispositivo en `/ajustes`; iPhone requiere icono en inicio |
 
 ## Decisiones tomadas
 
@@ -52,7 +52,7 @@ MVP en Vercel. Piloto founders (Tutis + Galaxy). Sprint Founders 02 completo: re
 - Sprint Founders 02A: horizonte reserva 3 meses; CTAs reserva más visibles
 - Sprint Founders 02B: pago `asegurado` al confirmar, `cobrado` al completar; reactivar cita admin
 - Sprint Founders 02C: vista mes en agenda admin + calendario mensual en reserva pública
-- Web Push: notificación al admin cuando llega reserva por link público (`/ajustes` → activar)
+- Web Push: notificación al admin en reserva pública; activación por dispositivo; prueba solo al dispositivo actual; iPhone vía PWA en pantalla de inicio
 
 ## Decisiones pendientes
 

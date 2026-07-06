@@ -64,9 +64,10 @@ export async function getVapidPublicKeyAction(): Promise<string | null> {
   return getVapidPublicKey();
 }
 
-export async function getPushStatusAction(): Promise<{
+export async function getPushStatusAction(currentEndpoint?: string): Promise<{
   configured: boolean;
   subscriptionCount: number;
+  currentDeviceRegistered: boolean;
   error?: string;
 }> {
   const user = await requireAdminUser();
@@ -76,46 +77,75 @@ export async function getPushStatusAction(): Promise<{
     return {
       configured: isPushConfigured(),
       subscriptionCount: 0,
+      currentDeviceRegistered: false,
       error: "admin_client",
     };
   }
 
-  const { count, error } = await admin
+  const { data, count, error } = await admin
     .from("push_subscriptions")
-    .select("id", { count: "exact", head: true })
+    .select("endpoint", { count: "exact" })
     .eq("salon_id", user.salon_id);
 
   if (error) {
     return {
       configured: isPushConfigured(),
       subscriptionCount: 0,
+      currentDeviceRegistered: false,
       error: error.message.includes("push_subscriptions")
         ? "migration_012"
         : "query_failed",
     };
   }
 
+  const endpoints = (data ?? []).map((row) => row.endpoint);
+  const currentDeviceRegistered = currentEndpoint
+    ? endpoints.includes(currentEndpoint)
+    : false;
+
   return {
     configured: isPushConfigured(),
     subscriptionCount: count ?? 0,
+    currentDeviceRegistered,
   };
 }
 
-export async function sendTestPushAction(): Promise<PushActionState> {
+export async function sendTestPushAction(
+  currentEndpoint?: string
+): Promise<PushActionState> {
   const user = await requireAdminUser();
 
   if (!isPushConfigured()) {
     return {
       error:
-        "Faltan variables VAPID en Vercel. Agrega las 3 claves y redespliega.",
+        "Faltan variables VAPID. En local: .env.local. En producción: Vercel + Redeploy.",
     };
   }
 
-  const result = await sendPushToSalon(user.salon_id, {
-    title: "Prueba Gota+Check",
-    body: "Si ves esto, las notificaciones están funcionando.",
-    url: "/",
-  });
+  if (!currentEndpoint) {
+    return {
+      error:
+        "No hay suscripción en este navegador. Desactiva y vuelve a activar notificaciones.",
+    };
+  }
+
+  const result = await sendPushToSalon(
+    user.salon_id,
+    {
+      title: "Prueba Gota+Check",
+      body: "Si ves esto, las notificaciones están funcionando.",
+      url: "/ajustes",
+      tag: `test-${Date.now()}`,
+    },
+    { endpoint: currentEndpoint }
+  );
+
+  if (result.skippedReason === "endpoint_not_registered") {
+    return {
+      error:
+        "Este dispositivo no está registrado en el servidor. Desactiva y vuelve a activar.",
+    };
+  }
 
   if (result.skippedReason === "no_subscriptions") {
     return {
@@ -127,12 +157,12 @@ export async function sendTestPushAction(): Promise<PushActionState> {
   if (result.sent === 0) {
     return {
       error:
-        "No se pudo entregar. Desactiva notificaciones, redespliega en Vercel y vuelve a activar.",
+        "No se pudo entregar a este dispositivo. Desactiva, activa de nuevo y prueba otra vez.",
     };
   }
 
   return {
     success: true,
-    message: `Notificación enviada (${result.sent} dispositivo${result.sent === 1 ? "" : "s"}).`,
+    message: "Notificación enviada a este dispositivo.",
   };
 }

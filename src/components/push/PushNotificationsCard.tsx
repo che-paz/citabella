@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Bell, BellOff } from "lucide-react";
 import {
   getPushStatusAction,
@@ -29,6 +29,22 @@ function urlBase64ToUint8Array(base64String: string): Uint8Array {
   return output;
 }
 
+function getServiceWorkerRegistration(): Promise<ServiceWorkerRegistration | undefined> {
+  if (!("serviceWorker" in navigator)) {
+    return Promise.resolve(undefined);
+  }
+  return navigator.serviceWorker.getRegistration("/");
+}
+
+function isIosBrowserWithoutPwa(): boolean {
+  if (typeof window === "undefined") return false;
+  const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const isStandalone =
+    window.matchMedia("(display-mode: standalone)").matches ||
+    (navigator as Navigator & { standalone?: boolean }).standalone === true;
+  return isIos && !isStandalone;
+}
+
 export function PushNotificationsCard() {
   const [vapidPublicKey, setVapidPublicKey] = useState<string | null>(null);
   const [supported, setSupported] = useState(false);
@@ -38,16 +54,36 @@ export function PushNotificationsCard() {
   const [status, setStatus] = useState<{
     configured: boolean;
     subscriptionCount: number;
+    currentDeviceRegistered: boolean;
     error?: string;
   } | null>(null);
 
+  const getCurrentSubscription = useCallback(async () => {
+    const reg =
+      (await getServiceWorkerRegistration()) ??
+      (await navigator.serviceWorker.register("/sw.js"));
+    await navigator.serviceWorker.ready;
+    return reg.pushManager.getSubscription();
+  }, []);
+
+  const refreshStatus = useCallback(async () => {
+    const sub = await getCurrentSubscription().catch(() => null);
+    const nextStatus = await getPushStatusAction(sub?.endpoint).catch(
+      () => null
+    );
+    setStatus(nextStatus);
+  }, [getCurrentSubscription]);
+
   useEffect(() => {
-    getVapidPublicKeyAction().then(setVapidPublicKey).catch(() => setVapidPublicKey(null));
+    getVapidPublicKeyAction()
+      .then(setVapidPublicKey)
+      .catch(() => setVapidPublicKey(null));
   }, []);
 
   useEffect(() => {
-    getPushStatusAction().then(setStatus).catch(() => setStatus(null));
-  }, [enabled]);
+    if (!supported) return;
+    refreshStatus().catch(() => setStatus(null));
+  }, [enabled, supported, refreshStatus]);
 
   useEffect(() => {
     setSupported(
@@ -61,22 +97,21 @@ export function PushNotificationsCard() {
   useEffect(() => {
     if (!supported) return;
 
-    async function checkSubscription() {
-      try {
-        const reg = await navigator.serviceWorker.register("/sw.js");
-        const sub = await reg.pushManager.getSubscription();
-        setEnabled(Boolean(sub));
-      } catch {
-        setEnabled(false);
-      }
-    }
-
-    checkSubscription();
-  }, [supported]);
+    getCurrentSubscription()
+      .then((sub) => setEnabled(Boolean(sub)))
+      .catch(() => setEnabled(false));
+  }, [supported, getCurrentSubscription]);
 
   async function enableNotifications() {
     if (!vapidPublicKey) {
       setMessage("Las notificaciones aún no están configuradas en el servidor.");
+      return;
+    }
+
+    if (isIosBrowserWithoutPwa()) {
+      setMessage(
+        "En iPhone debes abrir Gota+Check desde el icono de inicio (Safari → Compartir → Añadir a inicio), no desde Safari normal."
+      );
       return;
     }
 
@@ -120,8 +155,10 @@ export function PushNotificationsCard() {
       }
 
       setEnabled(true);
-      setMessage("Listo. Te avisaremos cuando llegue una reserva nueva.");
-      getPushStatusAction().then(setStatus).catch(() => undefined);
+      setMessage(
+        "Listo en este dispositivo. Repite en cada teléfono o computadora donde quieras recibir avisos."
+      );
+      await refreshStatus();
     } catch {
       setMessage("No se pudieron activar las notificaciones.");
     } finally {
@@ -134,7 +171,7 @@ export function PushNotificationsCard() {
     setMessage(null);
 
     try {
-      const reg = await navigator.serviceWorker.getRegistration("/sw.js");
+      const reg = await getServiceWorkerRegistration();
       const sub = await reg?.pushManager.getSubscription();
 
       if (sub) {
@@ -143,7 +180,8 @@ export function PushNotificationsCard() {
       }
 
       setEnabled(false);
-      setMessage("Notificaciones desactivadas.");
+      setMessage("Notificaciones desactivadas en este dispositivo.");
+      await refreshStatus();
     } catch {
       setMessage("No se pudieron desactivar las notificaciones.");
     } finally {
@@ -154,12 +192,43 @@ export function PushNotificationsCard() {
   async function sendTest() {
     setLoading(true);
     setMessage(null);
-    const result = await sendTestPushAction();
-    if (result.error) {
-      setMessage(result.error);
-    } else {
-      setMessage(result.message ?? "Notificación de prueba enviada.");
+
+    const sub = await getCurrentSubscription().catch(() => null);
+    if (!sub?.endpoint) {
+      setMessage("No hay suscripción en este navegador. Activa notificaciones primero.");
+      setLoading(false);
+      return;
     }
+
+    let pushReceived = false;
+    const onMessage = (event: MessageEvent) => {
+      if (event.data?.type === "PUSH_RECEIVED") {
+        pushReceived = true;
+      }
+    };
+    navigator.serviceWorker.addEventListener("message", onMessage);
+
+    const result = await sendTestPushAction(sub.endpoint);
+    if (result.error) {
+      navigator.serviceWorker.removeEventListener("message", onMessage);
+      setMessage(result.error);
+      setLoading(false);
+      return;
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 2500));
+    navigator.serviceWorker.removeEventListener("message", onMessage);
+
+    if (pushReceived) {
+      setMessage(
+        `${result.message ?? "Enviada."} Revisa el Centro de notificaciones si no viste el banner.`
+      );
+    } else {
+      setMessage(
+        `${result.message ?? "Enviada."} Si no la ves, minimiza la app y revisa permisos de notificaciones del sistema.`
+      );
+    }
+
     setLoading(false);
   }
 
@@ -190,15 +259,23 @@ export function PushNotificationsCard() {
           Notificaciones de reservas
         </CardTitle>
         <CardDescription>
-          Recibe un aviso en tu teléfono o computadora cuando una clienta reserve
-          por tu link público (con o sin comprobante).
+          Activa en cada dispositivo por separado (teléfono y computadora). Las
+          reservas del link público avisan a todos los dispositivos registrados.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-3">
+        {isIosBrowserWithoutPwa() && (
+          <p className="text-sm text-amber-700">
+            En iPhone abre Gota+Check desde el icono de inicio, no desde Safari.
+          </p>
+        )}
+
         {!vapidPublicKey && status !== null && (
           <p className="text-sm text-amber-700">
-            Servidor sin claves VAPID. En Vercel agrega VAPID_PUBLIC_KEY,
-            VAPID_PRIVATE_KEY y VAPID_SUBJECT, luego Redeploy.
+            {typeof window !== "undefined" &&
+            /localhost|127\.0\.0\.1/.test(window.location.hostname)
+              ? "Servidor sin claves VAPID. Copia VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY y VAPID_SUBJECT desde Vercel a .env.local y reinicia npm run dev."
+              : "Servidor sin claves VAPID. En Vercel agrega VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY y VAPID_SUBJECT, luego Redeploy."}
           </p>
         )}
 
@@ -208,10 +285,23 @@ export function PushNotificationsCard() {
           </p>
         )}
 
-        {status && status.subscriptionCount === 0 && enabled && (
+        {status && status.subscriptionCount > 0 && (
+          <p className="text-sm text-muted-foreground">
+            {status.subscriptionCount} dispositivo
+            {status.subscriptionCount === 1 ? "" : "s"} registrado
+            {status.subscriptionCount === 1 ? "" : "s"}
+            {status.currentDeviceRegistered
+              ? " · este dispositivo incluido"
+              : enabled
+                ? " · este dispositivo aún no está incluido"
+                : ""}
+          </p>
+        )}
+
+        {enabled && status && !status.currentDeviceRegistered && (
           <p className="text-sm text-amber-700">
-            El navegador está suscrito pero no hay registro en el servidor.
-            Desactiva y vuelve a activar.
+            Este dispositivo no está guardado en el servidor. Desactiva y vuelve
+            a activar.
           </p>
         )}
 
@@ -223,15 +313,15 @@ export function PushNotificationsCard() {
               disabled={loading}
               onClick={disableNotifications}
             >
-              Desactivar notificaciones
+              Desactivar en este dispositivo
             </Button>
             <Button
               type="button"
               variant="secondary"
-              disabled={loading}
+              disabled={loading || !status?.currentDeviceRegistered}
               onClick={sendTest}
             >
-              Enviar prueba
+              Enviar prueba aquí
             </Button>
           </div>
         ) : (
@@ -240,7 +330,7 @@ export function PushNotificationsCard() {
             disabled={loading || !vapidPublicKey}
             onClick={enableNotifications}
           >
-            {loading ? "Activando…" : "Activar notificaciones"}
+            {loading ? "Activando…" : "Activar en este dispositivo"}
           </Button>
         )}
 

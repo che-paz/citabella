@@ -15,9 +15,18 @@ export async function notifySalonNewReservation(params: {
   const needsValidation =
     params.metodo === "transferencia" || params.metodo === "fri";
 
-  await sendPushToSalon(params.salonId, {
+  const result = await sendPushToSalon(params.salonId, {
     title: "Nueva reserva en línea",
     body: `${params.clientaNombre} · ${params.itemNombre} · ${fecha} ${hora}`,
     url: needsValidation ? "/pagos" : "/agenda",
+    tag: `reserva-${Date.now()}`,
   });
+
+  if (result.sent === 0) {
+    console.error("[push] reservation notify not delivered", {
+      salonId: params.salonId,
+      skippedReason: result.skippedReason,
+      failed: result.failed,
+    });
+  }
 }

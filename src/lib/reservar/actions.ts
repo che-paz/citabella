@@ -260,6 +260,19 @@ export async function createReservaAction(
         });
       }
 
+      try {
+        await notifySalonNewReservation({
+          salonId: salon.id,
+          clientaNombre: parsed.data.nombre,
+          itemNombre: item.nombre,
+          inicio,
+          timezone: salon.timezone,
+          metodo: parsed.data.metodo,
+        });
+      } catch (error) {
+        console.error("[push] notify reservation failed", error);
+      }
+
       return { citaId: existingCita.id };
     }
 
