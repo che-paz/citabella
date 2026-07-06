@@ -3,8 +3,10 @@
 import { useEffect, useState } from "react";
 import { Bell, BellOff } from "lucide-react";
 import {
+  getPushStatusAction,
   removePushSubscriptionAction,
   savePushSubscriptionAction,
+  sendTestPushAction,
 } from "@/lib/push/actions";
 import { Button } from "@/components/ui/button";
 import {
@@ -37,6 +39,15 @@ export function PushNotificationsCard({
   const [enabled, setEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const [status, setStatus] = useState<{
+    configured: boolean;
+    subscriptionCount: number;
+    error?: string;
+  } | null>(null);
+
+  useEffect(() => {
+    getPushStatusAction().then(setStatus).catch(() => setStatus(null));
+  }, [enabled]);
 
   useEffect(() => {
     setSupported(
@@ -110,6 +121,7 @@ export function PushNotificationsCard({
 
       setEnabled(true);
       setMessage("Listo. Te avisaremos cuando llegue una reserva nueva.");
+      getPushStatusAction().then(setStatus).catch(() => undefined);
     } catch {
       setMessage("No se pudieron activar las notificaciones.");
     } finally {
@@ -137,6 +149,18 @@ export function PushNotificationsCard({
     } finally {
       setLoading(false);
     }
+  }
+
+  async function sendTest() {
+    setLoading(true);
+    setMessage(null);
+    const result = await sendTestPushAction();
+    if (result.error) {
+      setMessage(result.error);
+    } else {
+      setMessage(result.message ?? "Notificación de prueba enviada.");
+    }
+    setLoading(false);
   }
 
   if (!supported) {
@@ -172,21 +196,43 @@ export function PushNotificationsCard({
       </CardHeader>
       <CardContent className="space-y-3">
         {!vapidPublicKey && (
-          <p className="text-sm text-muted-foreground">
-            Pendiente de configuración en el servidor. Avísale a quien administra
-            la app.
+          <p className="text-sm text-amber-700">
+            Servidor sin claves VAPID. Configúralas en Vercel y redespliega.
+          </p>
+        )}
+
+        {status?.error === "migration_012" && (
+          <p className="text-sm text-destructive">
+            Falta la migración 012 en Supabase (tabla push_subscriptions).
+          </p>
+        )}
+
+        {status && status.subscriptionCount === 0 && enabled && (
+          <p className="text-sm text-amber-700">
+            El navegador está suscrito pero no hay registro en el servidor.
+            Desactiva y vuelve a activar.
           </p>
         )}
 
         {enabled ? (
-          <Button
-            type="button"
-            variant="outline"
-            disabled={loading}
-            onClick={disableNotifications}
-          >
-            Desactivar notificaciones
-          </Button>
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <Button
+              type="button"
+              variant="outline"
+              disabled={loading}
+              onClick={disableNotifications}
+            >
+              Desactivar notificaciones
+            </Button>
+            <Button
+              type="button"
+              variant="secondary"
+              disabled={loading}
+              onClick={sendTest}
+            >
+              Enviar prueba
+            </Button>
+          </div>
         ) : (
           <Button
             type="button"

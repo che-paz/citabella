@@ -337,14 +337,18 @@ export async function createReservaAction(
     return { error: "No se pudo registrar el pago" };
   }
 
-  void notifySalonNewReservation({
-    salonId: salon.id,
-    clientaNombre: parsed.data.nombre,
-    itemNombre: item.nombre,
-    inicio,
-    timezone: salon.timezone,
-    metodo: parsed.data.metodo,
-  });
+  try {
+    await notifySalonNewReservation({
+      salonId: salon.id,
+      clientaNombre: parsed.data.nombre,
+      itemNombre: item.nombre,
+      inicio,
+      timezone: salon.timezone,
+      metodo: parsed.data.metodo,
+    });
+  } catch (error) {
+    console.error("[push] notify reservation failed", error);
+  }
 
   return { citaId: cita.id };
 }
