@@ -135,6 +135,18 @@ salones ──┬── usuarios
 | notas | TEXT | |
 | created_at | TIMESTAMPTZ | |
 
+### `push_subscriptions`
+
+| Columna | Tipo | Notas |
+|---------|------|-------|
+| id | UUID PK | |
+| salon_id | UUID FK | |
+| user_id | UUID FK → usuarios | Admin que activó notificaciones |
+| endpoint | TEXT | URL del navegador/dispositivo |
+| p256dh | TEXT | Clave pública de la suscripción |
+| auth | TEXT | Secreto de la suscripción |
+| created_at | TIMESTAMPTZ | UNIQUE `(user_id, endpoint)` |
+
 ### `movimientos_contables` (Fase 2, diseñar ahora)
 
 | Columna | Tipo | Notas |

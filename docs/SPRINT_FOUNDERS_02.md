@@ -49,7 +49,7 @@ Separar **cita confirmada** de **dinero cobrado (ingreso)**.
 - [x] Calendario mensual en link público (`SlotPicker`)
 
 ### Después
-- Web Push (nueva reserva / comprobante)
+- ~~Web Push (nueva reserva / comprobante)~~ ✅ MVP en `/ajustes`
 - Fotos historial clienta (Fase 1.5)
 
 ## Comunicación a founders (antes deploy Sprint B)

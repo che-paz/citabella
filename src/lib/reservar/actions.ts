@@ -13,6 +13,7 @@ import { createAnonymousClient } from "@/lib/supabase/anon";
 import { createClient } from "@/lib/supabase/server";
 import { optionalPgUuidSchema } from "@/lib/utils/validation";
 import { normalizePhone } from "@/lib/utils/phone";
+import { notifySalonNewReservation } from "@/lib/push/notify";
 
 export type ReservarActionState = {
   error?: string;
@@ -53,13 +54,13 @@ async function getItemDetails(
   salonId: string,
   servicioId: string | null | undefined,
   paqueteId: string | null | undefined
-): Promise<{ duracion: number; precio: number } | null> {
+): Promise<{ duracion: number; precio: number; nombre: string } | null> {
   const supabase = await createClient();
 
   if (servicioId) {
     const { data } = await supabase
       .from("servicios")
-      .select("duracion_minutos, precio")
+      .select("duracion_minutos, precio, nombre")
       .eq("id", servicioId)
       .eq("salon_id", salonId)
       .eq("activo", true)
@@ -68,13 +69,14 @@ async function getItemDetails(
     return {
       duracion: data.duracion_minutos,
       precio: Number(data.precio),
+      nombre: data.nombre,
     };
   }
 
   if (paqueteId) {
     const { data } = await supabase
       .from("paquetes")
-      .select("duracion_minutos, precio")
+      .select("duracion_minutos, precio, nombre")
       .eq("id", paqueteId)
       .eq("salon_id", salonId)
       .eq("activo", true)
@@ -83,6 +85,7 @@ async function getItemDetails(
     return {
       duracion: data.duracion_minutos,
       precio: Number(data.precio),
+      nombre: data.nombre,
     };
   }
 
@@ -333,6 +336,15 @@ export async function createReservaAction(
     await supabase.rpc("cancel_reserva_public", { p_cita_id: cita.id });
     return { error: "No se pudo registrar el pago" };
   }
+
+  void notifySalonNewReservation({
+    salonId: salon.id,
+    clientaNombre: parsed.data.nombre,
+    itemNombre: item.nombre,
+    inicio,
+    timezone: salon.timezone,
+    metodo: parsed.data.metodo,
+  });
 
   return { citaId: cita.id };
 }

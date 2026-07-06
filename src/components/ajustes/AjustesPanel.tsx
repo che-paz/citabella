@@ -25,6 +25,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { PushNotificationsCard } from "@/components/push/PushNotificationsCard";
 
 type SalonSettings = {
   nombre: string;
@@ -37,6 +38,7 @@ type SalonSettings = {
 type AjustesPanelProps = {
   user: AuthUser;
   salon?: SalonSettings | null;
+  vapidPublicKey?: string | null;
 };
 
 function SubmitButton({ label }: { label: string }) {
@@ -58,7 +60,7 @@ function StatusMessage({ state }: { state: { error?: string; message?: string } 
   return null;
 }
 
-export function AjustesPanel({ user, salon }: AjustesPanelProps) {
+export function AjustesPanel({ user, salon, vapidPublicKey }: AjustesPanelProps) {
   const router = useRouter();
   const isAdmin = user.rol === "admin_salon";
   const [perfilState, perfilAction] = useFormState(updatePerfilAction, {});
@@ -286,6 +288,8 @@ export function AjustesPanel({ user, salon }: AjustesPanelProps) {
               </div>
             </CardContent>
           </Card>
+
+          <PushNotificationsCard vapidPublicKey={vapidPublicKey ?? null} />
         </>
       )}
     </div>

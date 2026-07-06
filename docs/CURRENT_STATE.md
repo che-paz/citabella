@@ -19,7 +19,7 @@ MVP en Vercel. Piloto founders (Tutis + Galaxy). Sprint Founders 02 completo: re
 | Deploy | 🟢 Staging Vercel | GitHub → Vercel; link reserva en dashboard |
 | Prototipo UI | 🟢 MVP core | Dashboard + clientas listos |
 | Finanzas / gastos | 🟢 MVP | `/finanzas` ingresos vs gastos + balance mes |
-| PWA | 🟢 Configurado | Manifest + iconos Gota+Check; nombre app instalada: Gota+Check |
+| PWA | 🟢 Configurado | Manifest + iconos Gota+Check; Web Push en ajustes (requiere VAPID + migración 012) |
 
 ## Decisiones tomadas
 
@@ -52,6 +52,7 @@ MVP en Vercel. Piloto founders (Tutis + Galaxy). Sprint Founders 02 completo: re
 - Sprint Founders 02A: horizonte reserva 3 meses; CTAs reserva más visibles
 - Sprint Founders 02B: pago `asegurado` al confirmar, `cobrado` al completar; reactivar cita admin
 - Sprint Founders 02C: vista mes en agenda admin + calendario mensual en reserva pública
+- Web Push: notificación al admin cuando llega reserva por link público (`/ajustes` → activar)
 
 ## Decisiones pendientes
 
@@ -75,9 +76,9 @@ Ninguno.
 
 ## Próximo paso inmediato
 
-1. **Aplicar migración 010** en Supabase Cloud (`asegurado`/`cobrado`) — requerido para Sprint B en producción
-2. Comunicar a founders el cambio de ingresos (confirmar ≠ cobrar)
-3. Web Push para nuevas reservas (founders)
+1. **Aplicar migraciones 010, 011, 012** en Supabase Cloud
+2. **Configurar VAPID** en Vercel (`node scripts/generate-vapid-keys.mjs`)
+3. Founders activan notificaciones en `/ajustes`
 
 ## Piloto founders (activo)
 

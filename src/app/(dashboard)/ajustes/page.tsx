@@ -1,6 +1,7 @@
 import { getAuthUser } from "@/lib/auth/get-user";
 import { getSalonSettings } from "@/lib/ajustes/queries";
 import { AjustesPanel } from "@/components/ajustes/AjustesPanel";
+import { getVapidPublicKey } from "@/lib/push/vapid";
 
 export default async function AjustesPage() {
   const user = await getAuthUser();
@@ -22,7 +23,11 @@ export default async function AjustesPage() {
         </p>
       </div>
 
-      <AjustesPanel user={user} salon={salon} />
+      <AjustesPanel
+        user={user}
+        salon={salon}
+        vapidPublicKey={getVapidPublicKey()}
+      />
     </div>
   );
 }
