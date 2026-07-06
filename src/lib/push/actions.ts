@@ -58,6 +58,12 @@ export async function removePushSubscriptionAction(
   return { success: true };
 }
 
+export async function getVapidPublicKeyAction(): Promise<string | null> {
+  await requireAdminUser();
+  const { getVapidPublicKey } = await import("@/lib/push/vapid");
+  return getVapidPublicKey();
+}
+
 export async function getPushStatusAction(): Promise<{
   configured: boolean;
   subscriptionCount: number;

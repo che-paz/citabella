@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Bell, BellOff } from "lucide-react";
 import {
   getPushStatusAction,
+  getVapidPublicKeyAction,
   removePushSubscriptionAction,
   savePushSubscriptionAction,
   sendTestPushAction,
@@ -28,13 +29,8 @@ function urlBase64ToUint8Array(base64String: string): Uint8Array {
   return output;
 }
 
-type PushNotificationsCardProps = {
-  vapidPublicKey: string | null;
-};
-
-export function PushNotificationsCard({
-  vapidPublicKey,
-}: PushNotificationsCardProps) {
+export function PushNotificationsCard() {
+  const [vapidPublicKey, setVapidPublicKey] = useState<string | null>(null);
   const [supported, setSupported] = useState(false);
   const [enabled, setEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -44,6 +40,10 @@ export function PushNotificationsCard({
     subscriptionCount: number;
     error?: string;
   } | null>(null);
+
+  useEffect(() => {
+    getVapidPublicKeyAction().then(setVapidPublicKey).catch(() => setVapidPublicKey(null));
+  }, []);
 
   useEffect(() => {
     getPushStatusAction().then(setStatus).catch(() => setStatus(null));
@@ -195,9 +195,10 @@ export function PushNotificationsCard({
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-3">
-        {!vapidPublicKey && (
+        {!vapidPublicKey && status !== null && (
           <p className="text-sm text-amber-700">
-            Servidor sin claves VAPID. Configúralas en Vercel y redespliega.
+            Servidor sin claves VAPID. En Vercel agrega VAPID_PUBLIC_KEY,
+            VAPID_PRIVATE_KEY y VAPID_SUBJECT, luego Redeploy.
           </p>
         )}
 

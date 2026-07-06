@@ -38,7 +38,6 @@ type SalonSettings = {
 type AjustesPanelProps = {
   user: AuthUser;
   salon?: SalonSettings | null;
-  vapidPublicKey?: string | null;
 };
 
 function SubmitButton({ label }: { label: string }) {
@@ -60,7 +59,7 @@ function StatusMessage({ state }: { state: { error?: string; message?: string } 
   return null;
 }
 
-export function AjustesPanel({ user, salon, vapidPublicKey }: AjustesPanelProps) {
+export function AjustesPanel({ user, salon }: AjustesPanelProps) {
   const router = useRouter();
   const isAdmin = user.rol === "admin_salon";
   const [perfilState, perfilAction] = useFormState(updatePerfilAction, {});
@@ -289,7 +288,7 @@ export function AjustesPanel({ user, salon, vapidPublicKey }: AjustesPanelProps)
             </CardContent>
           </Card>
 
-          <PushNotificationsCard vapidPublicKey={vapidPublicKey ?? null} />
+          <PushNotificationsCard />
         </>
       )}
     </div>
