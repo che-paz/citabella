@@ -43,9 +43,7 @@ export async function fetchAvailabilitySlots(params: {
       .in("estado", [...BLOCKING_CITA_ESTADOS])
       .lt("inicio", dayEnd)
       .gt("fin", dayStart),
-    params.pausaDiaria !== undefined
-      ? Promise.resolve(params.pausaDiaria)
-      : fetchSalonPausaDiaria(params.salonId),
+    fetchSalonPausaDiaria(params.salonId, params.pausaDiaria),
   ]);
 
   const citas: CitaOcupadaInput[] = (citasRes.data ?? []).map((c) => ({
