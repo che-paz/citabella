@@ -16,6 +16,7 @@ import type { CitaEstado } from "@/types/database";
 export type AgendaActionState = {
   error?: string;
   success?: boolean;
+  message?: string;
 };
 
 const horarioItemSchema = z.object({
@@ -208,7 +209,18 @@ export async function saveHorariosAction(
   }
 
   revalidatePath("/agenda");
-  return { success: true };
+
+  const pausaMsg =
+    pausa?.activa && pausa.hora_inicio && pausa.hora_fin
+      ? ` Pausa diaria ${pausa.hora_inicio}–${pausa.hora_fin} activa.`
+      : pausa?.activa === false
+        ? " Pausa diaria desactivada."
+        : "";
+
+  return {
+    success: true,
+    message: `Horarios guardados correctamente.${pausaMsg}`,
+  };
 }
 
 export async function createExcepcionAction(

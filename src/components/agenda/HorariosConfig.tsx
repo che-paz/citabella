@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useFormState } from "react-dom";
 import { useRouter } from "next/navigation";
-import { Trash2 } from "lucide-react";
+import { CheckCircle2, Trash2 } from "lucide-react";
 import {
   createExcepcionAction,
   deleteExcepcionAction,
@@ -45,6 +45,29 @@ type HorariosConfigProps = {
 
 const initialState: AgendaActionState = {};
 
+function SaveHorariosMessage({
+  state,
+}: {
+  state: { error?: string; message?: string } | null;
+}) {
+  if (!state) return null;
+  if (state.error) {
+    return <p className="text-sm text-destructive">{state.error}</p>;
+  }
+  if (state.message) {
+    return (
+      <p
+        className="flex items-start gap-2 rounded-lg border border-green-200 bg-green-50 px-3 py-2 text-sm text-green-800"
+        role="status"
+      >
+        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
+        <span>{state.message}</span>
+      </p>
+    );
+  }
+  return null;
+}
+
 function buildInitialRows(horarios: HorarioSalon[]): HorarioRow[] {
   return DIA_SEMANA_LABELS.map((_, dia) => {
     const existing = horarios.find((h) => h.dia_semana === dia);
@@ -73,9 +96,9 @@ export function HorariosConfig({
   const [pausaFin, setPausaFin] = useState(
     pausaDiaria.hora_fin?.slice(0, 5) ?? "13:00"
   );
-  const [horarioState, saveHorarios] = useFormState(
-    saveHorariosAction,
-    initialState
+  const [savingHorarios, setSavingHorarios] = useState(false);
+  const [horarioSaveState, setHorarioSaveState] = useState<AgendaActionState | null>(
+    null
   );
   const [excepcionState, createExcepcion] = useFormState(
     createExcepcionAction,
@@ -91,6 +114,9 @@ export function HorariosConfig({
   }
 
   async function handleSaveHorarios() {
+    setSavingHorarios(true);
+    setHorarioSaveState(null);
+
     const formData = new FormData();
     formData.set("horarios", JSON.stringify(rows));
     formData.set(
@@ -101,8 +127,14 @@ export function HorariosConfig({
         hora_fin: pausaActiva ? pausaFin : undefined,
       })
     );
-    await saveHorarios(formData);
-    router.refresh();
+
+    const result = await saveHorariosAction({}, formData);
+    setSavingHorarios(false);
+    setHorarioSaveState(result);
+
+    if (result.success) {
+      router.refresh();
+    }
   }
 
   async function handleDeleteExcepcion(id: string) {
@@ -194,14 +226,13 @@ export function HorariosConfig({
                 Bloquea reservas en ese rango todos los días que atiendes.
               </p>
             </div>
-            {horarioState.error && (
-              <p className="text-sm text-destructive">{horarioState.error}</p>
-            )}
+            <SaveHorariosMessage state={horarioSaveState} />
             <Button
               onClick={handleSaveHorarios}
               className="w-full sm:w-auto"
+              disabled={savingHorarios}
             >
-              Guardar horarios
+              {savingHorarios ? "Guardando…" : "Guardar horarios"}
             </Button>
           </section>
 
