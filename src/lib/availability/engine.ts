@@ -27,6 +27,12 @@ export type ExcepcionHorarioInput = {
   hora_fin: string | null;
 };
 
+export type PausaDiariaInput = {
+  activa: boolean;
+  hora_inicio: string;
+  hora_fin: string;
+};
+
 export type CitaOcupadaInput = {
   id?: string;
   inicio: Date;
@@ -41,11 +47,30 @@ export type AvailabilityInput = {
   duracionMinutos: number;
   horarios: HorarioSalonInput[];
   excepcion: ExcepcionHorarioInput | null;
+  pausaDiaria?: PausaDiariaInput | null;
   citas: CitaOcupadaInput[];
   colaboradoraId?: string;
   excludeCitaId?: string;
   slotStepMinutes?: number;
 };
+
+function applyPausaDiaria(
+  dateKey: string,
+  timezone: string,
+  ranges: TimeRange[],
+  pausaDiaria?: PausaDiariaInput | null
+): TimeRange[] {
+  if (!pausaDiaria?.activa || ranges.length === 0) {
+    return ranges;
+  }
+
+  const pauseRange: TimeRange = {
+    inicio: salonLocalToUtc(dateKey, pausaDiaria.hora_inicio, timezone),
+    fin: salonLocalToUtc(dateKey, pausaDiaria.hora_fin, timezone),
+  };
+
+  return subtractBusyRanges(ranges, [pauseRange]);
+}
 
 function buildWorkingRanges(
   dateKey: string,
@@ -94,6 +119,7 @@ export function computeAvailability(input: AvailabilityInput): TimeRange[] {
     duracionMinutos,
     horarios,
     excepcion,
+    pausaDiaria,
     citas,
     colaboradoraId,
     excludeCitaId,
@@ -108,13 +134,15 @@ export function computeAvailability(input: AvailabilityInput): TimeRange[] {
   const matchingExcepcion =
     excepcion && excepcion.fecha === dateKey ? excepcion : null;
 
-  const workingRanges = buildWorkingRanges(
+  let workingRanges = buildWorkingRanges(
     dateKey,
     timezone,
     horarios,
     matchingExcepcion,
     dayOfWeek
   );
+
+  workingRanges = applyPausaDiaria(dateKey, timezone, workingRanges, pausaDiaria);
 
   if (workingRanges.length === 0) return [];
 

@@ -172,6 +172,14 @@ salones ──┬── usuarios
 | storage_path | TEXT | |
 | created_at | TIMESTAMPTZ | |
 
+### `salones` (pausa diaria)
+
+| Columna | Tipo | Notas |
+|---------|------|-------|
+| pausa_diaria_activa | BOOLEAN DEFAULT false | Bloqueo recurrente de almuerzo |
+| pausa_hora_inicio | TIME NULL | Inicio pausa local |
+| pausa_hora_fin | TIME NULL | Fin pausa local |
+
 ### `horarios_salon`
 
 | Columna | Tipo | Notas |

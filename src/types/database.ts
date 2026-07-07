@@ -14,6 +14,9 @@ export type Salon = {
   politica_reembolso: string;
   logo_url: string | null;
   slot_step_minutes?: number;
+  pausa_diaria_activa?: boolean;
+  pausa_hora_inicio?: string | null;
+  pausa_hora_fin?: string | null;
   activo: boolean;
   created_at: string;
   updated_at: string;
@@ -153,6 +156,12 @@ export type ExcepcionHorario = {
   salon_id: string;
   fecha: string;
   cerrado: boolean;
+  hora_inicio: string | null;
+  hora_fin: string | null;
+};
+
+export type PausaDiaria = {
+  activa: boolean;
   hora_inicio: string | null;
   hora_fin: string | null;
 };

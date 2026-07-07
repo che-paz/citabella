@@ -10,7 +10,7 @@ import {
   saveHorariosAction,
   type AgendaActionState,
 } from "@/lib/agenda/actions";
-import { DIA_SEMANA_LABELS, type ExcepcionHorario, type HorarioSalon } from "@/types/database";
+import { DIA_SEMANA_LABELS, type ExcepcionHorario, type HorarioSalon, type PausaDiaria } from "@/types/database";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -40,6 +40,7 @@ type HorariosConfigProps = {
   onOpenChange: (open: boolean) => void;
   horarios: HorarioSalon[];
   excepciones: ExcepcionHorario[];
+  pausaDiaria: PausaDiaria;
 };
 
 const initialState: AgendaActionState = {};
@@ -61,9 +62,17 @@ export function HorariosConfig({
   onOpenChange,
   horarios,
   excepciones,
+  pausaDiaria,
 }: HorariosConfigProps) {
   const router = useRouter();
   const [rows, setRows] = useState<HorarioRow[]>(() => buildInitialRows(horarios));
+  const [pausaActiva, setPausaActiva] = useState(pausaDiaria.activa);
+  const [pausaInicio, setPausaInicio] = useState(
+    pausaDiaria.hora_inicio?.slice(0, 5) ?? "12:00"
+  );
+  const [pausaFin, setPausaFin] = useState(
+    pausaDiaria.hora_fin?.slice(0, 5) ?? "13:00"
+  );
   const [horarioState, saveHorarios] = useFormState(
     saveHorariosAction,
     initialState
@@ -84,6 +93,14 @@ export function HorariosConfig({
   async function handleSaveHorarios() {
     const formData = new FormData();
     formData.set("horarios", JSON.stringify(rows));
+    formData.set(
+      "pausa",
+      JSON.stringify({
+        activa: pausaActiva,
+        hora_inicio: pausaActiva ? pausaInicio : undefined,
+        hora_fin: pausaActiva ? pausaFin : undefined,
+      })
+    );
     await saveHorarios(formData);
     router.refresh();
   }
@@ -144,6 +161,39 @@ export function HorariosConfig({
                 )}
               </div>
             ))}
+            <div className="space-y-3 rounded-lg border p-3">
+              <label className="flex items-center gap-2 text-sm font-medium">
+                <input
+                  type="checkbox"
+                  checked={pausaActiva}
+                  onChange={(e) => setPausaActiva(e.target.checked)}
+                  className="h-4 w-4 rounded border"
+                />
+                Pausa diaria (almuerzo)
+              </label>
+              {pausaActiva && (
+                <div className="flex flex-wrap items-center gap-2 pl-6">
+                  <Input
+                    type="time"
+                    value={pausaInicio}
+                    onChange={(e) => setPausaInicio(e.target.value)}
+                    className="w-[7rem]"
+                    aria-label="Inicio pausa"
+                  />
+                  <span className="text-muted-foreground">—</span>
+                  <Input
+                    type="time"
+                    value={pausaFin}
+                    onChange={(e) => setPausaFin(e.target.value)}
+                    className="w-[7rem]"
+                    aria-label="Fin pausa"
+                  />
+                </div>
+              )}
+              <p className="text-xs text-muted-foreground pl-6">
+                Bloquea reservas en ese rango todos los días que atiendes.
+              </p>
+            </div>
             {horarioState.error && (
               <p className="text-sm text-destructive">{horarioState.error}</p>
             )}

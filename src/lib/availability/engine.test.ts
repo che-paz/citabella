@@ -281,4 +281,26 @@ describe("isSlotAvailable", () => {
       })
     ).toBe(true);
   });
+
+  it("blocks slots during daily lunch pause", () => {
+    const date = dateAt("2026-07-06", "12:00");
+    const slots = computeAvailability({
+      date,
+      timezone: TZ,
+      duracionMinutos: 60,
+      horarios: weekdayHorarios,
+      excepcion: null,
+      pausaDiaria: {
+        activa: true,
+        hora_inicio: "12:00",
+        hora_fin: "13:00",
+      },
+      citas: [],
+    });
+
+    const slotStarts = slots.map((s) => s.inicio.getTime());
+    expect(slotStarts).toContain(dateAt("2026-07-06", "11:00").getTime());
+    expect(slotStarts).toContain(dateAt("2026-07-06", "13:00").getTime());
+    expect(slotStarts).not.toContain(dateAt("2026-07-06", "12:00").getTime());
+  });
 });

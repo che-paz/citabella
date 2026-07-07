@@ -22,7 +22,7 @@ export async function fetchAvailabilitySlots(params: {
   const dayStart = startOfSalonDayUtc(dateKey, params.timezone).toISOString();
   const dayEnd = endOfSalonDayUtc(dateKey, params.timezone).toISOString();
 
-  const [horariosRes, excepcionRes, citasRes] = await Promise.all([
+  const [horariosRes, excepcionRes, citasRes, salonRes] = await Promise.all([
     supabase
       .from("horarios_salon")
       .select("dia_semana, hora_inicio, hora_fin")
@@ -40,6 +40,11 @@ export async function fetchAvailabilitySlots(params: {
       .in("estado", [...BLOCKING_CITA_ESTADOS])
       .lt("inicio", dayEnd)
       .gt("fin", dayStart),
+    supabase
+      .from("salones")
+      .select("pausa_diaria_activa, pausa_hora_inicio, pausa_hora_fin")
+      .eq("id", params.salonId)
+      .single(),
   ]);
 
   const citas: CitaOcupadaInput[] = (citasRes.data ?? []).map((c) => ({
@@ -50,12 +55,25 @@ export async function fetchAvailabilitySlots(params: {
     estado: c.estado,
   }));
 
+  const salon = salonRes.data;
+  const pausaDiaria =
+    salon?.pausa_diaria_activa &&
+    salon.pausa_hora_inicio &&
+    salon.pausa_hora_fin
+      ? {
+          activa: true,
+          hora_inicio: salon.pausa_hora_inicio.slice(0, 5),
+          hora_fin: salon.pausa_hora_fin.slice(0, 5),
+        }
+      : null;
+
   const input: AvailabilityInput = {
     date: params.date,
     timezone: params.timezone,
     duracionMinutos: params.duracionMinutos,
     horarios: horariosRes.data ?? [],
     excepcion: excepcionRes.data,
+    pausaDiaria,
     citas,
     colaboradoraId: params.colaboradoraId,
     excludeCitaId: params.excludeCitaId,

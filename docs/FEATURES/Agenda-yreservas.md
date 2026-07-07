@@ -84,6 +84,7 @@ src/lib/agenda/dates.ts
 
 - Colaboradora ve solo su agenda (RLS por `colaboradora_id`)
 - Admin ve agenda completa del salón
+- Pausa diaria (almuerzo): bloqueo recurrente en `salones`; opt-in, default desactivado
 - Timezone desde `salones.timezone` (default `America/Guatemala`)
 - Reserva pública: `creada_por = 'clienta'`, sin colaboradora asignada
 - RPC `upsert_clienta_public` evita duplicar clientas por teléfono

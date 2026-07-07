@@ -27,6 +27,13 @@ const horarioItemSchema = z.object({
 
 const saveHorariosSchema = z.object({
   horarios: z.array(horarioItemSchema),
+  pausa: z
+    .object({
+      activa: z.boolean(),
+      hora_inicio: z.string().regex(/^\d{2}:\d{2}$/).optional(),
+      hora_fin: z.string().regex(/^\d{2}:\d{2}$/).optional(),
+    })
+    .optional(),
 });
 
 const excepcionSchema = z.object({
@@ -122,20 +129,38 @@ export async function saveHorariosAction(
   const user = await requireAdminUser();
 
   const horariosJson = formData.get("horarios");
+  const pausaJson = formData.get("pausa");
   if (!horariosJson || typeof horariosJson !== "string") {
     return { error: "Datos de horarios inválidos" };
   }
 
   let parsedJson: unknown;
+  let parsedPausa: unknown = undefined;
   try {
     parsedJson = JSON.parse(horariosJson);
+    if (pausaJson && typeof pausaJson === "string") {
+      parsedPausa = JSON.parse(pausaJson);
+    }
   } catch {
     return { error: "Formato de horarios inválido" };
   }
 
-  const parsed = saveHorariosSchema.safeParse({ horarios: parsedJson });
+  const parsed = saveHorariosSchema.safeParse({
+    horarios: parsedJson,
+    pausa: parsedPausa,
+  });
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Datos inválidos" };
+  }
+
+  if (parsed.data.pausa?.activa) {
+    const { hora_inicio, hora_fin } = parsed.data.pausa;
+    if (!hora_inicio || !hora_fin) {
+      return { error: "Indica inicio y fin de la pausa diaria" };
+    }
+    if (hora_fin <= hora_inicio) {
+      return { error: "La pausa debe terminar después de iniciar" };
+    }
   }
 
   const supabase = await createClient();
@@ -166,6 +191,20 @@ export async function saveHorariosAction(
     if (insertError) {
       return { error: "No se pudieron guardar los horarios" };
     }
+  }
+
+  const pausa = parsed.data.pausa;
+  const { error: pausaError } = await supabase
+    .from("salones")
+    .update({
+      pausa_diaria_activa: pausa?.activa ?? false,
+      pausa_hora_inicio: pausa?.activa ? pausa.hora_inicio : null,
+      pausa_hora_fin: pausa?.activa ? pausa.hora_fin : null,
+    })
+    .eq("id", user.salon_id);
+
+  if (pausaError) {
+    return { error: "No se pudo guardar la pausa diaria" };
   }
 
   revalidatePath("/agenda");

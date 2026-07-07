@@ -39,6 +39,7 @@ import {
   type Clienta,
   type ExcepcionHorario,
   type HorarioSalon,
+  type PausaDiaria,
   type Paquete,
   type Servicio,
   type Usuario,
@@ -55,6 +56,7 @@ type AgendaViewProps = {
   colaboradoras: Usuario[];
   horarios: HorarioSalon[];
   excepciones: ExcepcionHorario[];
+  pausaDiaria: PausaDiaria;
   timezone: string;
   isAdmin: boolean;
   currentUserId: string;
@@ -70,6 +72,7 @@ export function AgendaView({
   colaboradoras,
   horarios,
   excepciones,
+  pausaDiaria,
   timezone,
   isAdmin,
   currentUserId,
@@ -391,6 +394,7 @@ export function AgendaView({
           onOpenChange={setHorariosOpen}
           horarios={horarios}
           excepciones={excepciones}
+          pausaDiaria={pausaDiaria}
         />
       )}
     </div>

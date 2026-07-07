@@ -36,6 +36,7 @@ export default async function AgendaPage({ searchParams }: PageProps) {
     colaboradorasRes,
     horariosRes,
     excepcionesRes,
+    salonRes,
   ] = await Promise.all([
     getAgendaCitas(user.salon_id, dateKey, view, timezone),
     supabase
@@ -73,7 +74,18 @@ export default async function AgendaPage({ searchParams }: PageProps) {
       .eq("salon_id", user.salon_id)
       .gte("fecha", todayDateKey(timezone))
       .order("fecha"),
+    supabase
+      .from("salones")
+      .select("pausa_diaria_activa, pausa_hora_inicio, pausa_hora_fin")
+      .eq("id", user.salon_id)
+      .single(),
   ]);
+
+  const pausaDiaria = {
+    activa: salonRes.data?.pausa_diaria_activa ?? false,
+    hora_inicio: salonRes.data?.pausa_hora_inicio?.slice(0, 5) ?? null,
+    hora_fin: salonRes.data?.pausa_hora_fin?.slice(0, 5) ?? null,
+  };
 
   return (
     <div className="space-y-6">
@@ -100,6 +112,7 @@ export default async function AgendaPage({ searchParams }: PageProps) {
         colaboradoras={colaboradorasRes.data ?? []}
         horarios={horariosRes.data ?? []}
         excepciones={excepcionesRes.data ?? []}
+        pausaDiaria={pausaDiaria}
         timezone={timezone}
         isAdmin={isAdmin}
         currentUserId={user.id}
