@@ -258,6 +258,9 @@ export type SalonPublico = Pick<
   | "politica_reembolso"
   | "logo_url"
   | "slot_step_minutes"
+  | "pausa_diaria_activa"
+  | "pausa_hora_inicio"
+  | "pausa_hora_fin"
 >;
 
 export type ReservaItem = {

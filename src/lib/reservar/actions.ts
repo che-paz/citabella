@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 import { fetchAvailabilitySlots } from "@/lib/availability/queries";
+import { resolvePausaDiariaFromSalon } from "@/lib/availability/pausa";
 import { resolveSlotStepMinutes } from "@/lib/availability/salon-config";
 import { getSalonDateKey } from "@/lib/availability/timezone";
 import { getSalonBySlug } from "@/lib/reservar/queries";
@@ -120,6 +121,7 @@ export async function getPublicSlotsAction(params: {
       timezone: salon.timezone,
       duracionMinutos: item.duracion,
       slotStepMinutes: resolveSlotStepMinutes(salon),
+      pausaDiaria: resolvePausaDiariaFromSalon(salon),
     });
 
     const dateKey = params.fecha;
@@ -199,6 +201,7 @@ export async function createReservaAction(
     timezone: salon.timezone,
     duracionMinutos: item.duracion,
     slotStepMinutes: resolveSlotStepMinutes(salon),
+    pausaDiaria: resolvePausaDiariaFromSalon(salon),
   });
 
   const now = Date.now();
