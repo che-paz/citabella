@@ -43,12 +43,24 @@ const reservaSchema = z
     metodo: z.enum(["transferencia", "efectivo", "fri"], {
       message: "Método de pago inválido",
     }),
+    para_otra_persona: z.coerce.boolean().optional().default(false),
+    beneficiario_nombre: z
+      .string()
+      .max(100)
+      .optional()
+      .transform((v) => (v?.trim() ? v.trim() : null)),
   })
   .refine(
     (data) =>
       (data.servicio_id && !data.paquete_id) ||
       (!data.servicio_id && data.paquete_id),
     { message: "Selecciona un servicio o paquete" }
+  )
+  .refine(
+    (data) =>
+      !data.para_otra_persona ||
+      (data.beneficiario_nombre && data.beneficiario_nombre.length >= 2),
+    { message: "Indica el nombre de quien asiste a la cita" }
   );
 
 async function getItemDetails(
@@ -157,6 +169,10 @@ export async function createReservaAction(
     nombre: formData.get("nombre"),
     telefono: formData.get("telefono"),
     metodo: formData.get("metodo"),
+    para_otra_persona:
+      formData.get("para_otra_persona") === "true" ||
+      formData.get("para_otra_persona") === "on",
+    beneficiario_nombre: formData.get("beneficiario_nombre") || "",
   });
 
   if (!parsed.success) {
@@ -175,6 +191,18 @@ export async function createReservaAction(
   const salon = await getSalonBySlug(parsed.data.slug);
   if (!salon) {
     return { error: "Salón no encontrado" };
+  }
+
+  const paraOtraPersona =
+    Boolean(salon.permite_reserva_otra_persona) &&
+    Boolean(parsed.data.para_otra_persona);
+
+  const beneficiarioNombre = paraOtraPersona
+    ? parsed.data.beneficiario_nombre
+    : null;
+
+  if (paraOtraPersona && !beneficiarioNombre) {
+    return { error: "Indica el nombre de quien asiste a la cita" };
   }
 
   const item = await getItemDetails(
@@ -267,6 +295,7 @@ export async function createReservaAction(
         await notifySalonNewReservation({
           salonId: salon.id,
           clientaNombre: parsed.data.nombre,
+          beneficiarioNombre,
           itemNombre: item.nombre,
           inicio,
           timezone: salon.timezone,
@@ -311,6 +340,7 @@ export async function createReservaAction(
       fin: fin.toISOString(),
       estado: "pendiente_validacion",
       creada_por: "clienta",
+      beneficiario_nombre: beneficiarioNombre,
     })
     .select("id")
     .single();
@@ -357,6 +387,7 @@ export async function createReservaAction(
     await notifySalonNewReservation({
       salonId: salon.id,
       clientaNombre: parsed.data.nombre,
+      beneficiarioNombre,
       itemNombre: item.nombre,
       inicio,
       timezone: salon.timezone,

@@ -183,7 +183,11 @@ export function MonthCalendar({
 }
 
 export function buildMonthSummariesFromCitas(
-  citas: { inicio: string; clienta: { nombre: string } }[],
+  citas: {
+    inicio: string;
+    beneficiario_nombre?: string | null;
+    clienta: { nombre: string };
+  }[],
   timezone: string
 ): Map<string, MonthDaySummary> {
   const summaries = new Map<string, MonthDaySummary>();
@@ -192,7 +196,9 @@ export function buildMonthSummariesFromCitas(
     const key = getSalonDateKey(new Date(cita.inicio), timezone);
     const existing = summaries.get(key) ?? { count: 0, labels: [] };
     existing.count += 1;
-    const firstName = cita.clienta.nombre.split(/\s+/)[0] ?? cita.clienta.nombre;
+    const display =
+      cita.beneficiario_nombre?.trim() || cita.clienta.nombre;
+    const firstName = display.split(/\s+/)[0] ?? display;
     if (!existing.labels.includes(firstName)) {
       existing.labels.push(firstName);
     }

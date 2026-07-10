@@ -105,7 +105,7 @@ salones ──┬── usuarios
 |---------|------|-------|
 | id | UUID PK | |
 | salon_id | UUID FK | |
-| clienta_id | UUID FK | |
+| clienta_id | UUID FK | Contacto (teléfono / WhatsApp) |
 | servicio_id | UUID FK NULL | XOR con paquete_id |
 | paquete_id | UUID FK NULL | |
 | colaboradora_id | UUID FK → usuarios NULL | |
@@ -113,6 +113,7 @@ salones ──┬── usuarios
 | fin | TIMESTAMPTZ NOT NULL | Calculado: inicio + duración |
 | estado | ENUM | `pendiente`, `pendiente_validacion`, `confirmada`, `cancelada`, `completada`, `no_show` |
 | notas | TEXT | |
+| beneficiario_nombre | TEXT NULL | Quien asiste si ≠ clienta de contacto |
 | creada_por | ENUM | `admin`, `clienta`, `colaboradora` |
 | created_at | TIMESTAMPTZ | |
 | updated_at | TIMESTAMPTZ | |
@@ -179,6 +180,7 @@ salones ──┬── usuarios
 | pausa_diaria_activa | BOOLEAN DEFAULT false | Bloqueo recurrente de almuerzo |
 | pausa_hora_inicio | TIME NULL | Inicio pausa local |
 | pausa_hora_fin | TIME NULL | Fin pausa local |
+| permite_reserva_otra_persona | BOOLEAN DEFAULT false | Checkbox en link público |
 
 ### `horarios_salon`
 

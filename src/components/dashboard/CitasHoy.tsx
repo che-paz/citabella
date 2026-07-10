@@ -7,6 +7,7 @@ import {
 } from "@/types/database";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getCitaAsistenteNombre, getCitaContactoLabel } from "@/lib/citas/display";
 import { Calendar } from "lucide-react";
 
 const ESTADO_VARIANT: Record<
@@ -51,6 +52,8 @@ export function CitasHoy({ citas, timezone, isAdmin }: CitasHoyProps) {
             {citas.map((cita) => {
               const servicioNombre =
                 cita.servicio?.nombre ?? cita.paquete?.nombre ?? "Servicio";
+              const asistenteNombre = getCitaAsistenteNombre(cita);
+              const contactoLabel = getCitaContactoLabel(cita);
 
               return (
                 <li key={cita.id} className="flex gap-3 py-3 first:pt-0 last:pb-0">
@@ -63,12 +66,17 @@ export function CitasHoy({ citas, timezone, isAdmin }: CitasHoyProps) {
                         href={`/clientas/${cita.clienta.id}`}
                         className="font-medium hover:underline"
                       >
-                        {cita.clienta.nombre}
+                        {asistenteNombre}
                       </Link>
                       <Badge variant={ESTADO_VARIANT[cita.estado]}>
                         {CITA_ESTADO_LABELS[cita.estado]}
                       </Badge>
                     </div>
+                    {contactoLabel && (
+                      <p className="text-xs text-muted-foreground">
+                        {contactoLabel}
+                      </p>
+                    )}
                     <p className="text-sm text-muted-foreground">
                       {servicioNombre}
                       {isAdmin && cita.colaboradora && (

@@ -6,14 +6,16 @@ export async function getSalonSettings(
 ): Promise<
   Pick<
     Salon,
-    "id" | "nombre" | "slug" | "logo_url" | "politica_reembolso" | "slot_step_minutes"
+    "id" | "nombre" | "slug" | "logo_url" | "politica_reembolso" | "slot_step_minutes" | "permite_reserva_otra_persona"
   > | null
 > {
   const supabase = await createClient();
 
   const { data } = await supabase
     .from("salones")
-    .select("id, nombre, slug, logo_url, politica_reembolso, slot_step_minutes")
+    .select(
+      "id, nombre, slug, logo_url, politica_reembolso, slot_step_minutes, permite_reserva_otra_persona"
+    )
     .eq("id", salonId)
     .single();
 

@@ -4,6 +4,7 @@ import { sendPushToSalon } from "@/lib/push/send";
 export async function notifySalonNewReservation(params: {
   salonId: string;
   clientaNombre: string;
+  beneficiarioNombre?: string | null;
   itemNombre: string;
   inicio: Date;
   timezone: string;
@@ -15,9 +16,13 @@ export async function notifySalonNewReservation(params: {
   const needsValidation =
     params.metodo === "transferencia" || params.metodo === "fri";
 
+  const quien = params.beneficiarioNombre?.trim()
+    ? `${params.beneficiarioNombre.trim()} (contacto ${params.clientaNombre})`
+    : params.clientaNombre;
+
   const result = await sendPushToSalon(params.salonId, {
     title: "Nueva reserva en línea",
-    body: `${params.clientaNombre} · ${params.itemNombre} · ${fecha} ${hora}`,
+    body: `${quien} · ${params.itemNombre} · ${fecha} ${hora}`,
     url: needsValidation ? "/pagos" : "/agenda",
     tag: `reserva-${Date.now()}`,
   });

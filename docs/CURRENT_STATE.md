@@ -54,6 +54,8 @@ MVP en Vercel. Piloto founders (Tutis + Galaxy). Sprint Founders 02 completo: re
 - Sprint Founders 02C: vista mes en agenda admin + calendario mensual en reserva pública
 - Web Push: notificación al admin en reserva pública; activación por dispositivo; prueba solo al dispositivo actual; iPhone vía PWA en pantalla de inicio
 - Pausa diaria (almuerzo): configurable en Agenda → Horarios; migración `013_pausa_diaria.sql`
+- Reserva “para otra persona”: flag en Ajustes; checkbox en link; `beneficiario_nombre` en cita; Galaxy activado por defecto (migración 015)
+- Link reserva: CTA Continuar fijo al pie al elegir servicio (catálogos largos)
 
 ## Decisiones pendientes
 

@@ -33,6 +33,7 @@ type SalonSettings = {
   logo_url: string | null;
   politica_reembolso: string;
   slot_step_minutes?: number | null;
+  permite_reserva_otra_persona?: boolean | null;
 };
 
 type AjustesPanelProps = {
@@ -203,6 +204,25 @@ export function AjustesPanel({ user, salon }: AjustesPanelProps) {
                     crear citas.
                   </p>
                 </div>
+                <label className="flex items-start gap-3 rounded-lg border p-3 text-sm">
+                  <input
+                    type="checkbox"
+                    name="permite_reserva_otra_persona"
+                    value="on"
+                    defaultChecked={Boolean(salon.permite_reserva_otra_persona)}
+                    className="mt-0.5 h-4 w-4 rounded border"
+                  />
+                  <span>
+                    <span className="font-medium">
+                      Permitir reservar para otra persona
+                    </span>
+                    <span className="mt-0.5 block text-xs text-muted-foreground">
+                      En el link público, la clienta puede indicar que la cita
+                      es para alguien más (hijo, familiar, amiga) y dejar su
+                      WhatsApp como contacto.
+                    </span>
+                  </span>
+                </label>
                 <div className="space-y-2">
                   <Label htmlFor="politica_reembolso">
                     Política de reembolso

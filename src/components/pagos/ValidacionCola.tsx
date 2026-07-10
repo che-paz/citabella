@@ -15,6 +15,7 @@ import {
   buildCitaRechazadaWhatsAppUrl,
 } from "@/lib/whatsapp/messages";
 import type { PagoPendiente } from "@/lib/pagos/queries";
+import { getCitaAsistenteNombre, getCitaContactoLabel } from "@/lib/citas/display";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -96,6 +97,8 @@ export function ValidacionCola({
         const telefonoDisplay = pago.cita.clienta.telefono
           ? formatPhoneDisplay(pago.cita.clienta.telefono)
           : "Sin teléfono";
+        const asistenteNombre = getCitaAsistenteNombre(pago.cita);
+        const contactoLabel = getCitaContactoLabel(pago.cita);
 
         return (
           <Card key={pago.id}>
@@ -103,8 +106,13 @@ export function ValidacionCola({
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <CardTitle className="text-base">
-                    {pago.cita.clienta.nombre}
+                    {asistenteNombre}
                   </CardTitle>
+                  {contactoLabel && (
+                    <p className="text-xs text-muted-foreground">
+                      {contactoLabel}
+                    </p>
+                  )}
                   <p className="text-sm text-muted-foreground">
                     {telefonoDisplay}
                   </p>

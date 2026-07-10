@@ -25,6 +25,8 @@ export function ReservarWizard({ salon, catalogo }: ReservarWizardProps) {
   const [horaLocal, setHoraLocal] = useState("");
   const [nombre, setNombre] = useState("");
   const [telefono, setTelefono] = useState("");
+  const [paraOtraPersona, setParaOtraPersona] = useState(false);
+  const [beneficiarioNombre, setBeneficiarioNombre] = useState("");
   const [metodo, setMetodo] = useState<PagoMetodo>("transferencia");
   const [comprobante, setComprobante] = useState<File | null>(null);
   const [error, setError] = useState<string | undefined>();
@@ -64,6 +66,10 @@ export function ReservarWizard({ salon, catalogo }: ReservarWizardProps) {
     formData.set("nombre", nombre.trim());
     formData.set("telefono", telefono.trim());
     formData.set("metodo", metodo);
+    if (paraOtraPersona && salon.permite_reserva_otra_persona) {
+      formData.set("para_otra_persona", "true");
+      formData.set("beneficiario_nombre", beneficiarioNombre.trim());
+    }
     if (comprobante) {
       formData.set("comprobante", comprobante);
     }
@@ -152,12 +158,19 @@ export function ReservarWizard({ salon, catalogo }: ReservarWizardProps) {
             horaLocal={horaLocal}
             nombre={nombre}
             telefono={telefono}
+            paraOtraPersona={paraOtraPersona}
+            beneficiarioNombre={beneficiarioNombre}
             metodo={metodo}
             comprobanteName={comprobante?.name ?? ""}
             submitting={pending}
             error={error}
             onNombreChange={setNombre}
             onTelefonoChange={setTelefono}
+            onParaOtraPersonaChange={(v) => {
+              setParaOtraPersona(v);
+              if (!v) setBeneficiarioNombre("");
+            }}
+            onBeneficiarioNombreChange={setBeneficiarioNombre}
             onMetodoChange={(m) => {
               setMetodo(m);
               if (m === "efectivo") setComprobante(null);

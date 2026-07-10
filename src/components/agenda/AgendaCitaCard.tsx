@@ -11,6 +11,7 @@ import {
   PAGO_METODO_LABELS,
   type CitaConDetalle,
 } from "@/types/database";
+import { getCitaAsistenteNombre, getCitaContactoLabel } from "@/lib/citas/display";
 import { cn } from "@/lib/utils";
 
 const estadoVariant: Record<
@@ -51,6 +52,8 @@ export function AgendaCitaCard({
   const isTerminal = ["cancelada", "completada", "no_show"].includes(
     cita.estado
   );
+  const asistenteNombre = getCitaAsistenteNombre(cita);
+  const contactoLabel = getCitaContactoLabel(cita);
 
   return (
     <Card className="overflow-hidden">
@@ -64,10 +67,21 @@ export function AgendaCitaCard({
                 ? "truncate text-sm font-medium leading-tight"
                 : "font-medium leading-snug"
             }
-            title={cita.clienta.nombre}
+            title={asistenteNombre}
           >
-            {cita.clienta.nombre}
+            {asistenteNombre}
           </p>
+          {contactoLabel && (
+            <p
+              className={
+                compact
+                  ? "truncate text-[11px] text-muted-foreground"
+                  : "text-xs text-muted-foreground"
+              }
+            >
+              {contactoLabel}
+            </p>
+          )}
 
           <Badge
             variant={estadoVariant[cita.estado] ?? "outline"}

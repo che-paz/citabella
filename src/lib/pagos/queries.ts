@@ -12,6 +12,7 @@ export type PagoPendiente = {
     inicio: string;
     fin: string;
     estado: string;
+    beneficiario_nombre: string | null;
     clienta: { nombre: string; telefono: string | null };
     servicio: { nombre: string } | null;
     paquete: { nombre: string } | null;
@@ -37,6 +38,7 @@ export async function getPagosPendientes(
         inicio,
         fin,
         estado,
+        beneficiario_nombre,
         clienta:clientas ( nombre, telefono ),
         servicio:servicios ( nombre ),
         paquete:paquetes ( nombre )
@@ -70,6 +72,7 @@ export async function getPagosPendientes(
         inicio: cita?.inicio ?? "",
         fin: cita?.fin ?? "",
         estado: cita?.estado ?? "",
+        beneficiario_nombre: cita?.beneficiario_nombre ?? null,
         clienta: {
           nombre: clienta?.nombre ?? "Clienta",
           telefono: clienta?.telefono ?? null,

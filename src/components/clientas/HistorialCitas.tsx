@@ -59,6 +59,11 @@ export function HistorialCitas({
                   {formatAgendaTime(cita.inicio, timezone)} –{" "}
                   {formatAgendaTime(cita.fin, timezone)}
                 </p>
+                {cita.beneficiario_nombre && (
+                  <p className="text-sm text-muted-foreground">
+                    Para: {cita.beneficiario_nombre}
+                  </p>
+                )}
                 {showColaboradora && cita.colaboradora && (
                   <p className="text-sm text-muted-foreground">
                     Con {cita.colaboradora.nombre}

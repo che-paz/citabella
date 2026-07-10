@@ -17,12 +17,16 @@ type DatosPagoFormProps = {
   horaLocal: string;
   nombre: string;
   telefono: string;
+  paraOtraPersona: boolean;
+  beneficiarioNombre: string;
   metodo: PagoMetodo;
   comprobanteName: string;
   submitting: boolean;
   error?: string;
   onNombreChange: (v: string) => void;
   onTelefonoChange: (v: string) => void;
+  onParaOtraPersonaChange: (v: boolean) => void;
+  onBeneficiarioNombreChange: (v: string) => void;
   onMetodoChange: (v: PagoMetodo) => void;
   onComprobanteChange: (file: File | null) => void;
   onBack: () => void;
@@ -62,12 +66,16 @@ export function DatosPagoForm({
   horaLocal,
   nombre,
   telefono,
+  paraOtraPersona,
+  beneficiarioNombre,
   metodo,
   comprobanteName,
   submitting,
   error,
   onNombreChange,
   onTelefonoChange,
+  onParaOtraPersonaChange,
+  onBeneficiarioNombreChange,
   onMetodoChange,
   onComprobanteChange,
   onBack,
@@ -75,6 +83,12 @@ export function DatosPagoForm({
 }: DatosPagoFormProps) {
   const fileRef = useRef<HTMLInputElement>(null);
   const needsComprobante = metodo === "transferencia" || metodo === "fri";
+  const permiteOtra = Boolean(salon.permite_reserva_otra_persona);
+
+  const canSubmit =
+    nombre.trim().length >= 2 &&
+    telefono.length >= 8 &&
+    (!paraOtraPersona || beneficiarioNombre.trim().length >= 2);
 
   return (
     <div className="space-y-6">
@@ -94,13 +108,51 @@ export function DatosPagoForm({
       </div>
 
       <div className="space-y-4">
+        {permiteOtra && (
+          <label className="flex items-start gap-3 rounded-lg border p-3 text-sm">
+            <input
+              type="checkbox"
+              checked={paraOtraPersona}
+              onChange={(e) => onParaOtraPersonaChange(e.target.checked)}
+              className="mt-0.5 h-4 w-4 rounded border"
+            />
+            <span>
+              <span className="font-medium">La cita es para otra persona</span>
+              <span className="mt-0.5 block text-xs text-muted-foreground">
+                Por ejemplo un hijo, familiar o amiga. Tú dejas el contacto por
+                WhatsApp.
+              </span>
+            </span>
+          </label>
+        )}
+
+        {paraOtraPersona && permiteOtra && (
+          <div className="space-y-2">
+            <Label htmlFor="beneficiario">Nombre de quien asiste</Label>
+            <Input
+              id="beneficiario"
+              value={beneficiarioNombre}
+              onChange={(e) => onBeneficiarioNombreChange(e.target.value)}
+              placeholder="Nombre de quien viene a la cita"
+              required
+              autoComplete="off"
+            />
+          </div>
+        )}
+
         <div className="space-y-2">
-          <Label htmlFor="nombre">Nombre completo</Label>
+          <Label htmlFor="nombre">
+            {paraOtraPersona && permiteOtra
+              ? "Tu nombre (contacto)"
+              : "Nombre completo"}
+          </Label>
           <Input
             id="nombre"
             value={nombre}
             onChange={(e) => onNombreChange(e.target.value)}
-            placeholder="Tu nombre"
+            placeholder={
+              paraOtraPersona && permiteOtra ? "Tu nombre" : "Tu nombre"
+            }
             required
             autoComplete="name"
           />
@@ -210,7 +262,7 @@ export function DatosPagoForm({
           type="button"
           className="reservar-cta flex-1"
           onClick={onSubmit}
-          disabled={submitting || !nombre.trim() || telefono.length < 8}
+          disabled={submitting || !canSubmit}
         >
           {submitting ? "Confirmando…" : "Confirmar reserva"}
         </Button>

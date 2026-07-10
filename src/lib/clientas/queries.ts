@@ -82,6 +82,7 @@ export async function getClientaCitas(
       fin: c.fin,
       estado: c.estado,
       notas: c.notas,
+      beneficiario_nombre: c.beneficiario_nombre ?? null,
       creada_por: c.creada_por,
       created_at: c.created_at,
       updated_at: c.updated_at,

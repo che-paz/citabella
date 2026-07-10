@@ -24,6 +24,7 @@ function mapCitaRow(c: Record<string, unknown>): CitaConDetalle {
     fin: c.fin as string,
     estado: c.estado as CitaConDetalle["estado"],
     notas: c.notas as string | null,
+    beneficiario_nombre: (c.beneficiario_nombre as string | null) ?? null,
     creada_por: c.creada_por as CitaConDetalle["creada_por"],
     created_at: c.created_at as string,
     updated_at: c.updated_at as string,

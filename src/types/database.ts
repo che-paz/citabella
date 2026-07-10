@@ -17,6 +17,7 @@ export type Salon = {
   pausa_diaria_activa?: boolean;
   pausa_hora_inicio?: string | null;
   pausa_hora_fin?: string | null;
+  permite_reserva_otra_persona?: boolean;
   activo: boolean;
   created_at: string;
   updated_at: string;
@@ -177,6 +178,7 @@ export type Cita = {
   fin: string;
   estado: CitaEstado;
   notas: string | null;
+  beneficiario_nombre: string | null;
   creada_por: CitaCreadaPor;
   created_at: string;
   updated_at: string;
@@ -261,6 +263,7 @@ export type SalonPublico = Pick<
   | "pausa_diaria_activa"
   | "pausa_hora_inicio"
   | "pausa_hora_fin"
+  | "permite_reserva_otra_persona"
 >;
 
 export type ReservaItem = {

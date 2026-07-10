@@ -86,14 +86,25 @@ export function CatalogoPicker({
         </Card>
       )}
 
-      <Button
-        className="reservar-cta w-full"
-        size="lg"
-        disabled={!selected}
-        onClick={onContinue}
-      >
-        Continuar
-      </Button>
+      {selected && <div className="h-24" aria-hidden />}
+
+      {selected && (
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t bg-background/95 px-4 py-3 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+          <div className="mx-auto flex max-w-lg flex-col gap-2">
+            <p className="truncate text-center text-sm text-muted-foreground">
+              {selected.nombre} · {formatDuration(selected.duracion_minutos)} ·{" "}
+              {formatQuetzales(selected.precio)}
+            </p>
+            <Button
+              className="reservar-cta w-full"
+              size="lg"
+              onClick={onContinue}
+            >
+              Continuar
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

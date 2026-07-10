@@ -39,6 +39,10 @@ const salonSchema = z.object({
   slot_step_minutes: z.coerce
     .number()
     .refine((v) => [15, 30, 60].includes(v), "Intervalo inválido"),
+  permite_reserva_otra_persona: z
+    .enum(["true", "false", "on", "off", ""])
+    .optional()
+    .transform((v) => v === "true" || v === "on"),
 });
 
 export async function updatePerfilAction(
@@ -104,6 +108,11 @@ export async function updateSalonAction(
     nombre: formData.get("nombre"),
     politica_reembolso: formData.get("politica_reembolso") ?? "",
     slot_step_minutes: formData.get("slot_step_minutes") ?? "60",
+    permite_reserva_otra_persona:
+      formData.get("permite_reserva_otra_persona") === "on" ||
+      formData.get("permite_reserva_otra_persona") === "true"
+        ? "true"
+        : "false",
   });
 
   if (!parsed.success) {
@@ -117,6 +126,7 @@ export async function updateSalonAction(
       nombre: parsed.data.nombre,
       politica_reembolso: parsed.data.politica_reembolso,
       slot_step_minutes: parsed.data.slot_step_minutes,
+      permite_reserva_otra_persona: parsed.data.permite_reserva_otra_persona,
     })
     .eq("id", user.salon_id);
 

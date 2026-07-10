@@ -20,6 +20,7 @@
 - [x] Elegir servicio o paquete (ve precio y duración)
 - [x] Ver solo slots disponibles según duración elegida
 - [x] Confirmar reserva (pasa a flujo de pago)
+- [x] Reservar para otra persona (si el salón lo habilita): contacto ≠ quien asiste
 - [x] Recibir confirmación (in-app MVP; WhatsApp Fase 2)
 
 ## Criterios de aceptación
