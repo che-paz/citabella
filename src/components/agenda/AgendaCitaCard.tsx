@@ -133,7 +133,7 @@ export function AgendaCitaCard({
               onClick={() => onEdit(cita)}
               disabled={isPending}
             >
-              Reagendar
+              Reagendar / editar
             </Button>
             <Button
               variant="outline"

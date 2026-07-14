@@ -1,15 +1,19 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { useRouter } from "next/navigation";
 import {
   createCitaAction,
-  getAvailableSlotsAction,
   rescheduleCitaAction,
   type AgendaActionState,
 } from "@/lib/agenda/actions";
-import { formatAgendaTime, getSalonDateKey, maxBookingDateKey, todayDateKey } from "@/lib/agenda/dates";
+import {
+  formatAgendaTime,
+  getSalonDateKey,
+  maxBookingDateKey,
+  todayDateKey,
+} from "@/lib/agenda/dates";
 import { formatDuration } from "@/lib/utils/format";
 import type {
   CitaConDetalle,
@@ -52,10 +56,31 @@ type CitaFormProps = {
 
 const initialState: AgendaActionState = {};
 
+function durationFromRange(inicioIso: string, finIso: string): number {
+  const mins = Math.round(
+    (new Date(finIso).getTime() - new Date(inicioIso).getTime()) / 60_000
+  );
+  return Math.max(5, mins);
+}
+
+function catalogDuration(
+  tipo: "servicio" | "paquete",
+  servicioId: string,
+  paqueteId: string,
+  servicios: Servicio[],
+  paquetes: Paquete[]
+): number {
+  if (tipo === "servicio") {
+    return servicios.find((s) => s.id === servicioId)?.duracion_minutos ?? 60;
+  }
+  return paquetes.find((p) => p.id === paqueteId)?.duracion_minutos ?? 60;
+}
+
 function buildInitialState(
   editingCita: CitaConDetalle | undefined,
   clientas: Clienta[],
   servicios: Servicio[],
+  paquetes: Paquete[],
   colaboradoras: Usuario[],
   defaultDate: string,
   isAdmin: boolean,
@@ -71,18 +96,27 @@ function buildInitialState(
       clientaId: editingCita.clienta_id,
       colaboradoraId: editingCita.colaboradora_id ?? "",
       fecha: getSalonDateKey(new Date(editingCita.inicio), timezone),
-      slotInicio: editingCita.inicio,
+      horaInicio: formatAgendaTime(editingCita.inicio, timezone),
+      duracionMinutos: durationFromRange(editingCita.inicio, editingCita.fin),
     };
   }
 
+  const servicioId = servicios[0]?.id ?? "";
   return {
     tipo: "servicio" as const,
-    servicioId: servicios[0]?.id ?? "",
+    servicioId,
     paqueteId: "",
     clientaId: clientas[0]?.id ?? "",
     colaboradoraId: isAdmin ? colaboradoras[0]?.id ?? "" : currentUserId,
     fecha: defaultDate,
-    slotInicio: "",
+    horaInicio: "09:00",
+    duracionMinutos: catalogDuration(
+      "servicio",
+      servicioId,
+      "",
+      servicios,
+      paquetes
+    ),
   };
 }
 
@@ -108,6 +142,7 @@ export function CitaForm({
     editingCita,
     clientas,
     servicios,
+    paquetes,
     colaboradoras,
     defaultDate,
     isAdmin,
@@ -124,49 +159,23 @@ export function CitaForm({
   const [clientaId, setClientaId] = useState(initial.clientaId);
   const [colaboradoraId, setColaboradoraId] = useState(initial.colaboradoraId);
   const [fecha, setFecha] = useState(initial.fecha);
-  const [slotInicio, setSlotInicio] = useState(initial.slotInicio);
-  const [slots, setSlots] = useState<{ inicio: string; fin: string }[]>([]);
-  const [loadingSlots, setLoadingSlots] = useTransition();
+  const [horaInicio, setHoraInicio] = useState(initial.horaInicio);
+  const [duracionMinutos, setDuracionMinutos] = useState(initial.duracionMinutos);
+  const [durationTouched, setDurationTouched] = useState(Boolean(editingCita));
 
-  const duracion =
-    tipo === "servicio"
-      ? servicios.find((s) => s.id === servicioId)?.duracion_minutos
-      : paquetes.find((p) => p.id === paqueteId)?.duracion_minutos;
-
-  const horaInicio = slotInicio
-    ? formatAgendaTime(slotInicio, timezone)
-    : "";
+  const catalogMins = catalogDuration(
+    tipo,
+    servicioId,
+    paqueteId,
+    servicios,
+    paquetes
+  );
 
   useEffect(() => {
-    if (!duracion || !fecha) {
-      setSlots([]);
-      setSlotInicio("");
-      return;
+    if (!durationTouched) {
+      setDuracionMinutos(catalogMins);
     }
-
-    setLoadingSlots(async () => {
-      const result = await getAvailableSlotsAction({
-        fecha,
-        duracionMinutos: duracion,
-        colaboradoraId: colaboradoraId || undefined,
-        excludeCitaId: editingCita?.id,
-      });
-      setSlots(result.slots);
-      setSlotInicio((current) => {
-        if (result.slots.length === 0) return "";
-        if (current && result.slots.some((s) => s.inicio === current)) {
-          return current;
-        }
-        return result.slots[0].inicio;
-      });
-    });
-  }, [
-    duracion,
-    fecha,
-    colaboradoraId,
-    editingCita?.id,
-    setLoadingSlots,
-  ]);
+  }, [catalogMins, durationTouched]);
 
   useEffect(() => {
     if (state.success) {
@@ -175,13 +184,20 @@ export function CitaForm({
     }
   }, [state.success, onOpenChange, router]);
 
-  const canSubmit = Boolean(clientaId && horaInicio && duracion);
+  const canSubmit = Boolean(
+    clientaId &&
+      horaInicio &&
+      duracionMinutos >= 5 &&
+      (tipo === "servicio" ? servicioId : paqueteId)
+  );
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>{isEditing ? "Reagendar cita" : "Nueva cita"}</DialogTitle>
+          <DialogTitle>
+            {isEditing ? "Editar / reagendar cita" : "Nueva cita"}
+          </DialogTitle>
         </DialogHeader>
 
         {clientas.length === 0 ? (
@@ -218,7 +234,11 @@ export function CitaForm({
               <Label>Tipo</Label>
               <Select
                 value={tipo}
-                onValueChange={(v) => setTipo(v as "servicio" | "paquete")}
+                onValueChange={(v) => {
+                  const next = v as "servicio" | "paquete";
+                  setTipo(next);
+                  setDurationTouched(false);
+                }}
               >
                 <SelectTrigger>
                   <SelectValue />
@@ -235,7 +255,10 @@ export function CitaForm({
                 <Label>Servicio</Label>
                 <Select
                   value={servicioId || undefined}
-                  onValueChange={setServicioId}
+                  onValueChange={(id) => {
+                    setServicioId(id);
+                    setDurationTouched(false);
+                  }}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Selecciona servicio" />
@@ -255,7 +278,10 @@ export function CitaForm({
                 <Label>Paquete</Label>
                 <Select
                   value={paqueteId || undefined}
-                  onValueChange={setPaqueteId}
+                  onValueChange={(id) => {
+                    setPaqueteId(id);
+                    setDurationTouched(false);
+                  }}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Selecciona paquete" />
@@ -312,33 +338,47 @@ export function CitaForm({
               />
             </div>
 
-            <div className="space-y-1">
-              <Label>Horario disponible</Label>
-              {loadingSlots ? (
-                <p className="text-sm text-muted-foreground">Calculando slots…</p>
-              ) : slots.length === 0 ? (
-                <p className="text-sm text-muted-foreground">
-                  No hay horarios disponibles para esta fecha.
-                </p>
-              ) : slotInicio ? (
-                <Select
-                  value={slotInicio}
-                  onValueChange={setSlotInicio}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Selecciona hora" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {slots.map((slot) => (
-                      <SelectItem key={slot.inicio} value={slot.inicio}>
-                        {formatAgendaTime(slot.inicio, timezone)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              ) : null}
-              <input type="hidden" name="hora_inicio" value={horaInicio} />
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <Label htmlFor="hora_inicio">Hora de inicio</Label>
+                <Input
+                  id="hora_inicio"
+                  name="hora_inicio"
+                  type="time"
+                  value={horaInicio}
+                  onChange={(e) => setHoraInicio(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="space-y-1">
+                <Label htmlFor="duracion_minutos">Duración (min)</Label>
+                <Input
+                  id="duracion_minutos"
+                  name="duracion_minutos"
+                  type="number"
+                  min={5}
+                  max={480}
+                  step={1}
+                  value={duracionMinutos}
+                  onChange={(e) => {
+                    setDurationTouched(true);
+                    setDuracionMinutos(Number(e.target.value) || 5);
+                  }}
+                  required
+                />
+              </div>
             </div>
+            <p className="text-xs text-muted-foreground">
+              Puedes poner cualquier hora (ej. 10:40) y acortar la duración para
+              emergencias. No debe cruzarse con otra cita ni con la pausa.
+              {duracionMinutos !== catalogMins && (
+                <>
+                  {" "}
+                  Catálogo: {formatDuration(catalogMins)}; esta cita:{" "}
+                  {formatDuration(duracionMinutos)}.
+                </>
+              )}
+            </p>
 
             <div className="space-y-1">
               <Label htmlFor="notas">Notas</Label>
@@ -359,7 +399,7 @@ export function CitaForm({
             )}
 
             <Button type="submit" disabled={!canSubmit} className="w-full">
-              {isEditing ? "Reagendar" : "Crear cita"}
+              {isEditing ? "Guardar cambios" : "Crear cita"}
             </Button>
           </form>
         )}

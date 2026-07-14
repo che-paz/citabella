@@ -60,6 +60,12 @@ const citaSchema = z
     colaboradora_id: optionalPgUuidSchema("Colaboradora inválida"),
     fecha: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Fecha inválida"),
     hora_inicio: z.string().regex(/^\d{2}:\d{2}$/, "Hora inválida"),
+    duracion_minutos: z.coerce
+      .number()
+      .int()
+      .min(5, "Mínimo 5 minutos")
+      .max(480, "Máximo 8 horas")
+      .optional(),
     notas: z
       .string()
       .max(500)
@@ -121,6 +127,45 @@ async function getDuracionMinutos(
   }
 
   return null;
+}
+
+/** Admin/colaboradora: hora libre + duración custom; respeta horario/pausa y no solapa. */
+async function resolveAdminCitaRange(params: {
+  salonId: string;
+  fecha: string;
+  horaInicio: string;
+  duracionMinutos: number;
+  colaboradoraId?: string;
+  excludeCitaId?: string;
+  timezone: string;
+}): Promise<{ inicio: Date; fin: Date } | { error: string }> {
+  const inicio = salonLocalToUtc(
+    params.fecha,
+    params.horaInicio,
+    params.timezone
+  );
+  const fin = new Date(inicio.getTime() + params.duracionMinutos * 60_000);
+
+  const slots = await fetchAvailabilitySlots({
+    salonId: params.salonId,
+    date: new Date(`${params.fecha}T12:00:00`),
+    timezone: params.timezone,
+    duracionMinutos: params.duracionMinutos,
+    colaboradoraId: params.colaboradoraId,
+    excludeCitaId: params.excludeCitaId,
+    // 1 min: permite cualquier hora (ej. 10:40), no el intervalo del link público
+    slotStepMinutes: 1,
+  });
+
+  const fits = slots.some((s) => s.inicio.getTime() === inicio.getTime());
+  if (!fits) {
+    return {
+      error:
+        "Ese horario no cabe (fuera de atención, en pausa, o se solapa con otra cita).",
+    };
+  }
+
+  return { inicio, fin };
 }
 
 export async function saveHorariosAction(
@@ -331,6 +376,7 @@ export async function createCitaAction(
     colaboradora_id: formData.get("colaboradora_id") || null,
     fecha: formData.get("fecha"),
     hora_inicio: formData.get("hora_inicio"),
+    duracion_minutos: formData.get("duracion_minutos") || undefined,
     notas: formData.get("notas") || undefined,
     estado: formData.get("estado") || "confirmada",
   });
@@ -352,38 +398,29 @@ export async function createCitaAction(
       ? user.id
       : parsed.data.colaboradora_id ?? null;
 
-  const duracion = await getDuracionMinutos(
+  const catalogDuracion = await getDuracionMinutos(
     user.salon_id,
     parsed.data.servicio_id,
     parsed.data.paquete_id
   );
 
-  if (!duracion) {
+  if (!catalogDuracion) {
     return { error: "Servicio o paquete no encontrado" };
   }
 
+  const duracion = parsed.data.duracion_minutos ?? catalogDuracion;
   const timezone = await getSalonTimezone(user.salon_id);
-  const inicio = salonLocalToUtc(
-    parsed.data.fecha,
-    parsed.data.hora_inicio,
-    timezone
-  );
-  const fin = new Date(inicio.getTime() + duracion * 60_000);
-
-  const slots = await fetchAvailabilitySlots({
+  const range = await resolveAdminCitaRange({
     salonId: user.salon_id,
-    date: new Date(`${parsed.data.fecha}T12:00:00`),
-    timezone,
+    fecha: parsed.data.fecha,
+    horaInicio: parsed.data.hora_inicio,
     duracionMinutos: duracion,
     colaboradoraId: colaboradoraId ?? undefined,
+    timezone,
   });
 
-  const slotValid = slots.some(
-    (s) => s.inicio.getTime() === inicio.getTime()
-  );
-
-  if (!slotValid) {
-    return { error: "El horario seleccionado no está disponible" };
+  if ("error" in range) {
+    return { error: range.error };
   }
 
   const creadaPor =
@@ -396,8 +433,8 @@ export async function createCitaAction(
     servicio_id: parsed.data.servicio_id ?? null,
     paquete_id: parsed.data.paquete_id ?? null,
     colaboradora_id: colaboradoraId,
-    inicio: inicio.toISOString(),
-    fin: fin.toISOString(),
+    inicio: range.inicio.toISOString(),
+    fin: range.fin.toISOString(),
     estado: (parsed.data.estado ?? "confirmada") as CitaEstado,
     notas: parsed.data.notas ?? null,
     creada_por: creadaPor,
@@ -429,6 +466,7 @@ export async function rescheduleCitaAction(
     colaboradora_id: formData.get("colaboradora_id") || null,
     fecha: formData.get("fecha"),
     hora_inicio: formData.get("hora_inicio"),
+    duracion_minutos: formData.get("duracion_minutos") || undefined,
     notas: formData.get("notas") || undefined,
   });
 
@@ -464,47 +502,41 @@ export async function rescheduleCitaAction(
       ? user.id
       : parsed.data.colaboradora_id ?? existing.colaboradora_id;
 
-  const duracion = await getDuracionMinutos(
+  const catalogDuracion = await getDuracionMinutos(
     user.salon_id,
     parsed.data.servicio_id,
     parsed.data.paquete_id
   );
 
-  if (!duracion) {
+  if (!catalogDuracion) {
     return { error: "Servicio o paquete no encontrado" };
   }
 
+  const duracion = parsed.data.duracion_minutos ?? catalogDuracion;
   const timezone = await getSalonTimezone(user.salon_id);
-  const inicio = salonLocalToUtc(
-    parsed.data.fecha,
-    parsed.data.hora_inicio,
-    timezone
-  );
-  const fin = new Date(inicio.getTime() + duracion * 60_000);
-
-  const slots = await fetchAvailabilitySlots({
+  const range = await resolveAdminCitaRange({
     salonId: user.salon_id,
-    date: new Date(`${parsed.data.fecha}T12:00:00`),
-    timezone,
+    fecha: parsed.data.fecha,
+    horaInicio: parsed.data.hora_inicio,
     duracionMinutos: duracion,
     colaboradoraId: colaboradoraId ?? undefined,
     excludeCitaId: citaId,
+    timezone,
   });
 
-  const slotValid = slots.some(
-    (s) => s.inicio.getTime() === inicio.getTime()
-  );
-
-  if (!slotValid) {
-    return { error: "El nuevo horario no está disponible" };
+  if ("error" in range) {
+    return { error: range.error };
   }
 
   const { error } = await supabase
     .from("citas")
     .update({
-      inicio: inicio.toISOString(),
-      fin: fin.toISOString(),
+      inicio: range.inicio.toISOString(),
+      fin: range.fin.toISOString(),
       colaboradora_id: colaboradoraId,
+      servicio_id: parsed.data.servicio_id ?? null,
+      paquete_id: parsed.data.paquete_id ?? null,
+      clienta_id: parsed.data.clienta_id,
       notas: parsed.data.notas ?? null,
     })
     .eq("id", citaId)
