@@ -56,6 +56,7 @@ MVP en Vercel. Piloto founders (Tutis + Galaxy). Sprint Founders 02 completo: re
 - Pausa diaria (almuerzo): configurable en Agenda → Horarios; migración `013_pausa_diaria.sql`
 - Reserva “para otra persona”: flag en Ajustes; checkbox en link; `beneficiario_nombre` en cita; Galaxy activado por defecto (migración 015)
 - Link reserva: CTA Continuar fijo al pie al elegir servicio (catálogos largos)
+- Agenda: citas canceladas ocultas (no aparecen en día/semana/mes)
 
 ## Decisiones pendientes
 

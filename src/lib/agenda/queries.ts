@@ -86,6 +86,7 @@ export async function getAgendaCitas(
     `
     )
     .eq("salon_id", salonId)
+    .neq("estado", "cancelada")
     .lt("inicio", rangeEnd)
     .gt("fin", rangeStart)
     .order("inicio");

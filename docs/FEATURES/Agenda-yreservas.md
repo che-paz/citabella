@@ -85,6 +85,7 @@ src/lib/agenda/dates.ts
 
 - Colaboradora ve solo su agenda (RLS por `colaboradora_id`)
 - Admin ve agenda completa del salón
+- Citas `cancelada` no se muestran en la agenda (sí quedan en historial de clienta)
 - Pausa diaria (almuerzo): bloqueo recurrente en `salones`; opt-in, default desactivado
 - Timezone desde `salones.timezone` (default `America/Guatemala`)
 - Reserva pública: `creada_por = 'clienta'`, sin colaboradora asignada
