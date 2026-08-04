@@ -2,7 +2,7 @@
 
 > **Última actualización:** 2026-08-04  
 > **Marca presentación:** Gota+Check · **Estudio:** VajaLabs (sin constituir)  
-> **Sprint activo:** Marketing merged a `main` · **siguiente:** deploy Vercel + DNS `gotacheck.app`, luego **S1.1**  
+> **Sprint activo:** Marketing live en `gotacheck.app` ✅ · siguiente **S1.1** (docs/inventario)  
 > **Fase:** MVP ✅ | Piloto founders en curso | Formalización + vitrina (SKUs A/B/C) en planificación
 
 ## Resumen en una línea
@@ -21,7 +21,7 @@ MVP operativo en Vercel/Supabase (Tutis + Galaxy). Landing marketing Gota+Check 
 | Prototipo UI | 🟢 MVP core | Dashboard + clientas listos |
 | Finanzas / gastos | 🟢 MVP | `/finanzas` ingresos vs gastos + balance mes |
 | PWA | 🟢 Operativo | Web Push por dispositivo; iPhone requiere icono en inicio |
-| Sitio marketing Gota+Check | 🟡 DNS pendiente | Live: https://gotacheck-marketing.vercel.app — falta dominio `gotacheck.app` |
+| Sitio marketing Gota+Check | 🟢 Live | https://gotacheck.app → www · proyecto Vercel `gotacheck-marketing` |
 | Vitrina / landings | ⬜ No iniciado | SKU B/C; plantillas post Fase 1 infra |
 
 ## Decisiones tomadas
@@ -68,8 +68,8 @@ MVP operativo en Vercel/Supabase (Tutis + Galaxy). Landing marketing Gota+Check 
 ## Decisiones pendientes
 
 - [x] Dominio producto Gota+Check comprado (`gotacheck.app`, 2026-08-04)
-- [ ] Apuntar DNS `gotacheck.app` → proyecto Vercel marketing (`marketing/README.md`)
-- [ ] `NEXT_PUBLIC_APP_URL` / `NEXT_PUBLIC_SITE_URL` en prod (app + marketing)
+- [x] DNS `gotacheck.app` → Vercel marketing (Cloudflare DNS-only; live 2026-08-04)
+- [ ] `NEXT_PUBLIC_APP_URL` / `NEXT_PUBLIC_SITE_URL` en prod (app + marketing) — marketing ya con WhatsApp + app URL
 - [ ] Precios A/B/C + trial — **sesión exclusiva al estar listos** (`ROUTE_GOTACHECK.md` §7)
 - [ ] Fecha taller (~35 maquillistas vía founders) — depende de sprints F1+F2
 - [ ] Spec contenido landing tipo Daysi (sesión S2.0)
@@ -91,11 +91,10 @@ Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta
 
 ## Próximo paso inmediato
 
-1. En Vercel (proyecto marketing) → Domains → añadir `gotacheck.app` + DNS Cloudflare DNS-only — ver `marketing/README.md`
-2. Ejecutar ruta `docs/ROUTE_GOTACHECK.md` — sprint **S1.1 → S1.4** (infra + onboarding asistido)
-3. Completar env Vercel/local app: VAPID (3 keys) + `NEXT_PUBLIC_SITE_URL`
-4. Luego Fase 2 vitrina (S2.0 contenido → plantilla → prueba founder)
-5. **Último:** sesión precios / trial / fecha taller
+1. Ejecutar ruta `docs/ROUTE_GOTACHECK.md` — sprint **S1.1 → S1.4** (infra + onboarding asistido)
+2. Completar env Vercel/local app: VAPID (3 keys) + `NEXT_PUBLIC_SITE_URL`
+3. Luego Fase 2 vitrina (S2.0 contenido → plantilla → prueba founder)
+4. **Último:** sesión precios / trial / fecha taller
 
 ## Piloto founders (activo)
 

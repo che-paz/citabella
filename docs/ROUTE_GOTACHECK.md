@@ -68,7 +68,7 @@ Leyenda de estado: ⬜ pending · 🟡 in progress · ✅ done
 | F0.1 | Marca presentación = Gota+Check | ✅ (2026-07-28) |
 | F0.2 | SKUs A/B/C + ownership dominio documentados | ✅ (este doc) |
 | F0.3 | Dominio producto Gota+Check comprado | ✅ `gotacheck.app` (2026-08-04) |
-| F0.4 | One-pager taller (borrador, sin precios finales) | 🟡 Landing marketing en `marketing/` (borrador web; precios aún no) |
+| F0.4 | One-pager taller (borrador, sin precios finales) | ✅ Landing live `gotacheck.app` (2026-08-04; precios aún no) |
 | F0.5 | Sesión precios + trial + fecha taller | ⬜ **última**, ver §7 |
 
 **Criterio fase:** nombre + oferta claros; dominio en camino; precios aún pueden esperar.
