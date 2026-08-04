@@ -72,12 +72,12 @@ export default function HomePage() {
         <section className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden px-6 pb-16 pt-10 sm:px-10 lg:px-16">
           <div className="mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
             <div className="order-2 lg:order-1">
-              <p className="animate-fade-up font-display text-5xl font-extrabold tracking-tight text-ink sm:text-6xl md:text-7xl lg:text-[5.25rem]">
+              <h1 className="animate-fade-up font-display text-5xl font-extrabold tracking-tight text-ink sm:text-6xl md:text-7xl lg:text-[5.25rem]">
                 Gota+Check
-              </p>
-              <h1 className="animate-fade-up mt-5 max-w-xl font-display text-2xl font-semibold leading-snug tracking-tight text-ink sm:text-3xl md:text-[2rem] [animation-delay:120ms]">
-                Tu agenda de salón, sin el caos del WhatsApp.
               </h1>
+              <p className="animate-fade-up mt-5 max-w-xl font-display text-2xl font-semibold leading-snug tracking-tight text-ink sm:text-3xl md:text-[2rem] [animation-delay:120ms]">
+                Tu agenda de salón, sin el caos del WhatsApp.
+              </p>
               <p className="animate-fade-up mt-4 max-w-md text-lg leading-relaxed text-muted [animation-delay:220ms]">
                 Para salones, maquillistas y barberías en Guatemala y
                 Centroamérica que quieren orden, menos no-shows y una presencia
