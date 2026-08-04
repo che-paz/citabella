@@ -1,28 +1,34 @@
-# CITABELLA — Current State
+# CITABELLA / Gota+Check — Current State
 
-> **Última actualización:** 2026-07-06  
-> **Sprint activo:** Founders 02 — Sprints A/B/C en código; migración 010 pendiente en cloud  
-> **Fase:** Fase 1 MVP ✅ | Piloto founders en curso
+> **Última actualización:** 2026-08-04  
+> **Marca presentación:** Gota+Check · **Estudio:** VajaLabs (sin constituir)  
+> **Sprint activo:** Marketing `gotacheck.app` ✅ · siguiente **S1.1** (docs/inventario); ver `docs/ROUTE_GOTACHECK.md`  
+> **Fase:** MVP ✅ | Piloto founders en curso | Formalización + vitrina (SKUs A/B/C) en planificación
 
 ## Resumen en una línea
 
-MVP en Vercel. Piloto founders (Tutis + Galaxy). Sprint Founders 02 completo: reserva 3 meses, teléfonos CA, pago asegurado/cobrado, vista mes.
+MVP operativo en Vercel/Supabase (Tutis + Galaxy). Landing marketing Gota+Check en `marketing/` lista para `gotacheck.app`; precios/taller pendientes de sesión de salida.
 
 ## Estado por área
 
 | Área | Estado | Notas |
 |------|--------|-------|
-| Documentación | 🟢 Al día | Sprint 02 + fixes documentados |
+| Documentación | 🟢 Ruta GTM | `ROUTE_GOTACHECK.md` + este archivo al día |
 | Repositorio / código | 🟢 MVP core | Flujo reserva + validación pagos verificado |
-| Base de datos | 🟡 Migración 010 pendiente | `asegurado`/`cobrado` en código; aplicar `010_pago_asegurado_cobrado.sql` en cloud |
-| Supabase | 🟢 Operativo | RLS público + bucket `comprobantes` + service role |
-| Deploy | 🟢 Staging Vercel | GitHub → Vercel; link reserva en dashboard |
+| Base de datos | 🟢 Migraciones 009–015 en cloud | Verificado 2026-07-27 (probe REST); docs previos decían 010 pendiente — obsoleto |
+| Supabase | 🟡 Free → Pro pendiente | Operativo; Pro + backups antes del taller |
+| Deploy | 🟢 Vercel | App: proyecto actual. Marketing: proyecto aparte Root=`marketing` → `gotacheck.app` |
 | Prototipo UI | 🟢 MVP core | Dashboard + clientas listos |
 | Finanzas / gastos | 🟢 MVP | `/finanzas` ingresos vs gastos + balance mes |
-| PWA | 🟢 Operativo | Web Push por dispositivo en `/ajustes`; iPhone requiere icono en inicio |
+| PWA | 🟢 Operativo | Web Push por dispositivo; iPhone requiere icono en inicio |
+| Sitio marketing Gota+Check | 🟢 Código listo | `marketing/` — deploy Vercel + DNS Cloudflare pendientes |
+| Vitrina / landings | ⬜ No iniciado | SKU B/C; plantillas post Fase 1 infra |
 
 ## Decisiones tomadas
 
+- Marca de **presentación** al gremio: **Gota+Check**; estudio: VajaLabs; ruta GTM en `ROUTE_GOTACHECK.md`
+- Oferta en 3 SKUs: A Agenda · B Vitrina (plantilla+dominio) · C Presencia (+foto); landing mínima tipo Daysi
+- Sitio marketing: monorepo `marketing/` + proyecto Vercel aparte (Root Directory); apex `gotacheck.app` este sprint; app → `app.gotacheck.app` después
 - Stack: Next.js 14 + TypeScript + Tailwind + shadcn/ui + Supabase + Vercel
 - Multi-tenant vía Row Level Security (RLS) en PostgreSQL
 - Disponibilidad de agenda: cálculo dinámico por duración de servicio
@@ -61,29 +67,35 @@ MVP en Vercel. Piloto founders (Tutis + Galaxy). Sprint Founders 02 completo: re
 
 ## Decisiones pendientes
 
-- [ ] Nombre de marca final y dominio
-- [ ] Prototipo navegable validado con founders
-- [ ] Tiers y precios del plan de pago
-- [ ] WhatsApp: Meta Cloud API vs Twilio (Fase 2)
-- [ ] Dominio propio (`NEXT_PUBLIC_SITE_URL`) vs `*.vercel.app`
+- [x] Dominio producto Gota+Check comprado (`gotacheck.app`, 2026-08-04)
+- [ ] Apuntar DNS `gotacheck.app` → proyecto Vercel marketing (`marketing/README.md`)
+- [ ] `NEXT_PUBLIC_APP_URL` / `NEXT_PUBLIC_SITE_URL` en prod (app + marketing)
+- [ ] Precios A/B/C + trial — **sesión exclusiva al estar listos** (`ROUTE_GOTACHECK.md` §7)
+- [ ] Fecha taller (~35 maquillistas vía founders) — depende de sprints F1+F2
+- [ ] Spec contenido landing tipo Daysi (sesión S2.0)
+- [ ] WhatsApp: Meta Cloud API vs Twilio (Fase 2 — fuera de ruta GTM)
 
 ## Bloqueadores actuales
 
-Ninguno.
+Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta cumplir F1+F2.
 
 ## Desarrollo local
 
 - App: **puerto 3004** (`npm run dev` → http://localhost:3004)
+- Marketing Gota+Check: **puerto 3010** (`cd marketing && npm run dev` → http://localhost:3010)
 - Link público: http://localhost:3004/reservar/belleza-luna
 - Supabase: cloud. Seeds: `seed-cloud.sql`, `seed-cloud-agenda.sql`
-- Env requerido: `NEXT_PUBLIC_SUPABASE_*` + `SUPABASE_SERVICE_ROLE_KEY`
-- Tests: `npm test` | Build: `npm run build`
+- Env requerido (app): `NEXT_PUBLIC_SUPABASE_*` + `SUPABASE_SERVICE_ROLE_KEY`
+- Env marketing: ver `marketing/.env.example` (`NEXT_PUBLIC_WHATSAPP_URL`, `NEXT_PUBLIC_APP_URL`)
+- Tests: `npm test` | Build app: `npm run build` | Build marketing: `cd marketing && npm run build`
 
 ## Próximo paso inmediato
 
-1. **Aplicar migraciones 010, 011, 012** en Supabase Cloud
-2. **Configurar VAPID** en Vercel (`node scripts/generate-vapid-keys.mjs`)
-3. Founders activan notificaciones en `/ajustes`
+1. Deploy proyecto Vercel Root=`marketing` + DNS `gotacheck.app` (DNS-only en Cloudflare) — ver `marketing/README.md`
+2. Ejecutar ruta `docs/ROUTE_GOTACHECK.md` — sprint **S1.1 → S1.4** (infra + onboarding asistido)
+3. Completar env Vercel/local app: VAPID (3 keys) + `NEXT_PUBLIC_SITE_URL`
+4. Luego Fase 2 vitrina (S2.0 contenido → plantilla → prueba founder)
+5. **Último:** sesión precios / trial / fecha taller
 
 ## Piloto founders (activo)
 
@@ -121,6 +133,8 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-08-04 | Landing marketing Gota+Check en `marketing/` (proyecto Vercel aparte → `gotacheck.app`) |
+| 2026-07-28 | Ruta GTM `ROUTE_GOTACHECK.md`; marca Gota+Check; cloud 009–015 verificadas |
 | 2026-07-01 | Fase 0 + Sprint 1.1 catálogo |
 | 2026-07-01 | Sprint 02A agenda admin + motor disponibilidad |
 | 2026-07-01 | Sprint 02B link público `/reservar/[slug]` |

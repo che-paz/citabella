@@ -1,0 +1,64 @@
+:root {
+  --ink: #2a2220;
+  --muted: #6f5f5a;
+  --blush: #fbf6f4;
+  --sand: #f0e4df;
+  --rose: #c97878;
+  --rose-deep: #a85a5a;
+  --rose-soft: #e8b4b0;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--ink);
+  background: var(--blush);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--rose) 35%, white);
+  color: var(--ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.atmosphere {
+  background:
+    radial-gradient(ellipse 90% 60% at 80% 10%, rgba(232, 180, 176, 0.55), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 10% 80%, rgba(240, 228, 223, 0.9), transparent 50%),
+    radial-gradient(ellipse 50% 40% at 50% 50%, rgba(255, 255, 255, 0.5), transparent 70%),
+    linear-gradient(165deg, #fffaf8 0%, #fbf6f4 40%, #f3e8e4 100%);
+}
+
+.grain {
+  position: relative;
+}
+
+.grain::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}

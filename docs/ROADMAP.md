@@ -1,7 +1,8 @@
 # CITABELLA — Roadmap Técnico
 
-> **Última actualización:** 2026-07-01  
-> **Horizonte MVP:** ~6-9 semanas (1 dev + AI-assisted)
+> **Última actualización:** 2026-07-28  
+> **Horizonte MVP:** ~6-9 semanas (1 dev + AI-assisted)  
+> **Go-to-market (Gota+Check):** ver `docs/ROUTE_GOTACHECK.md` — fases F0–F5 y sprints S1/S2 (no duplicar aquí)
 
 ## Vista general
 
@@ -141,6 +142,10 @@ Fundación    5-7 sem        4-5 sem     4-6 sem
 
 | Hito | Fase | Fecha objetivo |
 |------|------|----------------|
-| Founders onboarded | Post MVP | +1 semana post Fase 1 |
-| Primer trial externo | Fase 2 | TBD |
-| Lanzamiento público GT | Fase 3 | TBD |
+| Founders onboarded | Post MVP | ✅ Piloto Tutis + Galaxy |
+| Ruta GTM documentada (Gota+Check) | Post MVP | ✅ 2026-07-28 → `ROUTE_GOTACHECK.md` |
+| Vitrina plantilla + prueba founder | Ruta F2 | Antes del taller |
+| Precios / trial / fecha taller | Ruta F3 | Sesión exclusiva al estar listos |
+| Taller ~35 maquillistas | Ruta F4 | Depende de F1+F2 |
+| ≥10–15 salones pagos (90 días) | Ruta F4 | Post taller |
+| >50 salones | Ruta F5 | 12 meses |
