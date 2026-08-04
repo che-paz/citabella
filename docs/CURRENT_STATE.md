@@ -2,7 +2,7 @@
 
 > **Última actualización:** 2026-08-04  
 > **Marca presentación:** Gota+Check · **Estudio:** VajaLabs (sin constituir)  
-> **Sprint activo:** Marketing `gotacheck.app` ✅ · siguiente **S1.1** (docs/inventario); ver `docs/ROUTE_GOTACHECK.md`  
+> **Sprint activo:** Marketing merged a `main` · **siguiente:** deploy Vercel + DNS `gotacheck.app`, luego **S1.1**  
 > **Fase:** MVP ✅ | Piloto founders en curso | Formalización + vitrina (SKUs A/B/C) en planificación
 
 ## Resumen en una línea
@@ -21,7 +21,7 @@ MVP operativo en Vercel/Supabase (Tutis + Galaxy). Landing marketing Gota+Check 
 | Prototipo UI | 🟢 MVP core | Dashboard + clientas listos |
 | Finanzas / gastos | 🟢 MVP | `/finanzas` ingresos vs gastos + balance mes |
 | PWA | 🟢 Operativo | Web Push por dispositivo; iPhone requiere icono en inicio |
-| Sitio marketing Gota+Check | 🟢 Código listo | `marketing/` — deploy Vercel + DNS Cloudflare pendientes |
+| Sitio marketing Gota+Check | 🟡 Deploy pendiente | Código en `main` (PR #1). Falta proyecto Vercel Root=`marketing` + DNS |
 | Vitrina / landings | ⬜ No iniciado | SKU B/C; plantillas post Fase 1 infra |
 
 ## Decisiones tomadas
