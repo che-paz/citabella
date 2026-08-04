@@ -23,7 +23,7 @@ En Vercel (proyecto marketing), configura ambas en **Settings → Environment Va
 Ejemplo de app URL (proyecto actual de founders):
 
 ```
-NEXT_PUBLIC_APP_URL=https://TU-APP.vercel.app/login
+NEXT_PUBLIC_APP_URL=https://citabella-eight.vercel.app/login
 ```
 
 Objetivo futuro: app en `app.gotacheck.app` y marketing en `gotacheck.app`.
