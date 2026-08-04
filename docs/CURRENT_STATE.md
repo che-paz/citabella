@@ -21,7 +21,7 @@ MVP operativo en Vercel/Supabase (Tutis + Galaxy). Landing marketing Gota+Check 
 | Prototipo UI | 🟢 MVP core | Dashboard + clientas listos |
 | Finanzas / gastos | 🟢 MVP | `/finanzas` ingresos vs gastos + balance mes |
 | PWA | 🟢 Operativo | Web Push por dispositivo; iPhone requiere icono en inicio |
-| Sitio marketing Gota+Check | 🟡 Deploy pendiente | Código en `main` (PR #1). Falta proyecto Vercel Root=`marketing` + DNS |
+| Sitio marketing Gota+Check | 🟡 DNS pendiente | Live: https://gotacheck-marketing.vercel.app — falta dominio `gotacheck.app` |
 | Vitrina / landings | ⬜ No iniciado | SKU B/C; plantillas post Fase 1 infra |
 
 ## Decisiones tomadas
@@ -91,7 +91,7 @@ Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta
 
 ## Próximo paso inmediato
 
-1. Deploy proyecto Vercel Root=`marketing` + DNS `gotacheck.app` (DNS-only en Cloudflare) — ver `marketing/README.md`
+1. En Vercel (proyecto marketing) → Domains → añadir `gotacheck.app` + DNS Cloudflare DNS-only — ver `marketing/README.md`
 2. Ejecutar ruta `docs/ROUTE_GOTACHECK.md` — sprint **S1.1 → S1.4** (infra + onboarding asistido)
 3. Completar env Vercel/local app: VAPID (3 keys) + `NEXT_PUBLIC_SITE_URL`
 4. Luego Fase 2 vitrina (S2.0 contenido → plantilla → prueba founder)
