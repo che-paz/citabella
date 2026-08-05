@@ -82,7 +82,7 @@ Objetivo: operar y dar de alta salones **asistido** sin riesgo a founders.
 | Sprint | Scope | Done cuando |
 |--------|--------|-------------|
 | **S1.1 Docs & inventario** | Actualizar `CURRENT_STATE`; checklist migraciones cloud; runbook alta salón | ✅ 2026-08-05 — `MIGRATIONS_CHECKLIST.md` + `RUNBOOK_ALTA_SALON.md` |
-| **S1.2 Infra** | Checklist Supabase (backups; plan Pro cuando toque); Vercel env (Supabase + VAPID completo + `SITE_URL`); Auth redirect URLs | Smoke login + reserva + comprobante + push |
+| **S1.2 Infra** | Checklist Supabase (backups; plan Pro cuando toque); Vercel env (Supabase + VAPID completo + `SITE_URL`); Auth redirect URLs | 🟡 2026-08-05 — `S1.2_INFRA_CHECKLIST.md` + smoke público ✅; falta firma operador (env + smoke manual) |
 | **S1.3 Onboarding asistido** | Script/proceso genérico (no solo founders): salón + admin + slug + plan + horarios default + link listo | Alta de un salón de prueba &lt; 30 min |
 | **S1.4 Hardening** | Smoke RLS tenant A≠B; demo (Belleza Luna) marcada/aislada; reset seguro por salón documentado | Checklist firmado una vez |
 
@@ -148,7 +148,7 @@ No empieza hasta F1 ✅ y F2 ✅ (mínimo S2.1 + S2.2).
 ## 5. Orden de ejecución inmediato (próximos sprints)
 
 1. ~~**S1.1** — Docs + inventario~~ ✅  
-2. **S1.2** — Infra / env / smoke  
+2. **S1.2** — Infra / env / smoke 🟡 (checklist listo; cierre con firma operador)  
 3. **S1.3** — Onboarding asistido genérico  
 4. **S1.4** — Hardening RLS + demo  
 5. **S2.0** — Spec contenido landing (sesión dedicada)  
