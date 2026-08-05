@@ -2,12 +2,12 @@
 
 > **Última actualización:** 2026-08-05  
 > **Marca presentación:** Gota+Check · **Estudio:** VajaLabs (sin constituir)  
-> **Sprint activo:** **S2.1 🟡** (esqueleto vitrina `/vitrina/[slug]`) · S2.0 borrador listo · Fase 1 ✅  
-> **Fase:** MVP ✅ | Piloto founders | **Vitrina:** plantilla con placeholders | Precios/taller al final
+> **Sprint activo:** **S2.1 ✅** (mergeado; deploy Vercel) · S2.0 borrador · siguiente **S2.2** editor  
+> **Fase:** MVP ✅ | Piloto founders | **Vitrina:** plantilla + `?demo=1` en prod | Precios/taller al final
 
 ## Resumen en una línea
 
-MVP operativo. **Fase 1 ✅**. S2.1: esqueleto de vitrina en `/vitrina/[slug]` (placeholders + CTA a agenda).
+MVP operativo. **Fase 1 ✅**. S2.1 ✅: `/vitrina/[slug]` + modo demo pitch. Siguiente: S2.2 editor.
 
 ## Estado por área
 
@@ -22,7 +22,7 @@ MVP operativo. **Fase 1 ✅**. S2.1: esqueleto de vitrina en `/vitrina/[slug]` (
 | Finanzas / gastos | 🟢 MVP | `/finanzas` ingresos vs gastos + balance mes |
 | PWA | 🟢 Operativo | Web Push por dispositivo; iPhone requiere icono en inicio |
 | Sitio marketing Gota+Check | 🟢 Live | https://gotacheck.app → www · proyecto Vercel `gotacheck-marketing` |
-| Vitrina / landings | 🟡 S2.1 | `/vitrina/[slug]` plantilla + placeholders; editor = S2.2 |
+| Vitrina / landings | 🟢 S2.1 | `/vitrina/[slug]` + `?demo=1`; editor = S2.2 |
 
 ## Decisiones tomadas
 
@@ -91,9 +91,9 @@ Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta
 
 ## Próximo paso inmediato
 
-1. Probar demo: `/vitrina/salon-tutis?demo=1` (y Galaxy) — compartir a founders/taller
-2. Enviar brief founders y cerrar copy real → S2.0 ✅
-3. **S2.2** editor dueña · **Último:** precios / trial / taller
+1. Compartir prod `…/vitrina/[slug]?demo=1` + brief a founders
+2. Cerrar copy/fotos reales → S2.0 ✅
+3. **S2.2** editor dueña (prueba de campo: ellas cargan su info desde cero / campos vacíos)
 
 ## Docs operativos
 

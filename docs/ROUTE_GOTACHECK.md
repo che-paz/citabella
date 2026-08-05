@@ -97,7 +97,7 @@ Objetivo: plantilla mínima + founders como laboratorio.
 | Sprint | Scope | Done cuando |
 |--------|--------|-------------|
 | **S2.0 Contenido** | Sesión dedicada: secciones landing tipo Daysi (copy, fotos, CTA) | 🟡 Borrador 2026-08-05 — `S2.0_SPEC_VITRINA.md` + `S2.0_BRIEF_FOUNDERS.md` |
-| **S2.1 Plantilla técnica** | 1 plantilla (máx 2) desplegable; dominio salón → landing → agenda | 🟡 Esqueleto `/vitrina/[slug]` (placeholders; sin editor ni dominio propio aún) |
+| **S2.1 Plantilla técnica** | 1 plantilla (máx 2) desplegable; dominio salón → landing → agenda | ✅ Esqueleto + `?demo=1` (2026-08-05); dominio propio = S2.4 |
 | **S2.2 Editor dueña** | Rellenar plantilla lo más intuitivo posible; founder prueba sola | Notas de fricción + fixes mínimos |
 | **S2.3 Add-on diseño** | Proceso “diseño asistido” (cupo / lista); foto con tarifa amigo | Checklist entrega C (sin sobrevender capacidad) |
 | **S2.4 URLs** | Definir rutas: app-only vs `misalon.com/agendar` | Documentado + 1 ejemplo real |
