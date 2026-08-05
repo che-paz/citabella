@@ -1,11 +1,11 @@
 # Gota+Check — Ruta a mercado (fuente de verdad)
 
-> **Última actualización:** 2026-08-04  
+> **Última actualización:** 2026-08-05  
 > **Marca de presentación:** Gota+Check  
 > **Estudio / desarrollo:** VajaLabs (aún sin constituir)  
 > **Repo / dominio técnico histórico:** CITABELLA (`che-paz/citabella`)  
-> **Dominio producto:** `gotacheck.app`  
-> **Estado:** Piloto founders operativo · Sitio marketing listo en repo · Formalización + vitrina pendientes  
+> **Dominio producto:** `gotacheck.app` (marketing live)  
+> **Estado:** Piloto founders operativo · Marketing live · S1.1 ✅ · Formalización + vitrina pendientes  
 > **Precios / trial / fecha de taller:** **por definir en sesión exclusiva al estar listos para salir**
 
 Este documento traduce la estrategia a fases y sprints. No sustituye features técnicas en `FEATURES/`; define **qué construir en qué orden** y **cuándo se puede vender**.
@@ -81,7 +81,7 @@ Objetivo: operar y dar de alta salones **asistido** sin riesgo a founders.
 
 | Sprint | Scope | Done cuando |
 |--------|--------|-------------|
-| **S1.1 Docs & inventario** | Actualizar `CURRENT_STATE`; checklist migraciones cloud (009–015 ya aplicadas al 2026-07-27); runbook alta salón | Docs = realidad cloud |
+| **S1.1 Docs & inventario** | Actualizar `CURRENT_STATE`; checklist migraciones cloud; runbook alta salón | ✅ 2026-08-05 — `MIGRATIONS_CHECKLIST.md` + `RUNBOOK_ALTA_SALON.md` |
 | **S1.2 Infra** | Checklist Supabase (backups; plan Pro cuando toque); Vercel env (Supabase + VAPID completo + `SITE_URL`); Auth redirect URLs | Smoke login + reserva + comprobante + push |
 | **S1.3 Onboarding asistido** | Script/proceso genérico (no solo founders): salón + admin + slug + plan + horarios default + link listo | Alta de un salón de prueba &lt; 30 min |
 | **S1.4 Hardening** | Smoke RLS tenant A≠B; demo (Belleza Luna) marcada/aislada; reset seguro por salón documentado | Checklist firmado una vez |
@@ -147,7 +147,7 @@ No empieza hasta F1 ✅ y F2 ✅ (mínimo S2.1 + S2.2).
 
 ## 5. Orden de ejecución inmediato (próximos sprints)
 
-1. **S1.1** — Docs + inventario (rápido, desbloquea claridad)  
+1. ~~**S1.1** — Docs + inventario~~ ✅  
 2. **S1.2** — Infra / env / smoke  
 3. **S1.3** — Onboarding asistido genérico  
 4. **S1.4** — Hardening RLS + demo  

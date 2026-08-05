@@ -1,21 +1,21 @@
 # CITABELLA / Gota+Check — Current State
 
-> **Última actualización:** 2026-08-04  
+> **Última actualización:** 2026-08-05  
 > **Marca presentación:** Gota+Check · **Estudio:** VajaLabs (sin constituir)  
-> **Sprint activo:** Marketing live en `gotacheck.app` ✅ · siguiente **S1.1** (docs/inventario)  
+> **Sprint activo:** **S1.1 ✅** · siguiente **S1.2** (infra / env / smoke)  
 > **Fase:** MVP ✅ | Piloto founders en curso | Formalización + vitrina (SKUs A/B/C) en planificación
 
 ## Resumen en una línea
 
-MVP operativo en Vercel/Supabase (Tutis + Galaxy). Landing marketing Gota+Check en `marketing/` lista para `gotacheck.app`; precios/taller pendientes de sesión de salida.
+MVP operativo (Tutis + Galaxy). Marketing live en https://gotacheck.app. S1.1 docs/inventario/runbook alta ✅; siguiente S1.2 infra.
 
 ## Estado por área
 
 | Área | Estado | Notas |
 |------|--------|-------|
-| Documentación | 🟢 Ruta GTM | `ROUTE_GOTACHECK.md` + este archivo al día |
+| Documentación | 🟢 S1.1 | `MIGRATIONS_CHECKLIST.md` + `RUNBOOK_ALTA_SALON.md` + ruta GTM |
 | Repositorio / código | 🟢 MVP core | Flujo reserva + validación pagos verificado |
-| Base de datos | 🟢 Migraciones 009–015 en cloud | Verificado 2026-07-27 (probe REST); docs previos decían 010 pendiente — obsoleto |
+| Base de datos | 🟢 001–015 en cloud | Re-verificado 2026-08-05 (probe REST); ver checklist |
 | Supabase | 🟡 Free → Pro pendiente | Operativo; Pro + backups antes del taller |
 | Deploy | 🟢 Vercel | App: proyecto actual. Marketing: proyecto aparte Root=`marketing` → `gotacheck.app` |
 | Prototipo UI | 🟢 MVP core | Dashboard + clientas listos |
@@ -91,10 +91,16 @@ Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta
 
 ## Próximo paso inmediato
 
-1. Ejecutar ruta `docs/ROUTE_GOTACHECK.md` — sprint **S1.1 → S1.4** (infra + onboarding asistido)
-2. Completar env Vercel/local app: VAPID (3 keys) + `NEXT_PUBLIC_SITE_URL`
-3. Luego Fase 2 vitrina (S2.0 contenido → plantilla → prueba founder)
-4. **Último:** sesión precios / trial / fecha taller
+1. **S1.2** — Infra / env / smoke (VAPID completo, `NEXT_PUBLIC_SITE_URL`, Auth redirects, checklist Supabase)
+2. **S1.3** — Script onboarding genérico (reemplaza pasos manuales del runbook)
+3. **S1.4** — Hardening RLS + aislar demo Belleza Luna
+4. Luego Fase 2 vitrina · **Último:** precios / trial / taller
+
+## Docs operativos (S1.1)
+
+- Checklist migraciones: `docs/MIGRATIONS_CHECKLIST.md`
+- Alta asistida de salón: `docs/RUNBOOK_ALTA_SALON.md`
+- Ruta GTM: `docs/ROUTE_GOTACHECK.md`
 
 ## Piloto founders (activo)
 
@@ -132,6 +138,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-08-05 | S1.1: checklist migraciones 001–015 (cloud OK) + runbook alta salón |
 | 2026-08-04 | Landing marketing Gota+Check en `marketing/` (proyecto Vercel aparte → `gotacheck.app`) |
 | 2026-07-28 | Ruta GTM `ROUTE_GOTACHECK.md`; marca Gota+Check; cloud 009–015 verificadas |
 | 2026-07-01 | Fase 0 + Sprint 1.1 catálogo |
