@@ -5,7 +5,7 @@
 > **Estudio / desarrollo:** VajaLabs (aún sin constituir)  
 > **Repo / dominio técnico histórico:** CITABELLA (`che-paz/citabella`)  
 > **Dominio producto:** `gotacheck.app` (marketing live)  
-> **Estado:** Piloto founders operativo · Marketing live · S1.1–S1.3 ✅ · Formalización + vitrina pendientes  
+> **Estado:** Piloto founders operativo · Marketing live · S1.1–S1.3 ✅ · S1.4 🟡 · Formalización + vitrina pendientes  
 > **Precios / trial / fecha de taller:** **por definir en sesión exclusiva al estar listos para salir**
 
 Este documento traduce la estrategia a fases y sprints. No sustituye features técnicas en `FEATURES/`; define **qué construir en qué orden** y **cuándo se puede vender**.
@@ -84,7 +84,7 @@ Objetivo: operar y dar de alta salones **asistido** sin riesgo a founders.
 | **S1.1 Docs & inventario** | Actualizar `CURRENT_STATE`; checklist migraciones cloud; runbook alta salón | ✅ 2026-08-05 — `MIGRATIONS_CHECKLIST.md` + `RUNBOOK_ALTA_SALON.md` |
 | **S1.2 Infra** | Checklist Supabase; Vercel env; Auth redirect URLs; smoke | ✅ 2026-08-05 — `S1.2_INFRA_CHECKLIST.md`; push OK en dispositivo founder |
 | **S1.3 Onboarding asistido** | Script/proceso genérico: salón + admin + slug + plan + horarios + link | ✅ 2026-08-05 — `scripts/provision-salon.mjs`; prueba `gota-prueba-s13` |
-| **S1.4 Hardening** | Smoke RLS tenant A≠B; demo (Belleza Luna) marcada/aislada; reset seguro por salón documentado | Checklist firmado una vez |
+| **S1.4 Hardening** | Smoke RLS tenant A≠B; demo aislada; reset seguro | 🟡 2026-08-05 — reset blindado + Belleza Luna aislada; falta firma smoke RLS UI (`S1.4_HARDENING_CHECKLIST.md`) |
 
 **Criterio fase:** “Puedo onboardear salón N sin tocar founders ni improvisar SQL.”
 
@@ -150,7 +150,7 @@ No empieza hasta F1 ✅ y F2 ✅ (mínimo S2.1 + S2.2).
 1. ~~**S1.1** — Docs + inventario~~ ✅  
 2. ~~**S1.2** — Infra / env / smoke~~ ✅  
 3. ~~**S1.3** — Onboarding asistido genérico~~ ✅  
-4. **S1.4** — Hardening RLS + demo  
+4. **S1.4** — Hardening RLS + demo 🟡 (reset + isolate ✅; falta firma UI)  
 5. **S2.0** — Spec contenido landing (sesión dedicada)  
 6. **S2.1 → S2.2** — Plantilla + prueba founder  
 7. **S2.3 → S2.4** — Cupo C + URLs  

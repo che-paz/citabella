@@ -107,13 +107,20 @@ Salón de prueba provisionado en &lt; 5 min:
 
 Contraseña: la del output del script (no guardar en git). Se puede desactivar (`activo=false`) o resetear con `reset-salon-pilot.sql` cuando ya no haga falta.
 
-## Reset de práctica (cuidado)
+## Reset de práctica (cuidado — founders protegidos)
 
-`supabase/reset-salon-pilot.sql` borra citas/pagos/clientas/movimientos del slug. Conserva salón, usuarios, horarios y catálogo.
+`supabase/reset-salon-pilot.sql` borra citas/pagos/clientas/movimientos **solo** del slug en `v_slug`.
 
-1. Editar `v_slug`  
-2. SQL Editor  
-3. Nunca apuntar al slug equivocado  
+Protecciones (S1.4):
+
+- Default: `gota-prueba-s13` (no Tutis)
+- `salon-tutis` y `galaxy-barberia-infantil` **bloqueados** salvo `v_allow_protected := true`
+
+1. Editar `v_slug` al salón de prueba  
+2. SQL Editor → Run  
+3. Si pones un founder por error, el script **aborta** sin borrar nada  
+
+Aislar demo: `supabase/isolate-demo-belleza-luna.sql` (`activo = false`).  
 
 ## Respaldo manual (SQL)
 

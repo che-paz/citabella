@@ -47,7 +47,7 @@ Esperado: todos `1`.
 |------|------|---------------------|-----|
 | `salon-tutis` | founder | 60 | Piloto Ruth |
 | `galaxy-barberia-infantil` | founder | 60 | Piloto Andrea |
-| `belleza-luna` | founder | 30 | Demo seed (aislar en S1.4) |
+| `belleza-luna` | founder | 30 | Demo — **aislada** `activo=false` (S1.4, 2026-08-05) |
 
 ## Archivos relacionados (no son migraciones)
 
@@ -56,7 +56,8 @@ Esperado: todos `1`.
 | `supabase/cloud-init.sql` | Bootstrap histórico / referencia |
 | `supabase/seed-cloud.sql` / `seed-cloud-agenda.sql` | Demo local/cloud Belleza Luna |
 | `supabase/seed-founders-pilot.sql` | Datos founders (requiere Auth users) |
-| `supabase/reset-salon-pilot.sql` | Borra citas/pagos/clientas/movimientos de **un** slug |
+| `supabase/reset-salon-pilot.sql` | Borra citas/pagos/clientas/movimientos de **un** slug; founders bloqueados (S1.4) |
+| `supabase/isolate-demo-belleza-luna.sql` | `activo=false` + sufijo `[DEMO]` en Belleza Luna |
 | `scripts/provision-founders-pilot.mjs` | Alta Auth + salón + admin + horarios (solo founders hardcode) |
 
 ## Al aplicar una migración nueva
