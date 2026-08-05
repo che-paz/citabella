@@ -14,8 +14,8 @@ const BEAUTY_PORTFOLIO = [
   "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80",
   "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=800&q=80",
   "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1595476108010-b4d1f595b71b?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1634449573010-63af48afb6b5?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1562322140-8baeececf3df?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=800&q=80",
   "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&q=80",
 ];
 
