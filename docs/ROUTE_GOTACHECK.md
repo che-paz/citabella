@@ -5,7 +5,7 @@
 > **Estudio / desarrollo:** VajaLabs (aún sin constituir)  
 > **Repo / dominio técnico histórico:** CITABELLA (`che-paz/citabella`)  
 > **Dominio producto:** `gotacheck.app` (marketing live)  
-> **Estado:** Piloto founders operativo · Marketing live · S1.1–S1.2 ✅ · Formalización + vitrina pendientes  
+> **Estado:** Piloto founders operativo · Marketing live · S1.1–S1.3 ✅ · Formalización + vitrina pendientes  
 > **Precios / trial / fecha de taller:** **por definir en sesión exclusiva al estar listos para salir**
 
 Este documento traduce la estrategia a fases y sprints. No sustituye features técnicas en `FEATURES/`; define **qué construir en qué orden** y **cuándo se puede vender**.
@@ -83,7 +83,7 @@ Objetivo: operar y dar de alta salones **asistido** sin riesgo a founders.
 |--------|--------|-------------|
 | **S1.1 Docs & inventario** | Actualizar `CURRENT_STATE`; checklist migraciones cloud; runbook alta salón | ✅ 2026-08-05 — `MIGRATIONS_CHECKLIST.md` + `RUNBOOK_ALTA_SALON.md` |
 | **S1.2 Infra** | Checklist Supabase; Vercel env; Auth redirect URLs; smoke | ✅ 2026-08-05 — `S1.2_INFRA_CHECKLIST.md`; push OK en dispositivo founder |
-| **S1.3 Onboarding asistido** | Script/proceso genérico (no solo founders): salón + admin + slug + plan + horarios default + link listo | Alta de un salón de prueba &lt; 30 min |
+| **S1.3 Onboarding asistido** | Script/proceso genérico: salón + admin + slug + plan + horarios + link | ✅ 2026-08-05 — `scripts/provision-salon.mjs`; prueba `gota-prueba-s13` |
 | **S1.4 Hardening** | Smoke RLS tenant A≠B; demo (Belleza Luna) marcada/aislada; reset seguro por salón documentado | Checklist firmado una vez |
 
 **Criterio fase:** “Puedo onboardear salón N sin tocar founders ni improvisar SQL.”
@@ -149,7 +149,7 @@ No empieza hasta F1 ✅ y F2 ✅ (mínimo S2.1 + S2.2).
 
 1. ~~**S1.1** — Docs + inventario~~ ✅  
 2. ~~**S1.2** — Infra / env / smoke~~ ✅  
-3. **S1.3** — Onboarding asistido genérico  
+3. ~~**S1.3** — Onboarding asistido genérico~~ ✅  
 4. **S1.4** — Hardening RLS + demo  
 5. **S2.0** — Spec contenido landing (sesión dedicada)  
 6. **S2.1 → S2.2** — Plantilla + prueba founder  
@@ -235,8 +235,8 @@ DNS Cloudflare → Vercel: registros en **DNS-only** (sin proxy naranja). Instru
 
 | Etapa | Herramienta | Umbral para pasar a la siguiente |
 |-------|-------------|----------------------------------|
-| Hoy | Script founders (hardcode) | — |
-| **S1.3** | Script genérico parametrizado | Ya |
+| Hoy | **`scripts/provision-salon.mjs`** (S1.3 ✅) | — |
+| Legacy founders | `scripts/provision-founders-pilot.mjs` | Solo Tutis/Galaxy |
 | Interno | Página admin de plataforma (rol `platform_admin`) | ~5–8 salones o &gt;1 alta/semana |
 | Self-serve | Signup solo **SKU A** | Después de la oleada; B/C siguen asistidos |
 

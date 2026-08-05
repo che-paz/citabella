@@ -2,12 +2,12 @@
 
 > **Última actualización:** 2026-08-05  
 > **Marca presentación:** Gota+Check · **Estudio:** VajaLabs (sin constituir)  
-> **Sprint activo:** **S1.2 ✅** · siguiente **S1.3** (onboarding asistido genérico)  
+> **Sprint activo:** **S1.3 ✅** · siguiente **S1.4** (hardening RLS + demo)  
 > **Fase:** MVP ✅ | Piloto founders en curso | Formalización + vitrina (SKUs A/B/C) en planificación
 
 ## Resumen en una línea
 
-MVP operativo (Tutis + Galaxy). Marketing live en https://gotacheck.app. S1.1–S1.2 ✅. Siguiente: S1.3 onboarding genérico.
+MVP operativo (Tutis + Galaxy). Marketing live. S1.1–S1.3 ✅ (`provision-salon.mjs`). Siguiente: S1.4 hardening.
 
 ## Estado por área
 
@@ -91,16 +91,14 @@ Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta
 
 ## Próximo paso inmediato
 
-1. **S1.3** — Script onboarding genérico (`docs/RUNBOOK_ALTA_SALON.md` → automatizar)
-2. **S1.4** — Hardening RLS + aislar demo Belleza Luna
-3. Luego Fase 2 vitrina · **Último:** precios / trial / taller
+1. **S1.4** — Hardening RLS + aislar demo Belleza Luna
+2. Luego Fase 2 vitrina · **Último:** precios / trial / taller
 
 ## Docs operativos
 
 - Checklist migraciones: `docs/MIGRATIONS_CHECKLIST.md`
-- Alta asistida de salón: `docs/RUNBOOK_ALTA_SALON.md`
+- Alta asistida: `docs/RUNBOOK_ALTA_SALON.md` → `npm run provision:salon -- …`
 - Infra / smoke S1.2: `docs/S1.2_INFRA_CHECKLIST.md`
-- Smoke público: `node scripts/smoke-s1.2-public.mjs`
 - Ruta GTM: `docs/ROUTE_GOTACHECK.md`
 
 ## Piloto founders (activo)
@@ -139,6 +137,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-08-05 | S1.3: `scripts/provision-salon.mjs` + prueba `gota-prueba-s13` |
 | 2026-08-05 | S1.2 cerrado: Auth redirects + push smoke (Tutis) OK |
 | 2026-08-05 | S1.2: checklist infra/smoke + script público; S1.1 mergeado |
 | 2026-08-05 | S1.1: checklist migraciones 001–015 (cloud OK) + runbook alta salón |

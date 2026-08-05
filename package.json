@@ -8,7 +8,9 @@
     "start": "next start -p 3004",
     "lint": "next lint",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "provision:salon": "node scripts/provision-salon.mjs",
+    "smoke:s1.2": "node scripts/smoke-s1.2-public.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
@@ -30,6 +32,7 @@
     "tailwind-merge": "^3.6.0",
     "tailwindcss-animate": "^1.0.7",
     "web-push": "^3.6.7",
+    "ws": "^8.21.2",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -37,6 +40,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/web-push": "^3.6.4",
+    "@types/ws": "^8.18.1",
     "eslint": "^8",
     "eslint-config-next": "14.2.35",
     "postcss": "^8",

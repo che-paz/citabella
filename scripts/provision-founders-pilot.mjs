@@ -8,6 +8,11 @@ import { createClient } from "@supabase/supabase-js";
 import { readFileSync, existsSync } from "fs";
 import { resolve } from "path";
 import { randomBytes } from "crypto";
+import WebSocket from "ws";
+
+if (!globalThis.WebSocket) {
+  globalThis.WebSocket = WebSocket;
+}
 
 function loadEnv() {
   const envPath = resolve(process.cwd(), ".env.local");
