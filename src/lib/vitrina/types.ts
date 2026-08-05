@@ -29,4 +29,8 @@ export type VitrinaResolved = VitrinaPlaceholders & {
   bookingUrl: string;
   services: VitrinaServiceItem[];
   servicesFromCatalog: boolean;
+  /** Pitch/taller: copy + fotos ilustrativas (?demo=1) */
+  isDemo: boolean;
+  heroImageUrl: string | null;
+  portfolioImages: string[];
 };

@@ -1,4 +1,5 @@
 import type { ReservaItem } from "@/types/database";
+import { getVitrinaDemoPack } from "@/lib/vitrina/demo";
 import { getVitrinaPlaceholders } from "@/lib/vitrina/placeholders";
 import type { VitrinaResolved, VitrinaServiceItem } from "@/lib/vitrina/types";
 
@@ -21,9 +22,34 @@ export function resolveVitrinaContent(params: {
   salonName: string;
   logoSrc: string | null;
   catalogo: ReservaItem[];
+  demo?: boolean;
 }): VitrinaResolved {
   const placeholders = getVitrinaPlaceholders(params.slug);
   const fromCatalog = catalogToServices(params.catalogo);
+
+  if (params.demo) {
+    const pack = getVitrinaDemoPack(placeholders.theme, params.slug);
+    const services =
+      fromCatalog.length > 0 ? fromCatalog : pack.services;
+
+    return {
+      ...placeholders,
+      tagline: pack.tagline,
+      about: pack.about,
+      contact: pack.contact,
+      portfolioCount: pack.portfolioImages.length,
+      salonName: params.salonName,
+      slug: params.slug,
+      logoSrc: params.logoSrc,
+      bookingUrl: `/reservar/${params.slug}`,
+      services,
+      servicesFromCatalog: fromCatalog.length > 0,
+      isDemo: true,
+      heroImageUrl: pack.heroImageUrl,
+      portfolioImages: pack.portfolioImages,
+    };
+  }
+
   const services =
     fromCatalog.length > 0 ? fromCatalog : placeholders.servicesFallback;
 
@@ -35,6 +61,9 @@ export function resolveVitrinaContent(params: {
     bookingUrl: `/reservar/${params.slug}`,
     services,
     servicesFromCatalog: fromCatalog.length > 0,
+    isDemo: false,
+    heroImageUrl: null,
+    portfolioImages: [],
   };
 }
 

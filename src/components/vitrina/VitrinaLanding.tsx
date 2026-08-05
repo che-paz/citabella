@@ -28,18 +28,33 @@ function AgendarButton({
 
 export function VitrinaLanding({ content }: Props) {
   const wa = getWhatsAppHref(content.contact.whatsapp);
-  const portfolioSlots = Array.from(
-    { length: content.portfolioCount },
-    (_, i) => i + 1
-  );
+  const hasPortfolioPhotos = content.portfolioImages.length > 0;
+  const portfolioSlots = hasPortfolioPhotos
+    ? content.portfolioImages
+    : Array.from({ length: content.portfolioCount }, (_, i) => i + 1);
 
   return (
     <div
-      className={`vitrina-root vitrina-theme-${content.theme}`}
+      className={`vitrina-root vitrina-theme-${content.theme}${content.isDemo ? " vitrina-is-demo" : ""}`}
       data-slug={content.slug}
     >
+      {content.isDemo ? (
+        <p className="vitrina-demo-banner" role="note">
+          Vista de ejemplo · fotos ilustrativas (no del salón). Así se ve
+          terminada para clientas y para el taller.
+        </p>
+      ) : null}
+
       <header className="vitrina-hero">
-        <div className="vitrina-hero-bg" aria-hidden />
+        <div
+          className={`vitrina-hero-bg${content.heroImageUrl ? " vitrina-hero-bg--photo" : ""}`}
+          style={
+            content.heroImageUrl
+              ? { backgroundImage: `url(${content.heroImageUrl})` }
+              : undefined
+          }
+          aria-hidden
+        />
         <div className="vitrina-hero-inner">
           {content.logoSrc ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -68,7 +83,9 @@ export function VitrinaLanding({ content }: Props) {
           <p className="vitrina-section-lead">
             {content.servicesFromCatalog
               ? "Selección del catálogo. Precios y cupos al agendar."
-              : "Lista de ejemplo hasta cargar el catálogo o el editor."}
+              : content.isDemo
+                ? "Ejemplos de servicios. En la versión real salen los tuyos."
+                : "Lista de ejemplo hasta cargar el catálogo o el editor."}
           </p>
           <ul className="vitrina-services">
             {content.services.map((s) => (
@@ -85,18 +102,34 @@ export function VitrinaLanding({ content }: Props) {
         <section className="vitrina-section" aria-labelledby="vitrina-portfolio">
           <h2 id="vitrina-portfolio">Trabajos</h2>
           <p className="vitrina-section-lead">
-            Galería placeholder — aquí irán fotos reales del salón.
+            {hasPortfolioPhotos
+              ? "Galería de ejemplo. En producción van fotos reales del salón."
+              : "Galería placeholder — aquí irán fotos reales del salón."}
           </p>
           <div className="vitrina-portfolio" role="list">
-            {portfolioSlots.map((n) => (
-              <div
-                key={n}
-                className={`vitrina-portfolio-slot vitrina-portfolio-slot-${(n % 3) + 1}`}
-                role="listitem"
-              >
-                <span>Foto {n}</span>
-              </div>
-            ))}
+            {portfolioSlots.map((item, index) => {
+              if (typeof item === "string") {
+                return (
+                  <div
+                    key={item}
+                    className="vitrina-portfolio-photo"
+                    role="listitem"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={item} alt={`Trabajo de ejemplo ${index + 1}`} />
+                  </div>
+                );
+              }
+              return (
+                <div
+                  key={item}
+                  className={`vitrina-portfolio-slot vitrina-portfolio-slot-${(item % 3) + 1}`}
+                  role="listitem"
+                >
+                  <span>Foto {item}</span>
+                </div>
+              );
+            })}
           </div>
           <div className="vitrina-cta-wrap">
             <AgendarButton href={content.bookingUrl} />

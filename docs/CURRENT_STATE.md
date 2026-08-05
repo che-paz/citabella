@@ -91,7 +91,7 @@ Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta
 
 ## Próximo paso inmediato
 
-1. Probar `/vitrina/salon-tutis` (y Galaxy / `gota-prueba-s13`) en local o prod tras deploy
+1. Probar demo: `/vitrina/salon-tutis?demo=1` (y Galaxy) — compartir a founders/taller
 2. Enviar brief founders y cerrar copy real → S2.0 ✅
 3. **S2.2** editor dueña · **Último:** precios / trial / taller
 
@@ -118,6 +118,7 @@ Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta
 - Login: `/login` → contraseña temporal comunicada por canal privado (cambiar en `/ajustes`)
 - Links reserva: `/reservar/salon-tutis` y `/reservar/galaxy-barberia-infantil`
 - Vitrina (esqueleto): `/vitrina/salon-tutis` y `/vitrina/galaxy-barberia-infantil`
+- Vitrina demo (pitch): añadir `?demo=1` (fotos + copy de ejemplo)
 - Catálogo/citas: vacíos al inicio; configurar en `/ajustes` y `/catalogo`
 
 ## Credenciales de desarrollo (seed demo)
@@ -144,6 +145,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-08-05 | S2.1: modo `?demo=1` con fotos/copy ilustrativos para pitch y taller |
 | 2026-08-05 | S2.1: esqueleto `/vitrina/[slug]` + placeholders + `FEATURES/Vitrina.md` |
 | 2026-08-05 | S2.0 borrador: `S2.0_SPEC_VITRINA.md` + brief founders |
 | 2026-08-05 | S1.4 ✅ / Fase 1 completa: reset blindado, demo aislada, smoke RLS UI |

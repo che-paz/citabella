@@ -15,22 +15,24 @@ No es el dashboard ni el wizard de reserva.
 - Nombre y logo desde `salones` (mismo filtro `activo=true` que reserva pública).
 - Servicios: catálogo público si hay ítems; si no, placeholders.
 - Copy / contacto / fotos: placeholders en `src/lib/vitrina/placeholders.ts` (por slug).
+- **Modo demo pitch/taller:** `?demo=1` → copy pulido + fotos Unsplash ilustrativas + hero con imagen. Banner aclara que no son del salón. Código en `src/lib/vitrina/demo.ts`.
 - Sin migración DB; editor = S2.2.
 
 ## Archivos
 
 | Path | Rol |
 |------|-----|
-| `src/app/vitrina/[slug]/page.tsx` | Route + metadata |
+| `src/app/vitrina/[slug]/page.tsx` | Route + metadata + `?demo=1` |
 | `src/app/vitrina/layout.tsx` | Fuentes Fraunces + Outfit |
 | `src/components/vitrina/VitrinaLanding.tsx` | Secciones UI |
-| `src/lib/vitrina/*` | Types, placeholders, resolve |
+| `src/lib/vitrina/*` | Types, placeholders, demo pack, resolve |
 
 ## URLs de prueba (prod)
 
-- `…/vitrina/salon-tutis`
-- `…/vitrina/galaxy-barberia-infantil`
-- `…/vitrina/gota-prueba-s13`
+- Esqueleto: `…/vitrina/salon-tutis`
+- **Demo realista (mostrar founders/taller):** `…/vitrina/salon-tutis?demo=1`
+- Galaxy: `…/vitrina/galaxy-barberia-infantil?demo=1`
+- Prueba: `…/vitrina/gota-prueba-s13?demo=1`
 
 Salones inactivos → 404 (igual que `/reservar`).
 
