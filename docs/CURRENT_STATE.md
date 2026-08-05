@@ -2,12 +2,12 @@
 
 > **Última actualización:** 2026-08-05  
 > **Marca presentación:** Gota+Check · **Estudio:** VajaLabs (sin constituir)  
-> **Sprint activo:** **S1.4 🟡** (reset blindado + demo aislada ✅ · falta firma smoke RLS UI)  
+> **Sprint activo:** **S1.4 ✅ · Fase 1 completa** · siguiente **S2.0** (spec contenido vitrina)  
 > **Fase:** MVP ✅ | Piloto founders en curso | Formalización + vitrina (SKUs A/B/C) en planificación
 
 ## Resumen en una línea
 
-MVP operativo (Tutis + Galaxy). S1.1–S1.3 ✅. S1.4: reset protegido + Belleza Luna aislada; falta firma smoke RLS UI.
+MVP operativo (Tutis + Galaxy). Marketing live. **Fase 1 (S1.1–S1.4) ✅**. Siguiente: Fase 2 vitrina (S2.0).
 
 ## Estado por área
 
@@ -91,8 +91,9 @@ Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta
 
 ## Próximo paso inmediato
 
-1. **Cerrar S1.4:** firmar smoke RLS UI (Tutis vs Gota Prueba) — `docs/S1.4_HARDENING_CHECKLIST.md` §3
-2. Luego Fase 2 vitrina · **Último:** precios / trial / taller
+1. **S2.0** — Spec contenido landing tipo Daysi (sesión dedicada) — `ROUTE_GOTACHECK.md` Fase 2
+2. Luego S2.1–S2.2 plantilla + prueba founder
+3. **Último:** precios / trial / taller (Fase 3)
 
 ## Docs operativos
 
@@ -100,7 +101,7 @@ Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta
 - Alta asistida: `docs/RUNBOOK_ALTA_SALON.md` → `npm run provision:salon -- …`
 - Reset seguro: `supabase/reset-salon-pilot.sql` (founders bloqueados)
 - Aislar demo: `supabase/isolate-demo-belleza-luna.sql`
-- Hardening S1.4: `docs/S1.4_HARDENING_CHECKLIST.md`
+- Hardening S1.4: `docs/S1.4_HARDENING_CHECKLIST.md` ✅
 - Infra / smoke S1.2: `docs/S1.2_INFRA_CHECKLIST.md`
 - Ruta GTM: `docs/ROUTE_GOTACHECK.md`
 
@@ -140,6 +141,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-08-05 | S1.4 ✅ / Fase 1 completa: reset blindado, demo aislada, smoke RLS UI |
 | 2026-08-05 | S1.4: reset blindado (founders); Belleza Luna `activo=false` (link 404) |
 | 2026-08-05 | S1.3: `scripts/provision-salon.mjs` + prueba `gota-prueba-s13` |
 | 2026-08-05 | S1.2 cerrado: Auth redirects + push smoke (Tutis) OK |
