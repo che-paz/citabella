@@ -11,3 +11,7 @@ export function getSiteUrl(): string {
 export function getPublicBookingUrl(slug: string): string {
   return `${getSiteUrl()}/reservar/${slug}`;
 }
+
+export function getPublicVitrinaUrl(slug: string): string {
+  return `${getSiteUrl()}/vitrina/${slug}`;
+}

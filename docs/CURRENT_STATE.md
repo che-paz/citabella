@@ -2,12 +2,12 @@
 
 > **Última actualización:** 2026-08-05  
 > **Marca presentación:** Gota+Check · **Estudio:** VajaLabs (sin constituir)  
-> **Sprint activo:** **S2.0 🟡** (borrador spec vitrina + brief founders) · Fase 1 ✅  
-> **Fase:** MVP ✅ | Piloto founders | **Vitrina:** spec en borrador | Precios/taller al final
+> **Sprint activo:** **S2.1 🟡** (esqueleto vitrina `/vitrina/[slug]`) · S2.0 borrador listo · Fase 1 ✅  
+> **Fase:** MVP ✅ | Piloto founders | **Vitrina:** plantilla con placeholders | Precios/taller al final
 
 ## Resumen en una línea
 
-MVP operativo. **Fase 1 ✅**. S2.0: borrador spec vitrina + brief para founders (`docs/S2.0_*`).
+MVP operativo. **Fase 1 ✅**. S2.1: esqueleto de vitrina en `/vitrina/[slug]` (placeholders + CTA a agenda).
 
 ## Estado por área
 
@@ -22,7 +22,7 @@ MVP operativo. **Fase 1 ✅**. S2.0: borrador spec vitrina + brief para founders
 | Finanzas / gastos | 🟢 MVP | `/finanzas` ingresos vs gastos + balance mes |
 | PWA | 🟢 Operativo | Web Push por dispositivo; iPhone requiere icono en inicio |
 | Sitio marketing Gota+Check | 🟢 Live | https://gotacheck.app → www · proyecto Vercel `gotacheck-marketing` |
-| Vitrina / landings | ⬜ No iniciado | SKU B/C; plantillas post Fase 1 infra |
+| Vitrina / landings | 🟡 S2.1 | `/vitrina/[slug]` plantilla + placeholders; editor = S2.2 |
 
 ## Decisiones tomadas
 
@@ -72,7 +72,7 @@ MVP operativo. **Fase 1 ✅**. S2.0: borrador spec vitrina + brief para founders
 - [ ] `NEXT_PUBLIC_APP_URL` / `NEXT_PUBLIC_SITE_URL` en prod (app + marketing) — marketing ya con WhatsApp + app URL
 - [ ] Precios A/B/C + trial — **sesión exclusiva al estar listos** (`ROUTE_GOTACHECK.md` §7)
 - [ ] Fecha taller (~35 maquillistas vía founders) — depende de sprints F1+F2
-- [ ] Spec contenido landing tipo Daysi (sesión S2.0)
+- [x] Spec contenido landing tipo Daysi (sesión S2.0) — borrador 2026-08-05; cierre tras reunión founders
 - [ ] WhatsApp: Meta Cloud API vs Twilio (Fase 2 — fuera de ruta GTM)
 
 ## Bloqueadores actuales
@@ -91,9 +91,9 @@ Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta
 
 ## Próximo paso inmediato
 
-1. Enviar `docs/S2.0_BRIEF_FOUNDERS.md` a Tutis + Galaxy y agendar reunión de contenido
-2. Cerrar spec con lo acordado en `docs/S2.0_SPEC_VITRINA.md` → marcar S2.0 ✅
-3. **S2.1** plantilla técnica · **Último:** precios / trial / taller
+1. Probar `/vitrina/salon-tutis` (y Galaxy / `gota-prueba-s13`) en local o prod tras deploy
+2. Enviar brief founders y cerrar copy real → S2.0 ✅
+3. **S2.2** editor dueña · **Último:** precios / trial / taller
 
 ## Docs operativos
 
@@ -103,6 +103,7 @@ Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta
 - Aislar demo: `supabase/isolate-demo-belleza-luna.sql`
 - Hardening S1.4: `docs/S1.4_HARDENING_CHECKLIST.md` ✅
 - Infra / smoke S1.2: `docs/S1.2_INFRA_CHECKLIST.md`
+- Vitrina: `docs/FEATURES/Vitrina.md` · spec `docs/S2.0_SPEC_VITRINA.md`
 - Ruta GTM: `docs/ROUTE_GOTACHECK.md`
 
 ## Piloto founders (activo)
@@ -116,6 +117,7 @@ Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta
 - Reset datos de práctica: `supabase/reset-salon-pilot.sql`
 - Login: `/login` → contraseña temporal comunicada por canal privado (cambiar en `/ajustes`)
 - Links reserva: `/reservar/salon-tutis` y `/reservar/galaxy-barberia-infantil`
+- Vitrina (esqueleto): `/vitrina/salon-tutis` y `/vitrina/galaxy-barberia-infantil`
 - Catálogo/citas: vacíos al inicio; configurar en `/ajustes` y `/catalogo`
 
 ## Credenciales de desarrollo (seed demo)
@@ -128,6 +130,7 @@ Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta
 ## Estructura clave
 
 ```
+src/app/vitrina/[slug]/         → Landing vitrina (S2.1) 🟡
 src/app/(dashboard)/page.tsx       → Dashboard home ✅
 src/app/(dashboard)/clientas/      → CRUD clientas + historial ✅
 src/app/(dashboard)/pagos/         → Cola validación comprobantes ✅
@@ -141,6 +144,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-08-05 | S2.1: esqueleto `/vitrina/[slug]` + placeholders + `FEATURES/Vitrina.md` |
 | 2026-08-05 | S2.0 borrador: `S2.0_SPEC_VITRINA.md` + brief founders |
 | 2026-08-05 | S1.4 ✅ / Fase 1 completa: reset blindado, demo aislada, smoke RLS UI |
 | 2026-08-05 | S1.4: reset blindado (founders); Belleza Luna `activo=false` (link 404) |
