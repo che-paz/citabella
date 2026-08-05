@@ -96,7 +96,7 @@ Objetivo: plantilla mínima + founders como laboratorio.
 
 | Sprint | Scope | Done cuando |
 |--------|--------|-------------|
-| **S2.0 Contenido** | Sesión dedicada: secciones landing tipo Daysi (copy, fotos, CTA) | Spec de contenido 1 página |
+| **S2.0 Contenido** | Sesión dedicada: secciones landing tipo Daysi (copy, fotos, CTA) | 🟡 Borrador 2026-08-05 — `S2.0_SPEC_VITRINA.md` + `S2.0_BRIEF_FOUNDERS.md` |
 | **S2.1 Plantilla técnica** | 1 plantilla (máx 2) desplegable; dominio salón → landing → agenda | Tutis y/o Galaxy en aire (B) |
 | **S2.2 Editor dueña** | Rellenar plantilla lo más intuitivo posible; founder prueba sola | Notas de fricción + fixes mínimos |
 | **S2.3 Add-on diseño** | Proceso “diseño asistido” (cupo / lista); foto con tarifa amigo | Checklist entrega C (sin sobrevender capacidad) |
@@ -151,7 +151,7 @@ No empieza hasta F1 ✅ y F2 ✅ (mínimo S2.1 + S2.2).
 2. ~~**S1.2** — Infra / env / smoke~~ ✅  
 3. ~~**S1.3** — Onboarding asistido genérico~~ ✅  
 4. ~~**S1.4** — Hardening RLS + demo~~ ✅ · **Fase 1 completa**  
-5. **S2.0** — Spec contenido landing (sesión dedicada)  
+5. **S2.0** — Spec contenido landing 🟡 (borrador + brief founders listos)  
 6. **S2.1 → S2.2** — Plantilla + prueba founder  
 7. **S2.3 → S2.4** — Cupo C + URLs  
 8. **Fase 3 (X.\*)** — Precios, trial, fecha taller

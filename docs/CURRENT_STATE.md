@@ -2,12 +2,12 @@
 
 > **Última actualización:** 2026-08-05  
 > **Marca presentación:** Gota+Check · **Estudio:** VajaLabs (sin constituir)  
-> **Sprint activo:** **S1.4 ✅ · Fase 1 completa** · siguiente **S2.0** (spec contenido vitrina)  
-> **Fase:** MVP ✅ | Piloto founders en curso | Formalización + vitrina (SKUs A/B/C) en planificación
+> **Sprint activo:** **S2.0 🟡** (borrador spec vitrina + brief founders) · Fase 1 ✅  
+> **Fase:** MVP ✅ | Piloto founders | **Vitrina:** spec en borrador | Precios/taller al final
 
 ## Resumen en una línea
 
-MVP operativo (Tutis + Galaxy). Marketing live. **Fase 1 (S1.1–S1.4) ✅**. Siguiente: Fase 2 vitrina (S2.0).
+MVP operativo. **Fase 1 ✅**. S2.0: borrador spec vitrina + brief para founders (`docs/S2.0_*`).
 
 ## Estado por área
 
@@ -91,9 +91,9 @@ Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta
 
 ## Próximo paso inmediato
 
-1. **S2.0** — Spec contenido landing tipo Daysi (sesión dedicada) — `ROUTE_GOTACHECK.md` Fase 2
-2. Luego S2.1–S2.2 plantilla + prueba founder
-3. **Último:** precios / trial / taller (Fase 3)
+1. Enviar `docs/S2.0_BRIEF_FOUNDERS.md` a Tutis + Galaxy y agendar reunión de contenido
+2. Cerrar spec con lo acordado en `docs/S2.0_SPEC_VITRINA.md` → marcar S2.0 ✅
+3. **S2.1** plantilla técnica · **Último:** precios / trial / taller
 
 ## Docs operativos
 
@@ -141,6 +141,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-08-05 | S2.0 borrador: `S2.0_SPEC_VITRINA.md` + brief founders |
 | 2026-08-05 | S1.4 ✅ / Fase 1 completa: reset blindado, demo aislada, smoke RLS UI |
 | 2026-08-05 | S1.4: reset blindado (founders); Belleza Luna `activo=false` (link 404) |
 | 2026-08-05 | S1.3: `scripts/provision-salon.mjs` + prueba `gota-prueba-s13` |
