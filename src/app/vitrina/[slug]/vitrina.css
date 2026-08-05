@@ -1,0 +1,388 @@
+/* Scoped to /vitrina — does not change dashboard tokens */
+
+.vitrina-root {
+  --v-ink: #1f1a19;
+  --v-muted: #5c524f;
+  --v-surface: #fffaf8;
+  --v-line: rgba(31, 26, 25, 0.1);
+  --v-accent: #d4786a;
+  --v-accent-deep: #b85a4d;
+  --v-hero-a: #f7c4bb;
+  --v-hero-b: #e8d5cf;
+  --v-hero-c: #f3ebe7;
+  --v-display: var(--font-vitrina-display), Georgia, serif;
+  --v-sans: var(--font-vitrina-sans), system-ui, sans-serif;
+
+  min-height: 100vh;
+  color: var(--v-ink);
+  background: var(--v-surface);
+  font-family: var(--v-sans);
+}
+
+.vitrina-theme-kids {
+  --v-accent: #2f7a78;
+  --v-accent-deep: #1f5c5a;
+  --v-hero-a: #9fd4d0;
+  --v-hero-b: #c5e4e1;
+  --v-hero-c: #eef6f5;
+  --v-surface: #f7fbfb;
+}
+
+.vitrina-demo-banner {
+  margin: 0;
+  padding: 0.55rem 1.25rem;
+  text-align: center;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  color: var(--v-muted);
+  background: color-mix(in srgb, var(--v-accent) 10%, var(--v-surface));
+  border-bottom: 1px solid var(--v-line);
+}
+
+.vitrina-hero {
+  position: relative;
+  min-height: min(92vh, 720px);
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.vitrina-hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 90% 70% at 15% 20%, var(--v-hero-a) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 60% at 90% 10%, var(--v-hero-b) 0%, transparent 50%),
+    linear-gradient(165deg, var(--v-hero-c) 0%, var(--v-surface) 78%);
+  animation: vitrina-hero-drift 18s ease-in-out infinite alternate;
+}
+
+.vitrina-hero-bg--photo {
+  background-color: #1f1a19;
+  background-size: cover;
+  background-position: center;
+  animation: vitrina-hero-drift 22s ease-in-out infinite alternate;
+}
+
+.vitrina-hero-bg--photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(20, 16, 15, 0.25) 0%,
+    rgba(20, 16, 15, 0.55) 45%,
+    rgba(20, 16, 15, 0.82) 100%
+  );
+}
+
+.vitrina-is-demo .vitrina-hero-bg--photo ~ .vitrina-hero-inner .vitrina-brand,
+.vitrina-is-demo .vitrina-hero-bg--photo ~ .vitrina-hero-inner .vitrina-tagline {
+  color: #fffaf7;
+}
+
+.vitrina-is-demo .vitrina-hero-bg--photo ~ .vitrina-hero-inner .vitrina-tagline {
+  color: rgba(255, 250, 247, 0.88);
+}
+
+@keyframes vitrina-hero-drift {
+  from {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.04) translate3d(-1.5%, 1%, 0);
+  }
+}
+
+.vitrina-hero-inner {
+  width: 100%;
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 4.5rem 1.35rem 3.25rem;
+  animation: vitrina-rise 0.85s ease-out both;
+}
+
+@keyframes vitrina-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.vitrina-logo {
+  display: block;
+  width: 4.5rem;
+  height: 4.5rem;
+  object-fit: cover;
+  border-radius: 0.85rem;
+  margin-bottom: 1.1rem;
+  box-shadow: 0 10px 28px rgba(31, 26, 25, 0.12);
+}
+
+.vitrina-brand {
+  font-family: var(--v-display);
+  font-weight: 600;
+  font-size: clamp(2.65rem, 9vw, 4.15rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.85rem;
+}
+
+.vitrina-tagline {
+  margin: 0 0 1.75rem;
+  max-width: 22rem;
+  font-size: 1.125rem;
+  line-height: 1.45;
+  color: var(--v-muted);
+}
+
+.vitrina-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0.7rem 1.45rem;
+  border-radius: 999px;
+  background: var(--v-accent);
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.vitrina-cta:hover {
+  background: var(--v-accent-deep);
+  transform: translateY(-1px);
+}
+
+.vitrina-cta:focus-visible {
+  outline: 2px solid var(--v-accent-deep);
+  outline-offset: 3px;
+}
+
+.vitrina-section {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 3.25rem 1.35rem 0;
+  animation: vitrina-rise 0.7s ease-out both;
+  animation-delay: 0.08s;
+}
+
+.vitrina-section h2 {
+  font-family: var(--v-display);
+  font-size: clamp(1.55rem, 4.5vw, 1.95rem);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  margin: 0 0 0.65rem;
+}
+
+.vitrina-section-lead,
+.vitrina-prose {
+  margin: 0;
+  color: var(--v-muted);
+  line-height: 1.6;
+  font-size: 1.02rem;
+}
+
+.vitrina-prose {
+  max-width: 34rem;
+}
+
+.vitrina-services {
+  list-style: none;
+  margin: 1.35rem 0 0;
+  padding: 0;
+  border-top: 1px solid var(--v-line);
+}
+
+.vitrina-services li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--v-line);
+}
+
+.vitrina-service-name {
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.vitrina-service-desc {
+  color: var(--v-muted);
+  font-size: 0.95rem;
+}
+
+.vitrina-portfolio {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin-top: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .vitrina-portfolio {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.vitrina-portfolio-slot {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 0.65rem;
+  color: rgba(31, 26, 25, 0.45);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.vitrina-portfolio-slot-1 {
+  background:
+    linear-gradient(135deg, rgba(212, 120, 106, 0.22), transparent 60%),
+    linear-gradient(320deg, #efe6e2, #f7f1ee);
+}
+
+.vitrina-portfolio-slot-2 {
+  background:
+    linear-gradient(200deg, rgba(212, 120, 106, 0.16), transparent 55%),
+    linear-gradient(40deg, #ebe3df, #faf6f4);
+}
+
+.vitrina-portfolio-slot-3 {
+  background:
+    linear-gradient(10deg, rgba(31, 26, 25, 0.06), transparent 50%),
+    linear-gradient(160deg, #f0e8e4, #f8f3f0);
+}
+
+.vitrina-portfolio-photo {
+  aspect-ratio: 1;
+  border-radius: 0.65rem;
+  overflow: hidden;
+  background: #ebe3df;
+}
+
+.vitrina-portfolio-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.vitrina-theme-kids .vitrina-portfolio-slot-1 {
+  background:
+    linear-gradient(135deg, rgba(47, 122, 120, 0.2), transparent 60%),
+    linear-gradient(320deg, #ddeceb, #f2f8f7);
+}
+
+.vitrina-theme-kids .vitrina-portfolio-slot-2 {
+  background:
+    linear-gradient(200deg, rgba(47, 122, 120, 0.14), transparent 55%),
+    linear-gradient(40deg, #e4efee, #f6fbfa);
+}
+
+.vitrina-theme-kids .vitrina-portfolio-slot-3 {
+  background:
+    linear-gradient(10deg, rgba(31, 26, 25, 0.05), transparent 50%),
+    linear-gradient(160deg, #e8f1f0, #f7fbfb);
+}
+
+.vitrina-cta-wrap {
+  margin-top: 1.75rem;
+}
+
+.vitrina-steps {
+  list-style: none;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.vitrina-steps li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  line-height: 1.45;
+}
+
+.vitrina-step-num {
+  flex: 0 0 1.75rem;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--v-accent) 18%, transparent);
+  color: var(--v-accent-deep);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.vitrina-contact {
+  margin: 1.2rem 0 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.vitrina-contact dt {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--v-muted);
+  margin-bottom: 0.2rem;
+}
+
+.vitrina-contact dd {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.vitrina-contact a {
+  color: var(--v-accent-deep);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.vitrina-footer {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 3.5rem 1.35rem 2.75rem;
+  border-top: 1px solid var(--v-line);
+  margin-top: 3.5rem;
+  text-align: center;
+}
+
+.vitrina-footer p {
+  margin: 0;
+  font-weight: 600;
+}
+
+.vitrina-footer-credit {
+  margin-top: 0.45rem !important;
+  font-weight: 400 !important;
+  font-size: 0.9rem;
+  color: var(--v-muted);
+}
+
+.vitrina-footer-credit a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vitrina-hero-bg,
+  .vitrina-hero-inner,
+  .vitrina-section {
+    animation: none;
+  }
+}
