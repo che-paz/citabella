@@ -2,12 +2,12 @@
 
 > **Última actualización:** 2026-08-05  
 > **Marca presentación:** Gota+Check · **Estudio:** VajaLabs (sin constituir)  
-> **Sprint activo:** **S1.1 ✅** · siguiente **S1.2** (infra / env / smoke)  
+> **Sprint activo:** **S1.2 ✅** · siguiente **S1.3** (onboarding asistido genérico)  
 > **Fase:** MVP ✅ | Piloto founders en curso | Formalización + vitrina (SKUs A/B/C) en planificación
 
 ## Resumen en una línea
 
-MVP operativo (Tutis + Galaxy). Marketing live en https://gotacheck.app. S1.1 docs/inventario/runbook alta ✅; siguiente S1.2 infra.
+MVP operativo (Tutis + Galaxy). Marketing live en https://gotacheck.app. S1.1–S1.2 ✅. Siguiente: S1.3 onboarding genérico.
 
 ## Estado por área
 
@@ -17,7 +17,7 @@ MVP operativo (Tutis + Galaxy). Marketing live en https://gotacheck.app. S1.1 do
 | Repositorio / código | 🟢 MVP core | Flujo reserva + validación pagos verificado |
 | Base de datos | 🟢 001–015 en cloud | Re-verificado 2026-08-05 (probe REST); ver checklist |
 | Supabase | 🟡 Free → Pro pendiente | Operativo; Pro + backups antes del taller |
-| Deploy | 🟢 Vercel | App: proyecto actual. Marketing: proyecto aparte Root=`marketing` → `gotacheck.app` |
+| Deploy | 🟢 Vercel | App + marketing. S1.2: Auth redirects + push smoke OK (2026-08-05) |
 | Prototipo UI | 🟢 MVP core | Dashboard + clientas listos |
 | Finanzas / gastos | 🟢 MVP | `/finanzas` ingresos vs gastos + balance mes |
 | PWA | 🟢 Operativo | Web Push por dispositivo; iPhone requiere icono en inicio |
@@ -91,15 +91,16 @@ Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta
 
 ## Próximo paso inmediato
 
-1. **S1.2** — Infra / env / smoke (VAPID completo, `NEXT_PUBLIC_SITE_URL`, Auth redirects, checklist Supabase)
-2. **S1.3** — Script onboarding genérico (reemplaza pasos manuales del runbook)
-3. **S1.4** — Hardening RLS + aislar demo Belleza Luna
-4. Luego Fase 2 vitrina · **Último:** precios / trial / taller
+1. **S1.3** — Script onboarding genérico (`docs/RUNBOOK_ALTA_SALON.md` → automatizar)
+2. **S1.4** — Hardening RLS + aislar demo Belleza Luna
+3. Luego Fase 2 vitrina · **Último:** precios / trial / taller
 
-## Docs operativos (S1.1)
+## Docs operativos
 
 - Checklist migraciones: `docs/MIGRATIONS_CHECKLIST.md`
 - Alta asistida de salón: `docs/RUNBOOK_ALTA_SALON.md`
+- Infra / smoke S1.2: `docs/S1.2_INFRA_CHECKLIST.md`
+- Smoke público: `node scripts/smoke-s1.2-public.mjs`
 - Ruta GTM: `docs/ROUTE_GOTACHECK.md`
 
 ## Piloto founders (activo)
@@ -138,6 +139,8 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-08-05 | S1.2 cerrado: Auth redirects + push smoke (Tutis) OK |
+| 2026-08-05 | S1.2: checklist infra/smoke + script público; S1.1 mergeado |
 | 2026-08-05 | S1.1: checklist migraciones 001–015 (cloud OK) + runbook alta salón |
 | 2026-08-04 | Landing marketing Gota+Check en `marketing/` (proyecto Vercel aparte → `gotacheck.app`) |
 | 2026-07-28 | Ruta GTM `ROUTE_GOTACHECK.md`; marca Gota+Check; cloud 009–015 verificadas |
