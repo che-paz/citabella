@@ -59,7 +59,7 @@ salones ──┬── usuarios
 | id | UUID PK | |
 | salon_id | UUID FK | |
 | nombre | TEXT NOT NULL | |
-| telefono | TEXT | WhatsApp |
+| telefono | TEXT | WhatsApp (puede repetirse en el mismo salón: mamá/hijos) |
 | email | TEXT NULL | |
 | fecha_nacimiento | DATE NULL | Alertas cumpleaños (Fase 2) |
 | notas | TEXT | |

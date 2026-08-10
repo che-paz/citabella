@@ -62,7 +62,7 @@ export function ClientaForm({ clienta, open, onOpenChange }: ClientaFormProps) {
           <DialogDescription>
             {isEdit
               ? "Actualiza los datos de contacto."
-              : "Registra una nueva clienta en tu salón."}
+              : "Registra una nueva clienta. Puedes repetir el mismo WhatsApp (ej. mamá e hijos)."}
           </DialogDescription>
         </DialogHeader>
 

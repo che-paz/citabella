@@ -1,6 +1,6 @@
 # Checklist de migraciones (Supabase Cloud)
 
-> **Última verificación:** 2026-08-05 (probe REST con service role)  
+> **Última verificación:** 2026-08-10 (016 aplicada en SQL Editor)  
 > **Proyecto:** CITABELLA / Gota+Check — esquema multi-tenant  
 > **Regla:** nunca editar una migración ya aplicada; solo agregar `016_…` en adelante.
 
@@ -23,8 +23,9 @@
 | `013_pausa_diaria.sql` | pausa (almuerzo) por salón | ✅ |
 | `014_salon_pausa_diaria_rpc.sql` | RPC pública `get_salon_pausa_diaria` | ✅ |
 | `015_reserva_otra_persona.sql` | flag + beneficiario en reserva | ✅ |
+| `016_upsert_clienta_shared_phone.sql` | upsert público seguro con WhatsApp compartido | ✅ 2026-08-10 |
 
-**Conclusión S1.1:** cloud al día con el repo (001–015). No hay migraciones pendientes conocidas.
+**Conclusión:** cloud al día con el repo (001–016).
 
 ## Cómo re-verificar (rápido)
 

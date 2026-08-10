@@ -44,27 +44,7 @@ function parseClientaForm(formData: FormData) {
   });
 }
 
-async function checkTelefonoDuplicado(
-  salonId: string,
-  telefono: string,
-  excludeId?: string
-): Promise<boolean> {
-  const supabase = await createClient();
-
-  let query = supabase
-    .from("clientas")
-    .select("id")
-    .eq("salon_id", salonId)
-    .eq("telefono", telefono);
-
-  if (excludeId) {
-    query = query.neq("id", excludeId);
-  }
-
-  const { data } = await query.limit(1);
-  return (data?.length ?? 0) > 0;
-}
-
+/** Same WhatsApp may belong to several fichas (e.g. mamá + hijos). */
 export async function createClientaAction(
   _prev: ClientaActionState,
   formData: FormData
@@ -74,15 +54,6 @@ export async function createClientaAction(
 
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Datos inválidos" };
-  }
-
-  const duplicado = await checkTelefonoDuplicado(
-    user.salon_id,
-    parsed.data.telefono
-  );
-
-  if (duplicado) {
-    return { error: "Ya existe una clienta con ese teléfono" };
   }
 
   const supabase = await createClient();
@@ -117,16 +88,6 @@ export async function updateClientaAction(
 
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Datos inválidos" };
-  }
-
-  const duplicado = await checkTelefonoDuplicado(
-    user.salon_id,
-    parsed.data.telefono,
-    id
-  );
-
-  if (duplicado) {
-    return { error: "Ya existe otra clienta con ese teléfono" };
   }
 
   const supabase = await createClient();

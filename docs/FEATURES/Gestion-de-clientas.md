@@ -25,10 +25,10 @@
 
 ## Criterios de aceptación MVP
 
-1. Clienta identificada por teléfono dentro del salón (único por salon_id)
+1. Varias clientas pueden compartir el mismo WhatsApp en un salón (ej. mamá + hijos = fichas distintas)
 2. Historial muestra citas ordenadas por fecha descendente
 3. Datos de clienta aislados por tenant (RLS)
-4. Reserva desde link público crea clienta si no existe
+4. Reserva desde link público crea o reutiliza clienta; con WhatsApp compartido no pisa nombres de hermanos (`upsert_clienta_public`, migración 016)
 
 ## Archivos de código
 
@@ -55,6 +55,8 @@ src/components/clientas/HistorialCitas.tsx
 
 ## Notas
 
-- Teléfono formato Guatemala (+502)
+- Teléfono formato GT/HN/SV (normalizado en storage)
 - Clienta no requiere cuenta Supabase Auth en MVP
 - Crear/editar clientas: solo `admin_salon` (RLS existente); colaboradora puede listar y ver historial
+- Admin puede crear fichas con el mismo teléfono (piloto Galaxy)
+- Link público: 1 ficha por teléfono → actualiza nombre (legacy); 2+ fichas → match por teléfono+nombre o crea nueva

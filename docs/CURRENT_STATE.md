@@ -1,13 +1,13 @@
 # CITABELLA / Gota+Check — Current State
 
-> **Última actualización:** 2026-08-05  
+> **Última actualización:** 2026-08-10  
 > **Marca presentación:** Gota+Check · **Estudio:** VajaLabs (sin constituir)  
-> **Sprint activo:** **S2.1 ✅** (mergeado; deploy Vercel) · S2.0 borrador · siguiente **S2.2** editor  
+> **Sprint activo:** **S2.1 ✅** · siguiente **S2.2** editor · parche piloto Clientas (teléfono compartido)  
 > **Fase:** MVP ✅ | Piloto founders | **Vitrina:** plantilla + `?demo=1` en prod | Precios/taller al final
 
 ## Resumen en una línea
 
-MVP operativo. **Fase 1 ✅**. S2.1 ✅: `/vitrina/[slug]` + modo demo pitch. Siguiente: S2.2 editor.
+MVP operativo. **Fase 1 ✅**. S2.1 ✅. Clientas: mismo WhatsApp en varias fichas (Galaxy). Siguiente: S2.2 editor.
 
 ## Estado por área
 
@@ -15,7 +15,7 @@ MVP operativo. **Fase 1 ✅**. S2.1 ✅: `/vitrina/[slug]` + modo demo pitch. Si
 |------|--------|-------|
 | Documentación | 🟢 S1.1 | `MIGRATIONS_CHECKLIST.md` + `RUNBOOK_ALTA_SALON.md` + ruta GTM |
 | Repositorio / código | 🟢 MVP core | Flujo reserva + validación pagos verificado |
-| Base de datos | 🟢 001–015 en cloud | Re-verificado 2026-08-05 (probe REST); ver checklist |
+| Base de datos | 🟢 001–016 en cloud | `016` upsert teléfono compartido ✅ 2026-08-10 |
 | Supabase | 🟡 Free → Pro pendiente | Operativo; Pro + backups antes del taller |
 | Deploy | 🟢 Vercel | App + marketing. S1.2: Auth redirects + push smoke OK (2026-08-05) |
 | Prototipo UI | 🟢 MVP core | Dashboard + clientas listos |
@@ -64,6 +64,7 @@ MVP operativo. **Fase 1 ✅**. S2.1 ✅: `/vitrina/[slug]` + modo demo pitch. Si
 - Link reserva: CTA Continuar fijo al pie al elegir servicio (catálogos largos)
 - Agenda: citas canceladas ocultas (no aparecen en día/semana/mes)
 - Agenda admin: hora libre + duración editable al crear/reagendar (emergencias); link público sigue con intervalos
+- Clientas: mismo teléfono permitido en varias fichas (admin); `upsert_clienta_public` no pisa hermanos si hay 2+ con ese WhatsApp (migración 016)
 
 ## Decisiones pendientes
 
@@ -145,6 +146,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-08-10 | Clientas: teléfono compartido (admin) + upsert público seguro (016) — piloto Galaxy |
 | 2026-08-05 | S2.1: modo `?demo=1` con fotos/copy ilustrativos para pitch y taller |
 | 2026-08-05 | S2.1: esqueleto `/vitrina/[slug]` + placeholders + `FEATURES/Vitrina.md` |
 | 2026-08-05 | S2.0 borrador: `S2.0_SPEC_VITRINA.md` + brief founders |
