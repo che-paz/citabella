@@ -1,34 +1,37 @@
 # CITABELLA / Gota+Check — Current State
 
-> **Última actualización:** 2026-08-10  
+> **Última actualización:** 2026-08-12  
 > **Marca presentación:** Gota+Check · **Estudio:** VajaLabs (sin constituir)  
-> **Sprint activo:** **S2.1 ✅** · siguiente **S2.2** editor · parche piloto Clientas (teléfono compartido)  
-> **Fase:** MVP ✅ | Piloto founders | **Vitrina:** plantilla + `?demo=1` en prod | Precios/taller al final
+> **Sprint activo:** **S2.3** (vitrinas founders con contenido real) · S2.2 editor ❌ aparcado  
+> **Fase:** MVP ✅ | Piloto founders | Precio A **Q100/mes** | Taller ≤15 post-sondeo
 
 ## Resumen en una línea
 
-MVP operativo. **Fase 1 ✅**. S2.1 ✅. Clientas: mismo WhatsApp en varias fichas (Galaxy). Siguiente: S2.2 editor.
+MVP operativo. **Fase 1 ✅ · S2.1 ✅.** Reunión founders 2026-08-12: Q100/mes; vitrina = **servicio del estudio** (no editor self-serve); demos Tutis/Galaxy; oleada ≤15.
 
 ## Estado por área
 
 | Área | Estado | Notas |
 |------|--------|-------|
-| Documentación | 🟢 S1.1 | `MIGRATIONS_CHECKLIST.md` + `RUNBOOK_ALTA_SALON.md` + ruta GTM |
+| Documentación | 🟢 | Ruta GTM actualizada 2026-08-12 |
 | Repositorio / código | 🟢 MVP core | Flujo reserva + validación pagos verificado |
 | Base de datos | 🟢 001–016 en cloud | `016` upsert teléfono compartido ✅ 2026-08-10 |
-| Supabase | 🟡 Free → Pro pendiente | Operativo; Pro + backups antes del taller |
-| Deploy | 🟢 Vercel | App + marketing. S1.2: Auth redirects + push smoke OK (2026-08-05) |
+| Supabase | 🟡 Free → Pro pendiente | Pro al primer cobro |
+| Deploy | 🟢 Vercel | App + marketing |
 | Prototipo UI | 🟢 MVP core | Dashboard + clientas listos |
-| Finanzas / gastos | 🟢 MVP | `/finanzas` ingresos vs gastos + balance mes |
-| PWA | 🟢 Operativo | Web Push por dispositivo; iPhone requiere icono en inicio |
-| Sitio marketing Gota+Check | 🟢 Live | https://gotacheck.app → www · proyecto Vercel `gotacheck-marketing` |
-| Vitrina / landings | 🟢 S2.1 | `/vitrina/[slug]` + `?demo=1`; editor = S2.2 |
+| Finanzas / gastos | 🟢 MVP | `/finanzas` |
+| PWA | 🟢 Operativo | Web Push |
+| Sitio marketing Gota+Check | 🟢 Live | Actualizar precio Q100 cuando toque |
+| Vitrina / landings | 🟡 S2.3 | Plantilla lista; falta contenido real founders + dominios |
+| Precio / taller | 🟡 | A = Q100; trial + fecha taller TBD; cupo ≤15 |
 
 ## Decisiones tomadas
 
 - Marca de **presentación** al gremio: **Gota+Check**; estudio: VajaLabs; ruta GTM en `ROUTE_GOTACHECK.md`
-- Oferta en 3 SKUs: A Agenda · B Vitrina (plantilla+dominio) · C Presencia (+foto); landing mínima tipo Daysi
-- Sitio marketing: monorepo `marketing/` + proyecto Vercel aparte (Root Directory); apex `gotacheck.app` este sprint; app → `app.gotacheck.app` después
+- Oferta (2026-08-12): **A Agenda Q100/mes**; **Vitrina = servicio del estudio** (no self-serve); founders como demos vivos
+- Taller: cupo **≤15** tras sondeo founders; luego adquisición más agresiva
+- Marca de **presentación** al gremio: **Gota+Check**; estudio: VajaLabs; ruta GTM en `ROUTE_GOTACHECK.md`
+- Sitio marketing: monorepo `marketing/` + proyecto Vercel aparte (Root Directory); apex `gotacheck.app`; app → `app.gotacheck.app` después
 - Stack: Next.js 14 + TypeScript + Tailwind + shadcn/ui + Supabase + Vercel
 - Multi-tenant vía Row Level Security (RLS) en PostgreSQL
 - Disponibilidad de agenda: cálculo dinámico por duración de servicio
@@ -65,26 +68,30 @@ MVP operativo. **Fase 1 ✅**. S2.1 ✅. Clientas: mismo WhatsApp en varias fich
 - Agenda: citas canceladas ocultas (no aparecen en día/semana/mes)
 - Agenda admin: hora libre + duración editable al crear/reagendar (emergencias); link público sigue con intervalos
 - Clientas: mismo teléfono permitido en varias fichas (admin); `upsert_clienta_public` no pisa hermanos si hay 2+ con ese WhatsApp (migración 016)
+- **S2.2 editor dueña: aparcado** (2026-08-12) — vitrina no es self-serve en esta fase
 
 ## Decisiones pendientes
 
 - [x] Dominio producto Gota+Check comprado (`gotacheck.app`, 2026-08-04)
 - [x] DNS `gotacheck.app` → Vercel marketing (Cloudflare DNS-only; live 2026-08-04)
-- [ ] `NEXT_PUBLIC_APP_URL` / `NEXT_PUBLIC_SITE_URL` en prod (app + marketing) — marketing ya con WhatsApp + app URL
-- [ ] Precios A/B/C + trial — **sesión exclusiva al estar listos** (`ROUTE_GOTACHECK.md` §7)
-- [ ] Fecha taller (~35 maquillistas vía founders) — depende de sprints F1+F2
-- [x] Spec contenido landing tipo Daysi (sesión S2.0) — borrador 2026-08-05; cierre tras reunión founders
-- [ ] WhatsApp: Meta Cloud API vs Twilio (Fase 2 — fuera de ruta GTM)
+- [x] Precio Agenda = **Q100/mes** (reunión founders 2026-08-12)
+- [x] Modelo vitrina = servicio estudio (no editor) — 2026-08-12
+- [ ] `NEXT_PUBLIC_APP_URL` / `NEXT_PUBLIC_SITE_URL` en prod (app + marketing)
+- [ ] Precio/alcance exacto del **servicio Vitrina** (setup)
+- [ ] Trial sí/no
+- [ ] Fecha taller ≤15 (tras sondeo founders)
+- [ ] WhatsApp: Meta Cloud API vs Twilio (fuera de ruta GTM inmediata)
 
 ## Bloqueadores actuales
 
-Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta cumplir F1+F2.
+Ninguno técnico duro. **Esperando assets founders** (texto, fotos, dominio) para S2.3.
 
 ## Desarrollo local
 
 - App: **puerto 3004** (`npm run dev` → http://localhost:3004)
 - Marketing Gota+Check: **puerto 3010** (`cd marketing && npm run dev` → http://localhost:3010)
 - Link público demo: ~~http://localhost:3004/reservar/belleza-luna~~ → aislada (`activo=false`); usar `/reservar/gota-prueba-s13` o founders
+- Vitrina pitch: `/vitrina/[slug]?demo=1` · vitrina real: sin `?demo=1` cuando haya contenido
 - Supabase: cloud. Seeds: `seed-cloud.sql`, `seed-cloud-agenda.sql`
 - Env requerido (app): `NEXT_PUBLIC_SUPABASE_*` + `SUPABASE_SERVICE_ROLE_KEY`
 - Env marketing: ver `marketing/.env.example` (`NEXT_PUBLIC_WHATSAPP_URL`, `NEXT_PUBLIC_APP_URL`)
@@ -92,12 +99,14 @@ Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta
 
 ## Próximo paso inmediato
 
-1. Compartir prod `…/vitrina/[slug]?demo=1` + brief a founders
-2. Cerrar copy/fotos reales → S2.0 ✅
-3. **S2.2** editor dueña (prueba de campo: ellas cargan su info desde cero / campos vacíos)
+1. Recibir de Tutis + Galaxy: textos, fotos (portada + trabajos), dominio deseado
+2. **S2.3** — Montar vitrinas reales (demos del servicio)
+3. **S2.4** — Dominios + CTA agenda; sondeo/taller ≤15 en paralelo de negocio
+4. Actualizar `gotacheck.app` con Q100 cuando el one-pager lo pida
 
 ## Docs operativos
 
+- Acuerdos reunión: `docs/DECISION_2026-08-12_FOUNDERS.md`
 - Checklist migraciones: `docs/MIGRATIONS_CHECKLIST.md`
 - Alta asistida: `docs/RUNBOOK_ALTA_SALON.md` → `npm run provision:salon -- …`
 - Reset seguro: `supabase/reset-salon-pilot.sql` (founders bloqueados)
@@ -146,6 +155,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-08-12 | Reunión founders: Q100/mes; vitrina=servicio estudio; S2.2 aparcado; taller ≤15 — `DECISION_2026-08-12_FOUNDERS.md` |
 | 2026-08-10 | Clientas: teléfono compartido (admin) + upsert público seguro (016) — piloto Galaxy |
 | 2026-08-05 | S2.1: modo `?demo=1` con fotos/copy ilustrativos para pitch y taller |
 | 2026-08-05 | S2.1: esqueleto `/vitrina/[slug]` + placeholders + `FEATURES/Vitrina.md` |

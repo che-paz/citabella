@@ -1,32 +1,53 @@
 # Gota+Check — Ruta a mercado (fuente de verdad)
 
-> **Última actualización:** 2026-08-05  
+> **Última actualización:** 2026-08-12  
 > **Marca de presentación:** Gota+Check  
 > **Estudio / desarrollo:** VajaLabs (aún sin constituir)  
 > **Repo / dominio técnico histórico:** CITABELLA (`che-paz/citabella`)  
 > **Dominio producto:** `gotacheck.app` (marketing live)  
-> **Estado:** Piloto founders operativo · Marketing live · **Fase 1 ✅ (S1.1–S1.4)** · Vitrina (F2) pendiente · Precios/taller al final
-> **Precios / trial / fecha de taller:** **por definir en sesión exclusiva al estar listos para salir**
+> **Estado:** Piloto founders · Marketing live · **Fase 1 ✅** · S2.1 ✅ · **Modelo oferta actualizado (reunión founders 2026-08-12)**  
+> **Precio app (SKU A):** **Q100/mes** (~USD 12) — acordado 2026-08-12  
+> **Taller:** cupo **≤15** potenciales (sondeo vía founders); fecha TBD
 
 Este documento traduce la estrategia a fases y sprints. No sustituye features técnicas en `FEATURES/`; define **qué construir en qué orden** y **cuándo se puede vender**.
 
 ---
 
-## 1. Oferta (3 SKUs)
+## 1. Oferta (actualizada 2026-08-12)
 
-| SKU | Nombre interno | Incluye | URL de agenda (objetivo) |
-|-----|----------------|---------|---------------------------|
-| **A** | Agenda | App bajo dominio Gota+Check | `gotacheck…/reservar/[slug]` o `/agendar` |
-| **B** | Vitrina | A + dominio del salón + landing con **plantilla** rellenable | `misalon.com/agendar` |
-| **C** | Presencia | B + sesión de fotos (+ diseño asistido opcional, cupo limitado) | igual B |
+| Línea | Nombre | Incluye | Quién la entrega | Precio |
+|-------|--------|---------|------------------|--------|
+| **A** | Agenda | App Gota+Check (reservas, pagos, agenda) bajo dominio producto | Self-serve / onboarding asistido | **Q100/mes** (~USD 12) |
+| **V** | Vitrina web | Landing del salón + dominio propio + CTA a agenda | **Servicio del estudio** (VajaLabs / desarrollador) — **no** self-serve | Setup/proyecto (precio del servicio TBD) |
+| **+** | Foto / diseño | Sesión o apoyo visual (opcional, cupo) | Estudio | Según cupo |
 
-- Landing tipo mínimo (referencia: [daysinavarroc.com](https://daysinavarroc.com/)): informativa, portafolio, servicios, CTA agendar. **Sin** carrito, blog ni e-commerce.
-- Plantillas: la dueña las llena; **diseño asistido por el founder del producto** = add-on / lista de espera.
-- Dueña del dominio del salón: quien paga el servicio.
-- Founders (Tutis, Galaxy): app founder Q0; B/C pagan solo dominio (y foto si C). Una founder prueba el editor de plantilla antes del taller.
+### Cambio de modelo (importante)
+
+- **Antes:** SKU B = plantilla rellenable por la dueña (editor S2.2) + C = foto/diseño.
+- **Ahora:** el margen del desarrollador en Q100/mes es bajo → **no se construye editor self-serve de vitrina** en esta fase.
+- La **vitrina es un servicio pago del estudio**: el cliente entrega texto + imágenes + nombre de dominio; el estudio monta y publica el sitio.
+- Ingreso de vitrinas → **directo al estudio/desarrollador** (no empaquetado como “ellas lo hacen solas” dentro del plan de Q100).
+- **Founders (Tutis, Galaxy):** el estudio les hace la vitrina con su contenido real → **demos vivos** para el taller / venta del servicio V.
+
+Landing tipo mínimo (referencia: [daysinavarroc.com](https://daysinavarroc.com/)): informativa, portafolio, servicios, CTA agendar. **Sin** carrito, blog ni e-commerce.
 
 **Marca hacia el gremio:** Gota+Check.  
 **Marca hacia desarrollo/contratos futuros:** VajaLabs.
+
+---
+
+## 1b. Acuerdos reunión founders (2026-08-12)
+
+| # | Acuerdo |
+|---|---------|
+| 1 | Precio app = **Q100/mes** (~USD 12) |
+| 2 | Quitar paquete “vitrina self-serve”; ofrecer vitrina como **servicio del estudio** |
+| 3 | Estudio hace vitrinas de Tutis + Galaxy como **demo** del servicio |
+| 4 | Founders entregan: **texto, imágenes, nombre de dominio** |
+| 5 | Founders hacen **sondeo** en el gremio; taller con **≤15** interesadas reales (grupo manejable: agendas, dudas, soporte) |
+| 6 | Tras esa oleada: adquisición más agresiva |
+
+Notas: trial / factura / precio exacto del servicio Vitrina — pendientes de cerrar al cobrar a terceros.
 
 ---
 
@@ -34,15 +55,11 @@ Este documento traduce la estrategia a fases y sprints. No sustituye features t�
 
 | Horizonte | Meta | Nota |
 |-----------|------|------|
-| 90 días post “listos para salir” | ≥10 pagos activos (mín) / **15** (stretch) | Capacidad ~10–12 h/sem |
-| 12 meses | **>50** salones | Tras taller + referidos; SKU A más self-serve después |
-| Piso ingreso recurrente | ~**Q2,500/mes** (cubre costos + margen chico) | No contar setups C como ingreso mensual |
-| Adquisición v1 | Taller con ~35 maquillistas vía founders | Sin ads hasta validar |
-
-**Puertas de salida (sesiones exclusivas, al final):**
-1. Precios exactos A/B/C (setup + mensual).
-2. Trial sí/no y reglas.
-3. Fecha del taller (cuando sprints de salida estén ✅).
+| Oleada 1 (taller ≤15) | Validar interés real + operar soporte | Sondeo founders primero |
+| 90 días post oleada | ≥10 pagos activos (mín) / **15** (stretch) | A Q100 → ~Q1,000–1,500 recurrente app; vitrinas = ingreso setup aparte |
+| 12 meses | **>50** salones | Tras validar con el primer grupo |
+| Piso ingreso | Revisar vs costos (Supabase/Vercel Pro + tiempo) | Q100 × N; vitrina no cuenta como recurrente salvo mantenimiento |
+| Adquisición v1 | Taller **≤15** vía founders (no ~35) | Sin ads hasta validar |
 
 ---
 
@@ -59,102 +76,87 @@ Este documento traduce la estrategia a fases y sprints. No sustituye features t�
 
 ## 4. Fases → sprints
 
-Leyenda de estado: ⬜ pending · 🟡 in progress · ✅ done
+Leyenda de estado: ⬜ pending · 🟡 in progress · ✅ done · ❌ cancelado / aparcado
 
 ### Fase 0 — Congelar marco (docs / negocio)
 
 | ID | Entregable | Done cuando |
 |----|------------|-------------|
 | F0.1 | Marca presentación = Gota+Check | ✅ (2026-07-28) |
-| F0.2 | SKUs A/B/C + ownership dominio documentados | ✅ (este doc) |
+| F0.2 | Oferta documentada | ✅ actualizado 2026-08-12 (A + servicio V) |
 | F0.3 | Dominio producto Gota+Check comprado | ✅ `gotacheck.app` (2026-08-04) |
-| F0.4 | One-pager taller (borrador, sin precios finales) | ✅ Landing live `gotacheck.app` (2026-08-04; precios aún no) |
-| F0.5 | Sesión precios + trial + fecha taller | ⬜ **última**, ver §7 |
-
-**Criterio fase:** nombre + oferta claros; dominio en camino; precios aún pueden esperar.
+| F0.4 | One-pager taller (borrador) | ✅ Landing live `gotacheck.app` |
+| F0.5 | Precios + trial + fecha taller | 🟡 **Precio A = Q100** (2026-08-12); trial + fecha taller TBD |
 
 ---
 
-### Fase 1 — Producción seria (app, sin vitrina aún)
-
-Objetivo: operar y dar de alta salones **asistido** sin riesgo a founders.
+### Fase 1 — Producción seria (app) ✅
 
 | Sprint | Scope | Done cuando |
 |--------|--------|-------------|
-| **S1.1 Docs & inventario** | Actualizar `CURRENT_STATE`; checklist migraciones cloud; runbook alta salón | ✅ 2026-08-05 — `MIGRATIONS_CHECKLIST.md` + `RUNBOOK_ALTA_SALON.md` |
-| **S1.2 Infra** | Checklist Supabase; Vercel env; Auth redirect URLs; smoke | ✅ 2026-08-05 — `S1.2_INFRA_CHECKLIST.md`; push OK en dispositivo founder |
-| **S1.3 Onboarding asistido** | Script/proceso genérico: salón + admin + slug + plan + horarios + link | ✅ 2026-08-05 — `scripts/provision-salon.mjs`; prueba `gota-prueba-s13` |
-| **S1.4 Hardening** | Smoke RLS tenant A≠B; demo aislada; reset seguro | ✅ 2026-08-05 — `S1.4_HARDENING_CHECKLIST.md`; Tutis vs Belleza Luna DEMO |
-
-**Criterio fase:** “Puedo onboardear salón N sin tocar founders ni improvisar SQL.” → **cumplido (Fase 1 ✅)**
+| **S1.1–S1.4** | Docs, infra, provision, hardening | ✅ 2026-08-05 |
 
 ---
 
-### Fase 2 — Vitrina v1 (bloquea el taller)
+### Fase 2 — Vitrina v1 (bloquea el taller) — **reenfocada**
 
-Objetivo: plantilla mínima + founders como laboratorio.
+Objetivo: **1–2 vitrinas founders live** (servicio estudio) + dominio + CTA agenda. **No** editor self-serve.
 
 | Sprint | Scope | Done cuando |
 |--------|--------|-------------|
-| **S2.0 Contenido** | Sesión dedicada: secciones landing tipo Daysi (copy, fotos, CTA) | 🟡 Borrador 2026-08-05 — `S2.0_SPEC_VITRINA.md` + `S2.0_BRIEF_FOUNDERS.md` |
-| **S2.1 Plantilla técnica** | 1 plantilla (máx 2) desplegable; dominio salón → landing → agenda | ✅ Esqueleto + `?demo=1` (2026-08-05); dominio propio = S2.4 |
-| **S2.2 Editor dueña** | Rellenar plantilla lo más intuitivo posible; founder prueba sola | Notas de fricción + fixes mínimos |
-| **S2.3 Add-on diseño** | Proceso “diseño asistido” (cupo / lista); foto con tarifa amigo | Checklist entrega C (sin sobrevender capacidad) |
-| **S2.4 URLs** | Definir rutas: app-only vs `misalon.com/agendar` | Documentado + 1 ejemplo real |
+| **S2.0 Contenido** | Textos/fotos/dominio de founders | 🟡 Esperando entrega founders (tras reunión 2026-08-12) |
+| **S2.1 Plantilla técnica** | Plantilla `/vitrina/[slug]` + `?demo=1` | ✅ 2026-08-05 |
+| **S2.2 Editor dueña** | Self-serve relleno plantilla | ❌ **Aparcado** — no encaja con margen Q100 ni modelo servicio |
+| **S2.3 Entrega vitrina founders** | Montar Tutis + Galaxy con contenido real (demo del servicio V) | Contenido en prod + sin `?demo=1` stock |
+| **S2.4 URLs / dominios** | Dominios founders → landing → `/reservar/[slug]` | 2 ejemplos live documentados |
 
-**Criterio fase:** 1–2 landings founders live + “dueña puede editar X sin nosotros”.
+**Criterio fase:** Tutis y Galaxy con sitio usable en presentación + proceso claro “cliente manda assets → estudio publica”.
 
-**Capacidad:** con 10–12 h/sem, cupo sugerido **≤2 sesiones foto (C) / mes** y priorizar A/B en el taller.
+**Capacidad:** cupo de vitrinas del estudio limitado (tiempo); priorizar demos founders antes del taller ≤15.
 
 ---
 
-### Fase 3 — Listos para salir (sesión exclusiva)
-
-No empieza hasta F1 ✅ y F2 ✅ (mínimo S2.1 + S2.2).
+### Fase 3 — Listos para oleada (antes del taller ≤15)
 
 | ID | Entregable |
 |----|------------|
-| X.1 | Precios A / B / C (setup + mensual) → meta piso Q2,500 |
-| X.2 | Reglas trial (o pago desde día 1) |
-| X.3 | Fecha taller + one-pager final |
-| X.4 | Subir Pro si aún Free; límites monitoreo |
-| X.5 | Legal mínimo informal (términos/privacidad one-pager) cuando cobres a terceros |
-
-**Criterio:** fecha de taller en calendario + precios dichos en voz alta.
+| X.1 | Precio A confirmado en copy marketing (**Q100/mes**) |
+| X.2 | Precio/alcance del **servicio Vitrina** (setup) dicho en voz alta |
+| X.3 | Reglas trial (si aplica) |
+| X.4 | Fecha taller ≤15 + lista sondeo founders |
+| X.5 | Supabase Pro si ya se cobra; legal mínimo al cobrar terceros |
 
 ---
 
-### Fase 4 — Taller + oleada 90 días
+### Fase 4 — Taller + oleada (≤15)
 
 | Sprint / bloque | Done cuando |
 |-----------------|-------------|
-| Taller demo founders + captura WhatsApp | Lista de interesados |
-| Onboarding asistido oleada (priorizar A/B; C con cupo) | ≥10 mensuales (mín) / 15 stretch |
-| Semana 6: revisar conversión y fricción plantilla | Ajuste precio o proceso |
-| Semana 12: ingreso recurrente vs Q2,500 | Go / adjust |
+| Taller con ≤15 interesadas reales | Lista onboard + soporte manejable |
+| Onboarding asistido SKU A | Agendas operando |
+| Vitrina solo a quien contrate el servicio | Sin sobrevender capacidad del estudio |
+| Semana 6–12: fricción + ingreso | Go / adjust; luego adquisición más agresiva |
 
 ---
 
-### Fase 5 — Hacia 50 (post-validación)
+### Fase 5 — Crecimiento post-validación
 
-- Self-serve **solo SKU A** (trial o pago).
-- B/C semi-asistidos o editor más maduro.
-- 2ª plantilla; constituir / facturar cuando ingreso estable.
-- Métricas mínimas: salones activos, reservas/semana, churn.
-- **No** WhatsApp API hasta que la oleada esté estable.
+- Self-serve **solo SKU A** cuando el proceso esté estable.
+- Vitrina sigue como **servicio asistido** (editor self-serve = solo si el margen/tiempo lo justifican más adelante).
+- Constituir / facturar cuando ingreso estable.
+- **No** WhatsApp API hasta oleada estable.
 
 ---
 
-## 5. Orden de ejecución inmediato (próximos sprints)
+## 5. Orden de ejecución inmediato
 
-1. ~~**S1.1** — Docs + inventario~~ ✅  
-2. ~~**S1.2** — Infra / env / smoke~~ ✅  
-3. ~~**S1.3** — Onboarding asistido genérico~~ ✅  
-4. ~~**S1.4** — Hardening RLS + demo~~ ✅ · **Fase 1 completa**  
-5. **S2.0** — Spec contenido landing 🟡 (borrador + brief founders listos)  
-6. **S2.1 → S2.2** — Plantilla + prueba founder  
-7. **S2.3 → S2.4** — Cupo C + URLs  
-8. **Fase 3 (X.\*)** — Precios, trial, fecha taller
+1. ~~Fase 1~~ ✅ · ~~S2.1~~ ✅  
+2. **Recibir de founders:** textos, imágenes (portada + trabajos), nombre de dominio  
+3. **S2.3** — Publicar vitrinas Tutis + Galaxy (contenido real)  
+4. **S2.4** — Conectar dominios + documentar  
+5. Actualizar `gotacheck.app` con precio Q100 cuando toque one-pager  
+6. Esperar sondeo + fecha taller ≤15  
+7. Oleada → luego adquisición agresiva  
 
 ---
 
@@ -162,21 +164,24 @@ No empieza hasta F1 ✅ y F2 ✅ (mínimo S2.1 + S2.2).
 
 - Hosting WordPress/cPanel para la app core  
 - Carrito, blog, tienda en la landing  
-- Campañas ads antes del taller  
-- Self-serve masivo antes de F2  
+- **Editor self-serve de vitrina (ex-S2.2)** en esta fase  
+- Campañas ads antes de validar con el grupo ≤15  
+- Self-serve masivo antes de cerrar oleada  
 - Fase 2 técnica del `ROADMAP.md` (WhatsApp API, etc.) como si fuera MVP  
 
 ---
 
-## 7. Sesión exclusiva “salida” (pendiente)
+## 7. Sesión “salida” (restante)
 
-Agenda cuando F1+F2 cumplan criterio:
+Ya cerrado: precio A = Q100/mes.
 
-1. Precios A/B/C y qué incluye el setup absorbido en C  
-2. Trial  
-3. Fecha taller y cupos C del mes  
-4. Confirmación Pro Supabase/Vercel  
-5. Copy final one-pager  
+Pendiente:
+
+1. Precio y alcance exacto del **servicio Vitrina**  
+2. Trial sí/no  
+3. Fecha taller ≤15  
+4. Confirmación Pro Supabase/Vercel al cobrar  
+5. Copy final one-pager con precio  
 
 ---
 
@@ -184,12 +189,10 @@ Agenda cuando F1+F2 cumplan criterio:
 
 | Servicio | Free alcanza para | Disparador para pagar | Costo |
 |----------|-------------------|------------------------|-------|
-| **Supabase** | Piloto + 3–5 salones sin cobrar | **Primer salón que paga** (Free no tiene backups diarios) o Storage cerca de 1 GB por comprobantes | ~$25 + compute |
-| **Vercel** | Desarrollo y founders | **Uso comercial** (Hobby es solo no comercial) o pasar de **50 dominios por proyecto** | $20/mes |
+| **Supabase** | Piloto + 3–5 salones sin cobrar | **Primer salón que paga** o Storage cerca de 1 GB | ~$25 + compute |
+| **Vercel** | Desarrollo y founders | **Uso comercial** o **50 dominios** | $20/mes |
 
-Regla operativa: **primer quetzal cobrado → Supabase Pro el mismo día; Vercel Pro al conectar el primer dominio de clienta.**
-
-Límite real más cercano en Free: **Storage 1 GB**. Los comprobantes admiten hasta 5 MB cada uno, así que con varios salones activos se llena antes que la base de datos.
+Regla: **primer quetzal cobrado → Supabase Pro el mismo día; Vercel Pro al conectar el primer dominio de clienta.**
 
 ---
 
@@ -197,33 +200,15 @@ Límite real más cercano en Free: **Storage 1 GB**. Los comprobantes admiten ha
 
 **Registrador:** Cloudflare Registrar (a costo) para `.com`. Compatible con Vercel vía DNS.
 
-Advertencias registradas:
-- Cloudflare Registrar **no soporta `.gt` / `.com.gt`** → registrador local si se quiere identidad GT.
-- Requiere usar nameservers de Cloudflare.
-- Al apuntar a Vercel: registros en **DNS-only** (sin proxy naranja) para evitar doble CDN/SSL.
-- Traslados bloqueados **60 días** después de registrar o transferir.
-- **Propiedad:** el dominio es de quien paga el servicio. Dos modelos permitidos:
-  1. La dueña registra en su cuenta y delega DNS (preferido a largo plazo).
-  2. Se registra en la cuenta del estudio con cláusula escrita de traspaso al salir.
-
-**Dónde vive cada cosa:**
+- Cloudflare Registrar **no** soporta `.gt` / `.com.gt` → registrador local si aplica.
+- DNS a Vercel: **DNS-only** (sin proxy naranja).
+- **Propiedad:** dominio de quien paga. Preferido: dueña registra y delega DNS.
 
 | Sitio | Dónde | Notas |
 |-------|-------|-------|
-| App (agenda, pagos, `/reservar`) | Proyecto Vercel actual + Supabase | Hoy: `*.vercel.app`. Objetivo: `app.gotacheck.app` |
-| **Landings de salones** | **Mismo proyecto de la app**, multi-tenant por dominio | El contenido viene de la plantilla en DB; 1 proyecto + N dominios |
-| Sitio Gota+Check (marketing) | Proyecto Vercel **aparte**, Root Directory = `marketing/` | Código en monorepo; se edita sin arriesgar deploys de la app. Este sprint: apex `gotacheck.app` → marketing |
-| Sitio VajaLabs | Proyecto aparte, baja prioridad | Identidad del estudio |
-
-**Plan de URLs (2026-08-04):**
-
-| Host | Destino este sprint | Destino objetivo |
-|------|---------------------|------------------|
-| `gotacheck.app` | Marketing (`marketing/`) | Marketing |
-| `www.gotacheck.app` | Redirect → apex (opcional) | Idem |
-| App founders | Dominio Vercel actual | `app.gotacheck.app` |
-
-DNS Cloudflare → Vercel: registros en **DNS-only** (sin proxy naranja). Instrucciones: `marketing/README.md`.
+| App (`/reservar`, dashboard) | Proyecto Vercel app + Supabase | Objetivo: `app.gotacheck.app` |
+| **Landings salón** | Mismo proyecto app, multi-tenant / dominio | Contenido cargado por el estudio (servicio V) |
+| Marketing Gota+Check | Proyecto `marketing/` | `gotacheck.app` |
 
 **No** un proyecto Vercel por salón.
 
@@ -231,31 +216,20 @@ DNS Cloudflare → Vercel: registros en **DNS-only** (sin proxy naranja). Instru
 
 ## 10. Alta de salones y cobro
 
-**Alta de salones (progresión):**
+| Etapa | Herramienta |
+|-------|-------------|
+| Hoy | `scripts/provision-salon.mjs` |
+| Founders | Ya provisionadas |
+| Self-serve A | Después de oleada ≤15 |
 
-| Etapa | Herramienta | Umbral para pasar a la siguiente |
-|-------|-------------|----------------------------------|
-| Hoy | **`scripts/provision-salon.mjs`** (S1.3 ✅) | — |
-| Legacy founders | `scripts/provision-founders-pilot.mjs` | Solo Tutis/Galaxy |
-| Interno | Página admin de plataforma (rol `platform_admin`) | ~5–8 salones o &gt;1 alta/semana |
-| Self-serve | Signup solo **SKU A** | Después de la oleada; B/C siguen asistidos |
+**Cobro inicio:** transferencia + recordatorio WhatsApp; registro manual. Formal (Recurrente/FEL) cuando se facture a terceros.
 
-**Cobro (progresión):**
-
-| Etapa | Método | Requisitos | Costo |
-|-------|--------|------------|-------|
-| Inicio (sin facturar) | Transferencia + recordatorio WhatsApp; registro manual | Ninguno | Q0 |
-| Formal | **Recurrente** (GT): links de pago + suscripciones automáticas | NIT, DPI, cuenta bancaria GT, **FEL** | 4.5% + Q1.20 tarjeta · 1% (máx Q20) transferencia |
-| Facturación | Certificador FEL (ej. INFILE) | Patente / NIT | desde ~Q99/mes |
-
-Impacto en el piso de Q2,500: comisiones + FEL ≈ **Q250–300/mes** con ~12 clientes. El piso debe leerse **después** de comisiones.
-
-No construir procesamiento de tarjetas propio. Stripe no aplica para GT.
+A Q100/mes: ~25 pagadoras ≈ Q2,500 bruto recurrente (antes de Pro/comisiones). Vitrinas = ingreso por proyecto, no confundir con MRR.
 
 ---
 
 ## 11. Cómo usar este doc en Cursor
 
-- Al iniciar trabajo de go-to-market: leer **este archivo** + `CURRENT_STATE.md` + `ENGINEERING_RULES.md`.  
-- Al cerrar un sprint de la ruta: marcar Done aquí y actualizar `CURRENT_STATE.md`.  
-- Precios/taller: no inventar en código; esperar sesión §7.
+- Al iniciar GTM: este archivo + `CURRENT_STATE.md` + `ENGINEERING_RULES.md`.  
+- Al cerrar sprint: marcar Done aquí y actualizar `CURRENT_STATE.md`.  
+- **No** retomar S2.2 editor sin decisión explícita de negocio.
