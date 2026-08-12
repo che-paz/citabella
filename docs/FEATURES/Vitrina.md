@@ -1,43 +1,36 @@
-# Vitrina — landing del salón (SKU B/C)
+# Vitrina — landing del salón (servicio del estudio)
 
-> **Sprint:** S2.1 (esqueleto)  
+> **Sprint:** S2.1 ✅ · siguiente **S2.3** (contenido founders)  
 > **Ruta:** `/vitrina/[slug]`  
-> **Spec contenido:** `docs/S2.0_SPEC_VITRINA.md`
+> **Modelo (2026-08-12):** no self-serve; el estudio monta el sitio con assets del cliente  
+> **Spec contenido:** `docs/S2.0_SPEC_VITRINA.md` · decisión: `docs/DECISION_2026-08-12_FOUNDERS.md`
 
 ## Qué es
 
 Página pública de una sola URL: marca + servicios + fotos + CTA a `/reservar/[slug]`.  
-No es el dashboard ni el wizard de reserva.
+Producto Gota+Check vende la **agenda (Q100/mes)**; la vitrina es **servicio VajaLabs** (ingreso setup al desarrollador).
 
-## Estado S2.1
+## Estado
 
-- Plantilla única con temas `beauty` | `kids` (CSS vars).
-- Nombre y logo desde `salones` (mismo filtro `activo=true` que reserva pública).
-- Servicios: catálogo público si hay ítems; si no, placeholders.
-- Copy / contacto / fotos: placeholders en `src/lib/vitrina/placeholders.ts` (por slug).
-- **Modo demo pitch/taller:** `?demo=1` → copy pulido + fotos Unsplash ilustrativas + hero con imagen. Banner aclara que no son del salón. Código en `src/lib/vitrina/demo.ts`.
-- Sin migración DB; editor = S2.2.
+- Plantilla única con temas `beauty` | `kids`.
+- Nombre/logo desde `salones` (`activo=true`).
+- `?demo=1` = pitch con stock (taller / venta del servicio).
+- Contenido real founders: se carga en código/storage por el estudio (**S2.3**); **S2.2 editor ❌ aparcado**.
 
 ## Archivos
 
 | Path | Rol |
 |------|-----|
-| `src/app/vitrina/[slug]/page.tsx` | Route + metadata + `?demo=1` |
-| `src/app/vitrina/layout.tsx` | Fuentes Fraunces + Outfit |
-| `src/components/vitrina/VitrinaLanding.tsx` | Secciones UI |
-| `src/lib/vitrina/*` | Types, placeholders, demo pack, resolve |
+| `src/app/vitrina/[slug]/page.tsx` | Route + `?demo=1` |
+| `src/components/vitrina/VitrinaLanding.tsx` | UI |
+| `src/lib/vitrina/*` | Placeholders, demo pack, resolve |
 
-## URLs de prueba (prod)
+## URLs
 
-- Esqueleto: `…/vitrina/salon-tutis`
-- **Demo realista (mostrar founders/taller):** `…/vitrina/salon-tutis?demo=1`
-- Galaxy: `…/vitrina/galaxy-barberia-infantil?demo=1`
-- Prueba: `…/vitrina/gota-prueba-s13?demo=1`
+- Pitch: `…/vitrina/salon-tutis?demo=1`
+- Real (post S2.3): `…/vitrina/salon-tutis` (y dominio propio en S2.4)
 
-Salones inactivos → 404 (igual que `/reservar`).
-
-## Fuera de S2.1
+## Fuera de alcance ahora
 
 - Editor dueña (S2.2)
-- Dominio propio del salón (S2.4)
-- Precios en vitrina (decisión abierta S2.0)
+- Self-serve masivo de landings
