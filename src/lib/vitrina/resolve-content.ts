@@ -1,5 +1,6 @@
 import type { ReservaItem } from "@/types/database";
 import { getVitrinaDemoPack } from "@/lib/vitrina/demo";
+import { getVitrinaLivePack } from "@/lib/vitrina/live";
 import { getVitrinaPlaceholders } from "@/lib/vitrina/placeholders";
 import type { VitrinaResolved, VitrinaServiceItem } from "@/lib/vitrina/types";
 
@@ -26,6 +27,31 @@ export function resolveVitrinaContent(params: {
 }): VitrinaResolved {
   const placeholders = getVitrinaPlaceholders(params.slug);
   const fromCatalog = catalogToServices(params.catalogo);
+  const live = getVitrinaLivePack(params.slug);
+
+  // Real studio-delivered landing wins (founders demos for taller).
+  if (live) {
+    const services =
+      fromCatalog.length > 0 ? fromCatalog : live.services;
+
+    return {
+      ...placeholders,
+      theme: live.theme,
+      tagline: live.tagline,
+      about: live.about,
+      contact: live.contact,
+      portfolioCount: live.portfolioImages.length,
+      salonName: live.displayName ?? params.salonName,
+      slug: params.slug,
+      logoSrc: live.logoSrc || params.logoSrc,
+      bookingUrl: `/reservar/${params.slug}`,
+      services,
+      servicesFromCatalog: fromCatalog.length > 0,
+      isDemo: false,
+      heroImageUrl: live.heroImageUrl,
+      portfolioImages: live.portfolioImages,
+    };
+  }
 
   if (params.demo) {
     const pack = getVitrinaDemoPack(placeholders.theme, params.slug);
