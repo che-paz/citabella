@@ -37,10 +37,13 @@ export function VitrinaPortfolioGallery({ images }: Props) {
     }
 
     const prevOverflow = document.body.style.overflow;
+    const prevTouch = document.body.style.touchAction;
     document.body.style.overflow = "hidden";
+    document.body.style.touchAction = "none";
     window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = prevOverflow;
+      document.body.style.touchAction = prevTouch;
       window.removeEventListener("keydown", onKey);
     };
   }, [active, close, showPrev, showNext]);
@@ -60,45 +63,51 @@ export function VitrinaPortfolioGallery({ images }: Props) {
               aria-label="Cerrar foto"
               onClick={close}
             />
-            <div className="vitrina-lightbox-stage">
-              <button
-                type="button"
-                className="vitrina-lightbox-close"
-                onClick={close}
-                aria-label="Cerrar"
-              >
-                <span aria-hidden>×</span>
-                <span className="vitrina-lightbox-close-label">Cerrar</span>
-              </button>
+
+            <div className="vitrina-lightbox-sheet">
+              <header className="vitrina-lightbox-toolbar">
+                <p className="vitrina-lightbox-count">
+                  {active + 1} / {images.length}
+                </p>
+                <button
+                  type="button"
+                  className="vitrina-lightbox-close"
+                  onClick={close}
+                  aria-label="Cerrar"
+                >
+                  Cerrar
+                </button>
+              </header>
+
+              <div className="vitrina-lightbox-scroll">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={images[active]}
+                  alt={`Trabajo ${active + 1}`}
+                  className="vitrina-lightbox-img"
+                />
+              </div>
+
               {images.length > 1 ? (
-                <>
+                <footer className="vitrina-lightbox-footer">
                   <button
                     type="button"
-                    className="vitrina-lightbox-nav vitrina-lightbox-prev"
+                    className="vitrina-lightbox-nav"
                     onClick={showPrev}
                     aria-label="Anterior"
                   >
-                    ‹
+                    ‹ Anterior
                   </button>
                   <button
                     type="button"
-                    className="vitrina-lightbox-nav vitrina-lightbox-next"
+                    className="vitrina-lightbox-nav"
                     onClick={showNext}
                     aria-label="Siguiente"
                   >
-                    ›
+                    Siguiente ›
                   </button>
-                </>
+                </footer>
               ) : null}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={images[active]}
-                alt={`Trabajo ${active + 1}`}
-                className="vitrina-lightbox-img"
-              />
-              <p className="vitrina-lightbox-count">
-                {active + 1} / {images.length}
-              </p>
             </div>
           </div>,
           document.body

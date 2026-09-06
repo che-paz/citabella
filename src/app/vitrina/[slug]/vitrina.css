@@ -308,13 +308,11 @@
   inset: 0;
   z-index: 9999;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
-  padding: max(0.75rem, env(safe-area-inset-top))
-    max(0.75rem, env(safe-area-inset-right))
-    max(0.75rem, env(safe-area-inset-bottom))
-    max(0.75rem, env(safe-area-inset-left));
   box-sizing: border-box;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+    env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 .vitrina-lightbox-backdrop {
@@ -323,106 +321,100 @@
   border: none;
   padding: 0;
   margin: 0;
-  background: rgba(12, 10, 9, 0.92);
+  background: rgba(12, 10, 9, 0.94);
   cursor: pointer;
 }
 
-.vitrina-lightbox-stage {
+.vitrina-lightbox-sheet {
   position: relative;
   z-index: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: min(100%, 720px);
-  max-height: 100%;
-  pointer-events: none;
+  width: 100%;
+  max-width: 720px;
+  height: 100%;
+  max-height: 100dvh;
+  margin: 0 auto;
+  background: transparent;
 }
 
-.vitrina-lightbox-stage > * {
-  pointer-events: auto;
+.vitrina-lightbox-toolbar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(12, 10, 9, 0.96);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.vitrina-lightbox-count {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.vitrina-lightbox-close {
+  flex: 0 0 auto;
+  min-height: 2.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 999px;
+  background: #fff;
+  color: #1f1a19;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+.vitrina-lightbox-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 1rem;
+  touch-action: pan-y;
 }
 
 .vitrina-lightbox-img {
   display: block;
-  width: auto;
+  width: 100%;
+  max-width: 560px;
   height: auto;
-  max-width: 100%;
-  max-height: min(78vh, 900px);
-  object-fit: contain;
+  margin: 0 auto;
   border-radius: 0.5rem;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
   background: #1a1615;
 }
 
-.vitrina-lightbox-close {
-  position: fixed;
-  top: max(0.75rem, env(safe-area-inset-top));
-  right: max(0.75rem, env(safe-area-inset-right));
-  z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
+.vitrina-lightbox-footer {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 0.65rem;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: rgba(12, 10, 9, 0.96);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.vitrina-lightbox-nav {
+  flex: 1 1 0;
   min-height: 2.75rem;
-  padding: 0.45rem 0.9rem 0.45rem 0.75rem;
   border: none;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.95);
   color: #1f1a19;
-  font-size: 1.35rem;
-  font-weight: 600;
-  line-height: 1;
+  font-size: 0.95rem;
+  font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-}
-
-.vitrina-lightbox-close-label {
-  font-size: 0.85rem;
-  letter-spacing: 0.02em;
-}
-
-.vitrina-lightbox-nav {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 2;
-  width: 2.75rem;
-  height: 2.75rem;
-  border: none;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.92);
-  color: #1f1a19;
-  font-size: 1.75rem;
-  line-height: 1;
-  cursor: pointer;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-}
-
-.vitrina-lightbox-prev {
-  left: max(0.5rem, env(safe-area-inset-left));
-}
-
-.vitrina-lightbox-next {
-  right: max(0.5rem, env(safe-area-inset-right));
-}
-
-.vitrina-lightbox-count {
-  margin: 0.75rem 0 0;
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 0.85rem;
-  font-weight: 500;
-}
-
-@media (max-width: 520px) {
-  .vitrina-lightbox-img {
-    max-height: min(70vh, 900px);
-  }
-
-  .vitrina-lightbox-nav {
-    top: auto;
-    bottom: max(1rem, env(safe-area-inset-bottom));
-    transform: none;
-  }
 }
 
 .vitrina-map-block {
