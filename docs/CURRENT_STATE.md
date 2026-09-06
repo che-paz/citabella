@@ -2,12 +2,12 @@
 
 > **Última actualización:** 2026-09-06  
 > **Marca presentación:** Gota+Check · **Estudio:** VajaLabs (sin constituir)  
-> **Sprint activo:** **S2.3** Tutis ✅ en main · Galaxy pendiente  
-> **Fase:** MVP ✅ | Piloto founders | Vitrina Tutis live (sustituye demo stock)
+> **Sprint activo:** **S2.3** Tutis ✅ · Galaxy 🟡  
+> **Fase:** MVP ✅ | Piloto founders | Vitrinas founders con contenido real
 
 ## Resumen en una línea
 
-MVP operativo. **Tutis vitrina live** mergeada (#10); Galaxy siguiente; dominios después.
+MVP operativo. Tutis live; **Galaxy vitrina** en curso; dominios después.
 
 ## Estado por área
 
@@ -22,7 +22,7 @@ MVP operativo. **Tutis vitrina live** mergeada (#10); Galaxy siguiente; dominios
 | Finanzas / gastos | 🟢 MVP | `/finanzas` ingresos vs gastos + balance mes |
 | PWA | 🟢 Operativo | Web Push por dispositivo; iPhone requiere icono en inicio |
 | Sitio marketing Gota+Check | 🟢 Live | https://gotacheck.app → www · proyecto Vercel `gotacheck-marketing` |
-| Vitrina / landings | 🟡 S2.3 | Tutis ✅ live (PR #10); Galaxy pendiente |
+| Vitrina / landings | 🟡 S2.3 | Tutis ✅ · Galaxy pack en PR |
 
 ## Decisiones tomadas
 
@@ -92,9 +92,9 @@ Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta
 
 ## Próximo paso inmediato
 
-1. Revisar Tutis: `/vitrina/salon-tutis` (sin `?demo=1`) en local/prod
-2. Armar Galaxy con `files/vitrina/Galaxy Barberia/`
-3. Dominios (S2.4) cuando confirmen nombres
+1. Revisar Galaxy: `/vitrina/galaxy-barberia-infantil`
+2. Dominios (S2.4) cuando confirmen nombres
+3. Mejoras iterativas de vitrina según feedback founders
 
 ## Docs operativos
 
@@ -118,7 +118,7 @@ Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta
 - Reset datos de práctica: `supabase/reset-salon-pilot.sql`
 - Login: `/login` → contraseña temporal comunicada por canal privado (cambiar en `/ajustes`)
 - Links reserva: `/reservar/salon-tutis` y `/reservar/galaxy-barberia-infantil`
-- Vitrina Tutis (real): `/vitrina/salon-tutis` · Galaxy pendiente
+- Vitrina Tutis: `/vitrina/salon-tutis` · Galaxy: `/vitrina/galaxy-barberia-infantil`
 - Pitch stock: `?demo=1` en slugs sin pack live
 - Catálogo/citas: vacíos al inicio; configurar en `/ajustes` y `/catalogo`
 
@@ -146,6 +146,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-09-06 | S2.3: vitrina Galaxy live (pack + assets) |
 | 2026-09-06 | S2.3: vitrina Tutis live (copy + fotos reales en `public/vitrina/salon-tutis`) |
 | 2026-08-10 | Clientas: teléfono compartido (admin) + upsert público seguro (016) — piloto Galaxy |
 | 2026-08-05 | S2.1: modo `?demo=1` con fotos/copy ilustrativos para pitch y taller |

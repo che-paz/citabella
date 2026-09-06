@@ -13,8 +13,8 @@ El estudio monta el contenido (no hay editor self-serve en esta fase).
 
 | Salón | Slug | Contenido |
 |-------|------|-----------|
-| Tutis | `salon-tutis` | ✅ Live — `src/lib/vitrina/live.ts` + `public/vitrina/salon-tutis/` |
-| Galaxy | `galaxy-barberia-infantil` | ⬜ Pendiente |
+| Tutis | `salon-tutis` | ✅ Live |
+| Galaxy | `galaxy-barberia-infantil` | ✅ Live |
 | Pitch stock | sin live pack | `?demo=1` → Unsplash |
 
 ## Archivos
@@ -23,12 +23,12 @@ El estudio monta el contenido (no hay editor self-serve en esta fase).
 |------|-----|
 | `src/lib/vitrina/live.ts` | Packs reales por slug |
 | `public/vitrina/[slug]/` | Logo, hero, portfolio (web) |
-| `files/vitrina/` | Fuentes crudas (no requeridas en deploy) |
+| `files/vitrina/` | Fuentes crudas |
 | `src/components/vitrina/VitrinaLanding.tsx` | UI |
-| `src/lib/vitrina/demo.ts` | Solo pitch `?demo=1` |
+| `src/components/vitrina/VitrinaPortfolioGallery.tsx` | Lightbox |
 
 ## URLs
 
-- **Tutis (compartir):** `…/vitrina/salon-tutis` — sin `?demo=1`
-- Galaxy: cuando exista pack live
+- Tutis: `…/vitrina/salon-tutis`
+- Galaxy: `…/vitrina/galaxy-barberia-infantil`
 - Pitch genérico: `…/vitrina/gota-prueba-s13?demo=1`
