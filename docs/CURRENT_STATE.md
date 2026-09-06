@@ -2,12 +2,12 @@
 
 > **Última actualización:** 2026-09-06  
 > **Marca presentación:** Gota+Check · **Estudio:** VajaLabs (sin constituir)  
-> **Sprint activo:** **S2.3** Tutis ✅ · Galaxy 🟡  
+> **Sprint activo:** **S2.3 ✅** Tutis + Galaxy live · siguiente S2.4 dominios  
 > **Fase:** MVP ✅ | Piloto founders | Vitrinas founders con contenido real
 
 ## Resumen en una línea
 
-MVP operativo. Tutis live; **Galaxy vitrina** en curso; dominios después.
+MVP operativo. **S2.3 ✅:** Tutis + Galaxy live (PR #11); lightbox corregido; dominios después.
 
 ## Estado por área
 
@@ -22,7 +22,7 @@ MVP operativo. Tutis live; **Galaxy vitrina** en curso; dominios después.
 | Finanzas / gastos | 🟢 MVP | `/finanzas` ingresos vs gastos + balance mes |
 | PWA | 🟢 Operativo | Web Push por dispositivo; iPhone requiere icono en inicio |
 | Sitio marketing Gota+Check | 🟢 Live | https://gotacheck.app → www · proyecto Vercel `gotacheck-marketing` |
-| Vitrina / landings | 🟡 S2.3 | Tutis ✅ · Galaxy pack en PR |
+| Vitrina / landings | 🟢 S2.3 | Tutis + Galaxy live; lightbox OK; dominios = S2.4 |
 
 ## Decisiones tomadas
 
