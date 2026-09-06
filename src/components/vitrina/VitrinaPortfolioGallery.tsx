@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 type Props = {
   images: string[];
@@ -8,6 +9,11 @@ type Props = {
 
 export function VitrinaPortfolioGallery({ images }: Props) {
   const [active, setActive] = useState<number | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const close = useCallback(() => setActive(null), []);
 
@@ -30,13 +36,74 @@ export function VitrinaPortfolioGallery({ images }: Props) {
       if (e.key === "ArrowRight") showNext();
     }
 
+    const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKey);
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = prevOverflow;
       window.removeEventListener("keydown", onKey);
     };
   }, [active, close, showPrev, showNext]);
+
+  const lightbox =
+    mounted && active !== null
+      ? createPortal(
+          <div
+            className="vitrina-lightbox"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Foto ampliada"
+          >
+            <button
+              type="button"
+              className="vitrina-lightbox-backdrop"
+              aria-label="Cerrar foto"
+              onClick={close}
+            />
+            <div className="vitrina-lightbox-stage">
+              <button
+                type="button"
+                className="vitrina-lightbox-close"
+                onClick={close}
+                aria-label="Cerrar"
+              >
+                <span aria-hidden>×</span>
+                <span className="vitrina-lightbox-close-label">Cerrar</span>
+              </button>
+              {images.length > 1 ? (
+                <>
+                  <button
+                    type="button"
+                    className="vitrina-lightbox-nav vitrina-lightbox-prev"
+                    onClick={showPrev}
+                    aria-label="Anterior"
+                  >
+                    ‹
+                  </button>
+                  <button
+                    type="button"
+                    className="vitrina-lightbox-nav vitrina-lightbox-next"
+                    onClick={showNext}
+                    aria-label="Siguiente"
+                  >
+                    ›
+                  </button>
+                </>
+              ) : null}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={images[active]}
+                alt={`Trabajo ${active + 1}`}
+                className="vitrina-lightbox-img"
+              />
+              <p className="vitrina-lightbox-count">
+                {active + 1} / {images.length}
+              </p>
+            </div>
+          </div>,
+          document.body
+        )
+      : null;
 
   return (
     <>
@@ -55,58 +122,7 @@ export function VitrinaPortfolioGallery({ images }: Props) {
           </button>
         ))}
       </div>
-
-      {active !== null ? (
-        <div
-          className="vitrina-lightbox"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Foto ampliada"
-          onClick={close}
-        >
-          <button
-            type="button"
-            className="vitrina-lightbox-close"
-            onClick={close}
-            aria-label="Cerrar"
-          >
-            ×
-          </button>
-          {images.length > 1 ? (
-            <>
-              <button
-                type="button"
-                className="vitrina-lightbox-nav vitrina-lightbox-prev"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  showPrev();
-                }}
-                aria-label="Anterior"
-              >
-                ‹
-              </button>
-              <button
-                type="button"
-                className="vitrina-lightbox-nav vitrina-lightbox-next"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  showNext();
-                }}
-                aria-label="Siguiente"
-              >
-                ›
-              </button>
-            </>
-          ) : null}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={images[active]}
-            alt={`Trabajo ${active + 1}`}
-            className="vitrina-lightbox-img"
-            onClick={(e) => e.stopPropagation()}
-          />
-        </div>
-      ) : null}
+      {lightbox}
     </>
   );
 }
