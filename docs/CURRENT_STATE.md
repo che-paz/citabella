@@ -1,19 +1,19 @@
 # CITABELLA / Gota+Check — Current State
 
-> **Última actualización:** 2026-08-10  
+> **Última actualización:** 2026-09-06  
 > **Marca presentación:** Gota+Check · **Estudio:** VajaLabs (sin constituir)  
-> **Sprint activo:** **S2.1 ✅** · siguiente **S2.2** editor · parche piloto Clientas (teléfono compartido)  
-> **Fase:** MVP ✅ | Piloto founders | **Vitrina:** plantilla + `?demo=1` en prod | Precios/taller al final
+> **Sprint activo:** **S2.3** Tutis live · Galaxy pendiente  
+> **Fase:** MVP ✅ | Piloto founders | Vitrina Tutis con contenido real
 
 ## Resumen en una línea
 
-MVP operativo. **Fase 1 ✅**. S2.1 ✅. Clientas: mismo WhatsApp en varias fichas (Galaxy). Siguiente: S2.2 editor.
+MVP operativo. **S2.3:** vitrina Tutis publicada con fotos/copy reales; Galaxy siguiente; dominios después.
 
 ## Estado por área
 
 | Área | Estado | Notas |
 |------|--------|-------|
-| Documentación | 🟢 S1.1 | `MIGRATIONS_CHECKLIST.md` + `RUNBOOK_ALTA_SALON.md` + ruta GTM |
+| Documentación | 🟢 S1.1 | + FEATURES/Vitrina S2.3 |
 | Repositorio / código | 🟢 MVP core | Flujo reserva + validación pagos verificado |
 | Base de datos | 🟢 001–016 en cloud | `016` upsert teléfono compartido ✅ 2026-08-10 |
 | Supabase | 🟡 Free → Pro pendiente | Operativo; Pro + backups antes del taller |
@@ -22,7 +22,7 @@ MVP operativo. **Fase 1 ✅**. S2.1 ✅. Clientas: mismo WhatsApp en varias fich
 | Finanzas / gastos | 🟢 MVP | `/finanzas` ingresos vs gastos + balance mes |
 | PWA | 🟢 Operativo | Web Push por dispositivo; iPhone requiere icono en inicio |
 | Sitio marketing Gota+Check | 🟢 Live | https://gotacheck.app → www · proyecto Vercel `gotacheck-marketing` |
-| Vitrina / landings | 🟢 S2.1 | `/vitrina/[slug]` + `?demo=1`; editor = S2.2 |
+| Vitrina / landings | 🟡 S2.3 | Tutis live; Galaxy pendiente; `?demo=1` = pitch stock |
 
 ## Decisiones tomadas
 
@@ -92,9 +92,9 @@ Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta
 
 ## Próximo paso inmediato
 
-1. Compartir prod `…/vitrina/[slug]?demo=1` + brief a founders
-2. Cerrar copy/fotos reales → S2.0 ✅
-3. **S2.2** editor dueña (prueba de campo: ellas cargan su info desde cero / campos vacíos)
+1. Revisar Tutis: `/vitrina/salon-tutis` (sin `?demo=1`) en local/prod
+2. Armar Galaxy con `files/vitrina/Galaxy Barberia/`
+3. Dominios (S2.4) cuando confirmen nombres
 
 ## Docs operativos
 
@@ -118,8 +118,8 @@ Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta
 - Reset datos de práctica: `supabase/reset-salon-pilot.sql`
 - Login: `/login` → contraseña temporal comunicada por canal privado (cambiar en `/ajustes`)
 - Links reserva: `/reservar/salon-tutis` y `/reservar/galaxy-barberia-infantil`
-- Vitrina (esqueleto): `/vitrina/salon-tutis` y `/vitrina/galaxy-barberia-infantil`
-- Vitrina demo (pitch): añadir `?demo=1` (fotos + copy de ejemplo)
+- Vitrina Tutis (real): `/vitrina/salon-tutis` · Galaxy pendiente
+- Pitch stock: `?demo=1` en slugs sin pack live
 - Catálogo/citas: vacíos al inicio; configurar en `/ajustes` y `/catalogo`
 
 ## Credenciales de desarrollo (seed demo)
@@ -146,6 +146,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-09-06 | S2.3: vitrina Tutis live (copy + fotos reales en `public/vitrina/salon-tutis`) |
 | 2026-08-10 | Clientas: teléfono compartido (admin) + upsert público seguro (016) — piloto Galaxy |
 | 2026-08-05 | S2.1: modo `?demo=1` con fotos/copy ilustrativos para pitch y taller |
 | 2026-08-05 | S2.1: esqueleto `/vitrina/[slug]` + placeholders + `FEATURES/Vitrina.md` |

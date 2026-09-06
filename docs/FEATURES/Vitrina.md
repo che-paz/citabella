@@ -1,43 +1,34 @@
-# Vitrina — landing del salón (SKU B/C)
+# Vitrina — landing del salón (servicio del estudio)
 
-> **Sprint:** S2.1 (esqueleto)  
+> **Sprint:** S2.3 🟡 · S2.1 ✅ · S2.2 ❌ aparcado  
 > **Ruta:** `/vitrina/[slug]`  
-> **Spec contenido:** `docs/S2.0_SPEC_VITRINA.md`
+> **Spec:** `docs/S2.0_SPEC_VITRINA.md`
 
 ## Qué es
 
-Página pública de una sola URL: marca + servicios + fotos + CTA a `/reservar/[slug]`.  
-No es el dashboard ni el wizard de reserva.
+Página pública: marca + servicios + fotos + CTA a `/reservar/[slug]`.  
+El estudio monta el contenido (no hay editor self-serve en esta fase).
 
-## Estado S2.1
+## Estado
 
-- Plantilla única con temas `beauty` | `kids` (CSS vars).
-- Nombre y logo desde `salones` (mismo filtro `activo=true` que reserva pública).
-- Servicios: catálogo público si hay ítems; si no, placeholders.
-- Copy / contacto / fotos: placeholders en `src/lib/vitrina/placeholders.ts` (por slug).
-- **Modo demo pitch/taller:** `?demo=1` → copy pulido + fotos Unsplash ilustrativas + hero con imagen. Banner aclara que no son del salón. Código en `src/lib/vitrina/demo.ts`.
-- Sin migración DB; editor = S2.2.
+| Salón | Slug | Contenido |
+|-------|------|-----------|
+| Tutis | `salon-tutis` | ✅ Live — `src/lib/vitrina/live.ts` + `public/vitrina/salon-tutis/` |
+| Galaxy | `galaxy-barberia-infantil` | ⬜ Pendiente |
+| Pitch stock | sin live pack | `?demo=1` → Unsplash |
 
 ## Archivos
 
 | Path | Rol |
 |------|-----|
-| `src/app/vitrina/[slug]/page.tsx` | Route + metadata + `?demo=1` |
-| `src/app/vitrina/layout.tsx` | Fuentes Fraunces + Outfit |
-| `src/components/vitrina/VitrinaLanding.tsx` | Secciones UI |
-| `src/lib/vitrina/*` | Types, placeholders, demo pack, resolve |
+| `src/lib/vitrina/live.ts` | Packs reales por slug |
+| `public/vitrina/[slug]/` | Logo, hero, portfolio (web) |
+| `files/vitrina/` | Fuentes crudas (no requeridas en deploy) |
+| `src/components/vitrina/VitrinaLanding.tsx` | UI |
+| `src/lib/vitrina/demo.ts` | Solo pitch `?demo=1` |
 
-## URLs de prueba (prod)
+## URLs
 
-- Esqueleto: `…/vitrina/salon-tutis`
-- **Demo realista (mostrar founders/taller):** `…/vitrina/salon-tutis?demo=1`
-- Galaxy: `…/vitrina/galaxy-barberia-infantil?demo=1`
-- Prueba: `…/vitrina/gota-prueba-s13?demo=1`
-
-Salones inactivos → 404 (igual que `/reservar`).
-
-## Fuera de S2.1
-
-- Editor dueña (S2.2)
-- Dominio propio del salón (S2.4)
-- Precios en vitrina (decisión abierta S2.0)
+- **Tutis (compartir):** `…/vitrina/salon-tutis` — sin `?demo=1`
+- Galaxy: cuando exista pack live
+- Pitch genérico: `…/vitrina/gota-prueba-s13?demo=1`

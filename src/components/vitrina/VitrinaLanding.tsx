@@ -85,7 +85,7 @@ export function VitrinaLanding({ content }: Props) {
               ? "Selección del catálogo. Precios y cupos al agendar."
               : content.isDemo
                 ? "Ejemplos de servicios. En la versión real salen los tuyos."
-                : "Lista de ejemplo hasta cargar el catálogo o el editor."}
+                : "Consulta disponibilidad y precios al agendar."}
           </p>
           <ul className="vitrina-services">
             {content.services.map((s) => (
@@ -103,7 +103,9 @@ export function VitrinaLanding({ content }: Props) {
           <h2 id="vitrina-portfolio">Trabajos</h2>
           <p className="vitrina-section-lead">
             {hasPortfolioPhotos
-              ? "Galería de ejemplo. En producción van fotos reales del salón."
+              ? content.isDemo
+                ? "Galería de ejemplo. En producción van fotos reales del salón."
+                : "Algunos de nuestros trabajos."
               : "Galería placeholder — aquí irán fotos reales del salón."}
           </p>
           <div className="vitrina-portfolio" role="list">
@@ -116,7 +118,7 @@ export function VitrinaLanding({ content }: Props) {
                     role="listitem"
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={item} alt={`Trabajo de ejemplo ${index + 1}`} />
+                    <img src={item} alt={`Trabajo ${index + 1}`} />
                   </div>
                 );
               }
