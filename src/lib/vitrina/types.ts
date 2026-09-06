@@ -11,6 +11,8 @@ export type VitrinaContact = {
   /** Digits only or full https://wa.me/... URL */
   whatsapp?: string;
   mapsUrl?: string;
+  /** Google Maps embed iframe src (optional; falls back to link only) */
+  mapsEmbedUrl?: string;
 };
 
 export type VitrinaPlaceholders = {

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { VitrinaPortfolioGallery } from "@/components/vitrina/VitrinaPortfolioGallery";
 import { getWhatsAppHref } from "@/lib/vitrina/resolve-content";
 import type { VitrinaResolved } from "@/lib/vitrina/types";
 
@@ -29,9 +30,10 @@ function AgendarButton({
 export function VitrinaLanding({ content }: Props) {
   const wa = getWhatsAppHref(content.contact.whatsapp);
   const hasPortfolioPhotos = content.portfolioImages.length > 0;
-  const portfolioSlots = hasPortfolioPhotos
-    ? content.portfolioImages
-    : Array.from({ length: content.portfolioCount }, (_, i) => i + 1);
+  const portfolioPlaceholders = Array.from(
+    { length: content.portfolioCount },
+    (_, i) => i + 1
+  );
 
   return (
     <div
@@ -105,24 +107,14 @@ export function VitrinaLanding({ content }: Props) {
             {hasPortfolioPhotos
               ? content.isDemo
                 ? "Galería de ejemplo. En producción van fotos reales del salón."
-                : "Algunos de nuestros trabajos."
+                : "Toca una foto para ampliarla."
               : "Galería placeholder — aquí irán fotos reales del salón."}
           </p>
-          <div className="vitrina-portfolio" role="list">
-            {portfolioSlots.map((item, index) => {
-              if (typeof item === "string") {
-                return (
-                  <div
-                    key={item}
-                    className="vitrina-portfolio-photo"
-                    role="listitem"
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={item} alt={`Trabajo ${index + 1}`} />
-                  </div>
-                );
-              }
-              return (
+          {hasPortfolioPhotos ? (
+            <VitrinaPortfolioGallery images={content.portfolioImages} />
+          ) : (
+            <div className="vitrina-portfolio" role="list">
+              {portfolioPlaceholders.map((item) => (
                 <div
                   key={item}
                   className={`vitrina-portfolio-slot vitrina-portfolio-slot-${(item % 3) + 1}`}
@@ -130,9 +122,9 @@ export function VitrinaLanding({ content }: Props) {
                 >
                   <span>Foto {item}</span>
                 </div>
-              );
-            })}
-          </div>
+              ))}
+            </div>
+          )}
           <div className="vitrina-cta-wrap">
             <AgendarButton href={content.bookingUrl} />
           </div>
@@ -176,21 +168,32 @@ export function VitrinaLanding({ content }: Props) {
                 </dd>
               </div>
             ) : null}
-            {content.contact.mapsUrl ? (
-              <div>
-                <dt>Mapa</dt>
-                <dd>
-                  <a
-                    href={content.contact.mapsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Ver en Google Maps
-                  </a>
-                </dd>
-              </div>
-            ) : null}
           </dl>
+          {content.contact.mapsEmbedUrl || content.contact.mapsUrl ? (
+            <div className="vitrina-map-block">
+              {content.contact.mapsEmbedUrl ? (
+                <div className="vitrina-map-frame">
+                  <iframe
+                    title="Ubicación del salón"
+                    src={content.contact.mapsEmbedUrl}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    allowFullScreen
+                  />
+                </div>
+              ) : null}
+              {content.contact.mapsUrl ? (
+                <a
+                  className="vitrina-map-link"
+                  href={content.contact.mapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Abrir en Google Maps
+                </a>
+              ) : null}
+            </div>
+          ) : null}
         </section>
       </main>
 

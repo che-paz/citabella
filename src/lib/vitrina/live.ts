@@ -33,12 +33,13 @@ const TUTIS: VitrinaLivePack = {
     hours: "Lun–Sáb 10:00–16:00",
     whatsapp: "50241925121",
     mapsUrl: "https://maps.app.goo.gl/pNFaTjFoGcGwxsEF7",
+    mapsEmbedUrl:
+      "https://maps.google.com/maps?q=14.565155,-89.354539&z=16&hl=es&output=embed",
   },
   theme: "beauty",
   logoSrc: "/vitrina/salon-tutis/logo.png",
   heroImageUrl: "/vitrina/salon-tutis/hero.jpg",
   portfolioImages: [
-    "/vitrina/salon-tutis/portfolio/01.jpg",
     "/vitrina/salon-tutis/portfolio/02.jpg",
     "/vitrina/salon-tutis/portfolio/03.jpg",
     "/vitrina/salon-tutis/portfolio/04.jpg",
