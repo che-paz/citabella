@@ -3,10 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useFormState, useFormStatus } from "react-dom";
-import {
-  createClientaAction,
-  updateClientaAction,
-} from "@/lib/clientas/actions";
+import { saveClientaAction } from "@/lib/clientas/actions";
 import { PHONE_INPUT_HINT, PHONE_INPUT_PLACEHOLDER } from "@/lib/utils/phone";
 import type { Clienta } from "@/types/database";
 import { Button } from "@/components/ui/button";
@@ -40,8 +37,7 @@ function SubmitButton({ isEdit }: { isEdit: boolean }) {
 export function ClientaForm({ clienta, open, onOpenChange }: ClientaFormProps) {
   const router = useRouter();
   const isEdit = !!clienta;
-  const action = isEdit ? updateClientaAction : createClientaAction;
-  const [state, formAction] = useFormState(action, {});
+  const [state, formAction] = useFormState(saveClientaAction, {});
 
   useEffect(() => {
     if (state.success) {
@@ -66,7 +62,7 @@ export function ClientaForm({ clienta, open, onOpenChange }: ClientaFormProps) {
           </DialogDescription>
         </DialogHeader>
 
-        <form action={formAction} className="space-y-4">
+        <form action={formAction} className="space-y-4" key={clienta?.id ?? "new"}>
           {isEdit && <input type="hidden" name="id" value={clienta.id} />}
 
           <div className="space-y-2">

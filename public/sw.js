@@ -1,10 +1,16 @@
-/* Gota+Check push SW v2 */
+/* Gota+Check push SW v3 — no offline HTML cache; clear any old Cache Storage */
 self.addEventListener("install", (event) => {
   event.waitUntil(self.skipWaiting());
 });
 
 self.addEventListener("activate", (event) => {
-  event.waitUntil(self.clients.claim());
+  event.waitUntil(
+    (async () => {
+      const keys = await caches.keys();
+      await Promise.all(keys.map((key) => caches.delete(key)));
+      await self.clients.claim();
+    })()
+  );
 });
 
 self.addEventListener("push", (event) => {

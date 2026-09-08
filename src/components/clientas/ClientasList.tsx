@@ -49,6 +49,11 @@ export function ClientasList({
     setFormOpen(true);
   }
 
+  function handleFormOpenChange(open: boolean) {
+    setFormOpen(open);
+    if (!open) setEditingClienta(undefined);
+  }
+
   return (
     <div className="space-y-4">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -115,9 +120,10 @@ export function ClientasList({
       )}
 
       <ClientaForm
+        key={editingClienta?.id ?? "new"}
         clienta={editingClienta}
         open={formOpen}
-        onOpenChange={setFormOpen}
+        onOpenChange={handleFormOpenChange}
       />
     </div>
   );

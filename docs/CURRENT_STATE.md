@@ -1,6 +1,6 @@
 # CITABELLA / Gota+Check — Current State
 
-> **Última actualización:** 2026-09-06  
+> **Última actualización:** 2026-09-07  
 > **Marca presentación:** Gota+Check · **Estudio:** VajaLabs (sin constituir)  
 > **Sprint activo:** **S2.3 ✅** Tutis + Galaxy live · siguiente S2.4 dominios  
 > **Fase:** MVP ✅ | Piloto founders | Vitrinas founders con contenido real
@@ -65,6 +65,7 @@ MVP operativo. **S2.3 ✅:** Tutis + Galaxy live (PR #11); lightbox corregido; d
 - Agenda: citas canceladas ocultas (no aparecen en día/semana/mes)
 - Agenda admin: hora libre + duración editable al crear/reagendar (emergencias); link público sigue con intervalos
 - Clientas: mismo teléfono permitido en varias fichas (admin); `upsert_clienta_public` no pisa hermanos si hay 2+ con ese WhatsApp (migración 016)
+- Clientas form: una sola action `saveClientaAction` (create vs update por `id`) para evitar “Clienta no encontrada” al crear
 
 ## Decisiones pendientes
 
@@ -146,6 +147,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-09-07 | Fix Clientas: “Nueva clienta” ya no dispara update sin id (“Clienta no encontrada”) |
 | 2026-09-06 | S2.3: vitrina Galaxy live (pack + assets) |
 | 2026-09-06 | S2.3: vitrina Tutis live (copy + fotos reales en `public/vitrina/salon-tutis`) |
 | 2026-08-10 | Clientas: teléfono compartido (admin) + upsert público seguro (016) — piloto Galaxy |

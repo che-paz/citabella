@@ -110,3 +110,18 @@ export async function updateClientaAction(
   revalidatePath(`/clientas/${id}`);
   return { success: true };
 }
+
+/**
+ * Single entry for the dialog form. Branches on `id` so create/edit
+ * never mix when useFormState keeps a stale action binding.
+ */
+export async function saveClientaAction(
+  prev: ClientaActionState,
+  formData: FormData
+): Promise<ClientaActionState> {
+  const id = formData.get("id");
+  if (typeof id === "string" && id.length > 0) {
+    return updateClientaAction(prev, formData);
+  }
+  return createClientaAction(prev, formData);
+}
