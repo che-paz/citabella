@@ -2,12 +2,12 @@
 
 > **Última actualización:** 2026-09-10  
 > **Marca presentación:** Gota+Check · **Estudio:** VajaLabs (sin constituir)  
-> **Sprint activo:** **S2.4** dominios Tutis/Galaxy · S2.3 ✅ · Vercel Pro ✅  
-> **Fase:** MVP ✅ | Piloto founders | Vitrinas live · dominios en curso
+> **Sprint activo:** **S2.4 ✅** dominios Tutis + Galaxy live · Vercel Pro ✅  
+> **Fase:** MVP ✅ | Piloto founders | Vitrinas + dominios en producción
 
 ## Resumen en una línea
 
-MVP operativo. S2.3 ✅. **S2.4:** mapeo host→vitrina en código; falta agregar dominios en Vercel + DNS.
+MVP operativo. **S2.3 ✅ · S2.4 ✅:** Tutis (`estudiotutis.com`) y Galaxy (`galaxybarberiagt.com`) con vitrina en dominio propio.
 
 ## Estado por área
 
@@ -22,7 +22,7 @@ MVP operativo. S2.3 ✅. **S2.4:** mapeo host→vitrina en código; falta agrega
 | Finanzas / gastos | 🟢 MVP | `/finanzas` |
 | PWA | 🟢 Operativo | Web Push |
 | Sitio marketing Gota+Check | 🟢 Live | https://gotacheck.app |
-| Vitrina / landings | 🟡 S2.4 | Tutis+Galaxy live; dominios código listo, DNS pendiente |
+| Vitrina / landings | 🟢 S2.4 | Tutis + Galaxy en dominio propio; paths `/vitrina` de respaldo |
 
 ## Decisiones tomadas
 
@@ -93,13 +93,13 @@ Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta
 
 ## Próximo paso inmediato
 
-1. Merge S2.4 código (host → vitrina)
-2. En Vercel app: agregar `estudiotutis.com` + `galaxybarberiagt.com` (+ www)
-3. DNS según `docs/S2.4_DOMAINS_CHECKLIST.md` → smoke HTTPS
+1. Compartir URLs a founders: `https://www.estudiotutis.com` · `https://www.galaxybarberiagt.com`
+2. Mejoras menores de vitrina según feedback
+3. Preparar oleada/taller ≤15 (negocio)
 
 ## Docs operativos
 
-- Dominios salón: `docs/S2.4_DOMAINS_CHECKLIST.md`
+- Dominios salón: `docs/S2.4_DOMAINS_CHECKLIST.md` ✅ Tutis + Galaxy
 - Checklist migraciones: `docs/MIGRATIONS_CHECKLIST.md`
 - Alta asistida: `docs/RUNBOOK_ALTA_SALON.md` → `npm run provision:salon -- …`
 - Reset seguro: `supabase/reset-salon-pilot.sql` (founders bloqueados)
@@ -148,6 +148,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-09-10 | S2.4 ✅: `estudiotutis.com` + `galaxybarberiagt.com` live en Vercel |
 | 2026-09-10 | S2.4: mapa host→slug + checklist dominios Tutis/Galaxy (Vercel Pro) |
 | 2026-09-07 | Fix Clientas: “Nueva clienta” ya no dispara update sin id (“Clienta no encontrada”) |
 | 2026-09-06 | S2.3: vitrina Galaxy live (pack + assets) |
