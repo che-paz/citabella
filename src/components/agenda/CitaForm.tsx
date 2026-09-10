@@ -157,10 +157,13 @@ export function CitaForm({
   const [servicioId, setServicioId] = useState(initial.servicioId);
   const [paqueteId, setPaqueteId] = useState(initial.paqueteId);
   const [clientaId, setClientaId] = useState(initial.clientaId);
+  const [clientaQuery, setClientaQuery] = useState("");
   const [colaboradoraId, setColaboradoraId] = useState(initial.colaboradoraId);
   const [fecha, setFecha] = useState(initial.fecha);
   const [horaInicio, setHoraInicio] = useState(initial.horaInicio);
-  const [duracionMinutos, setDuracionMinutos] = useState(initial.duracionMinutos);
+  const [duracionMinutos, setDuracionMinutos] = useState<number | "">(
+    initial.duracionMinutos
+  );
   const [durationTouched, setDurationTouched] = useState(Boolean(editingCita));
 
   const catalogMins = catalogDuration(
@@ -170,6 +173,18 @@ export function CitaForm({
     servicios,
     paquetes
   );
+
+  const clientaFilter = clientaQuery.trim().toLowerCase();
+  const filteredClientas = clientaFilter
+    ? clientas.filter((c) => {
+        const nombre = c.nombre.toLowerCase();
+        const telefono = (c.telefono ?? "").toLowerCase();
+        return (
+          nombre.includes(clientaFilter) || telefono.includes(clientaFilter)
+        );
+      })
+    : clientas;
+  const selectedClienta = clientas.find((c) => c.id === clientaId);
 
   useEffect(() => {
     if (!durationTouched) {
@@ -184,10 +199,15 @@ export function CitaForm({
     }
   }, [state.success, onOpenChange, router]);
 
+  const durationOk =
+    typeof duracionMinutos === "number" &&
+    duracionMinutos >= 5 &&
+    duracionMinutos <= 480;
+
   const canSubmit = Boolean(
     clientaId &&
       horaInicio &&
-      duracionMinutos >= 5 &&
+      durationOk &&
       (tipo === "servicio" ? servicioId : paqueteId)
   );
 
@@ -211,22 +231,63 @@ export function CitaForm({
             )}
 
             <div className="space-y-1">
-              <Label>Clienta</Label>
-              <Select
-                value={clientaId || undefined}
-                onValueChange={setClientaId}
+              <Label htmlFor="clienta_search">Clienta</Label>
+              <Input
+                id="clienta_search"
+                type="search"
+                autoComplete="off"
+                placeholder="Escribe el nombre o teléfono…"
+                value={clientaQuery}
+                onChange={(e) => setClientaQuery(e.target.value)}
+              />
+              {selectedClienta && (
+                <p className="text-xs text-muted-foreground">
+                  Seleccionada:{" "}
+                  <span className="font-medium text-foreground">
+                    {selectedClienta.nombre}
+                  </span>
+                </p>
+              )}
+              <ul
+                className="max-h-40 overflow-y-auto rounded-md border border-input bg-background"
+                role="listbox"
+                aria-label="Resultados de clientas"
               >
-                <SelectTrigger>
-                  <SelectValue placeholder="Selecciona clienta" />
-                </SelectTrigger>
-                <SelectContent>
-                  {clientas.map((c) => (
-                    <SelectItem key={c.id} value={c.id}>
-                      {c.nombre}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                {filteredClientas.length === 0 ? (
+                  <li className="px-3 py-2 text-sm text-muted-foreground">
+                    No hay coincidencias
+                  </li>
+                ) : (
+                  filteredClientas.map((c) => {
+                    const selected = c.id === clientaId;
+                    return (
+                      <li key={c.id}>
+                        <button
+                          type="button"
+                          role="option"
+                          aria-selected={selected}
+                          className={
+                            selected
+                              ? "flex w-full flex-col items-start gap-0.5 bg-accent px-3 py-2 text-left text-sm"
+                              : "flex w-full flex-col items-start gap-0.5 px-3 py-2 text-left text-sm hover:bg-muted"
+                          }
+                          onClick={() => {
+                            setClientaId(c.id);
+                            setClientaQuery("");
+                          }}
+                        >
+                          <span className="font-medium">{c.nombre}</span>
+                          {c.telefono ? (
+                            <span className="text-xs text-muted-foreground">
+                              {c.telefono}
+                            </span>
+                          ) : null}
+                        </button>
+                      </li>
+                    );
+                  })
+                )}
+              </ul>
               <input type="hidden" name="clienta_id" value={clientaId} />
             </div>
 
@@ -356,28 +417,45 @@ export function CitaForm({
                   id="duracion_minutos"
                   name="duracion_minutos"
                   type="number"
+                  inputMode="numeric"
                   min={5}
                   max={480}
                   step={1}
                   value={duracionMinutos}
                   onChange={(e) => {
                     setDurationTouched(true);
-                    setDuracionMinutos(Number(e.target.value) || 5);
+                    const raw = e.target.value;
+                    if (raw === "") {
+                      setDuracionMinutos("");
+                      return;
+                    }
+                    const next = Number(raw);
+                    if (Number.isFinite(next)) {
+                      setDuracionMinutos(next);
+                    }
                   }}
                   required
                 />
+                {duracionMinutos !== "" &&
+                  typeof duracionMinutos === "number" &&
+                  duracionMinutos < 5 && (
+                    <p className="text-xs text-destructive">
+                      Mínimo 5 minutos
+                    </p>
+                  )}
               </div>
             </div>
             <p className="text-xs text-muted-foreground">
               Puedes poner cualquier hora (ej. 10:40) y acortar la duración para
               emergencias. No debe cruzarse con otra cita ni con la pausa.
-              {duracionMinutos !== catalogMins && (
-                <>
-                  {" "}
-                  Catálogo: {formatDuration(catalogMins)}; esta cita:{" "}
-                  {formatDuration(duracionMinutos)}.
-                </>
-              )}
+              {typeof duracionMinutos === "number" &&
+                duracionMinutos !== catalogMins && (
+                  <>
+                    {" "}
+                    Catálogo: {formatDuration(catalogMins)}; esta cita:{" "}
+                    {formatDuration(duracionMinutos)}.
+                  </>
+                )}
             </p>
 
             <div className="space-y-1">

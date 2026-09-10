@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getSalonLogoPublicUrl } from "@/lib/storage/logos";
 import { cn } from "@/lib/utils";
 
@@ -7,6 +8,8 @@ type SalonBrandProps = {
   logoSrc?: string | null;
   compact?: boolean;
   className?: string;
+  /** When set, logo + name link to the salon website / vitrina. */
+  href?: string | null;
 };
 
 export function SalonBrand({
@@ -15,11 +18,12 @@ export function SalonBrand({
   logoSrc,
   compact = false,
   className,
+  href,
 }: SalonBrandProps) {
   const src = logoSrc ?? getSalonLogoPublicUrl(logoUrl);
 
-  return (
-    <div className={cn("flex min-w-0 items-center gap-2.5", className)}>
+  const content = (
+    <>
       {src ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
@@ -49,6 +53,26 @@ export function SalonBrand({
       >
         {nombre}
       </span>
+    </>
+  );
+
+  if (href) {
+    return (
+      <Link
+        href={href}
+        className={cn(
+          "flex min-w-0 items-center gap-2.5 rounded-md outline-none transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-ring",
+          className
+        )}
+      >
+        {content}
+      </Link>
+    );
+  }
+
+  return (
+    <div className={cn("flex min-w-0 items-center gap-2.5", className)}>
+      {content}
     </div>
   );
 }

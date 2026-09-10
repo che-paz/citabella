@@ -3,6 +3,7 @@ import { ReservarWizard } from "@/components/reservar/ReservarWizard";
 import { SalonBrand } from "@/components/dashboard/SalonBrand";
 import { getCatalogoPublico, getSalonBySlug } from "@/lib/reservar/queries";
 import { getSalonLogoPublicUrl } from "@/lib/storage/logos";
+import { getSalonWebsiteHref } from "@/lib/vitrina/hosts";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -37,7 +38,11 @@ export default async function ReservarPage({ params }: PageProps) {
           <p className="mb-2 text-xs font-medium uppercase tracking-wide text-primary">
             Reserva en línea
           </p>
-          <SalonBrand nombre={salon.nombre} logoSrc={logoSrc} />
+          <SalonBrand
+            nombre={salon.nombre}
+            logoSrc={logoSrc}
+            href={getSalonWebsiteHref(slug)}
+          />
         </div>
       </header>
 

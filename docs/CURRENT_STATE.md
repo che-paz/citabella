@@ -64,6 +64,9 @@ MVP operativo. **S2.3 ✅ · S2.4 ✅:** Tutis (`estudiotutis.com`) y Galaxy (`g
 - Link reserva: CTA Continuar fijo al pie al elegir servicio (catálogos largos)
 - Agenda: citas canceladas ocultas (no aparecen en día/semana/mes)
 - Agenda admin: hora libre + duración editable al crear/reagendar (emergencias); link público sigue con intervalos
+- Link reserva: logo/nombre enlazan a la web del salón (dominio propio o `/vitrina/[slug]`)
+- Agenda: picker de clienta con búsqueda por nombre/teléfono (útil en móvil)
+- Duración de cita: el campo permite borrarse al editar; validación mínimo 5 min
 - Clientas: mismo teléfono permitido en varias fichas (admin); `upsert_clienta_public` no pisa hermanos si hay 2+ con ese WhatsApp (migración 016)
 - Clientas form: una sola action `saveClientaAction` (create vs update por `id`) para evitar “Clienta no encontrada” al crear
 
@@ -93,9 +96,8 @@ Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta
 
 ## Próximo paso inmediato
 
-1. Compartir URLs a founders: `https://www.estudiotutis.com` · `https://www.galaxybarberiagt.com`
-2. Mejoras menores de vitrina según feedback
-3. Preparar oleada/taller ≤15 (negocio)
+1. Deploy fixes cosméticos agenda/reserva (logo → web, buscador clienta, duración)
+2. Preparar oleada/taller ≤15 (negocio)
 
 ## Docs operativos
 
@@ -148,6 +150,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-09-10 | Fix UI: logo reserva → web salón; buscar clienta por nombre en agenda (móvil); duración editable permite borrar (min 5) |
 | 2026-09-10 | S2.4 ✅: `estudiotutis.com` + `galaxybarberiagt.com` live en Vercel |
 | 2026-09-10 | S2.4: mapa host→slug + checklist dominios Tutis/Galaxy (Vercel Pro) |
 | 2026-09-07 | Fix Clientas: “Nueva clienta” ya no dispara update sin id (“Clienta no encontrada”) |
