@@ -100,7 +100,7 @@ Objetivo: plantilla mínima + founders como laboratorio.
 | **S2.1 Plantilla técnica** | 1 plantilla (máx 2) desplegable; dominio salón → landing → agenda | ✅ Esqueleto + `?demo=1` (2026-08-05); dominio propio = S2.4 |
 | **S2.2 Editor dueña** | Rellenar plantilla lo más intuitivo posible; founder prueba sola | Notas de fricción + fixes mínimos |
 | **S2.3 Add-on diseño** | Proceso “diseño asistido” (cupo / lista); foto con tarifa amigo | Checklist entrega C (sin sobrevender capacidad) |
-| **S2.4 URLs** | Definir rutas: app-only vs `misalon.com/agendar` | Documentado + 1 ejemplo real |
+| **S2.4 URLs** | Definir rutas: app-only vs `misalon.com/agendar` | 🟡 Código host→vitrina (`hosts.ts`); DNS Tutis/Galaxy pendiente — `S2.4_DOMAINS_CHECKLIST.md` |
 
 **Criterio fase:** 1–2 landings founders live + “dueña puede editar X sin nosotros”.
 

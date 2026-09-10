@@ -1,8 +1,8 @@
 # Vitrina — landing del salón (servicio del estudio)
 
-> **Sprint:** S2.3 🟡 · S2.1 ✅ · S2.2 ❌ aparcado  
-> **Ruta:** `/vitrina/[slug]`  
-> **Spec:** `docs/S2.0_SPEC_VITRINA.md`
+> **Sprint:** S2.3 ✅ · **S2.4** dominios 🟡 · S2.2 ❌ aparcado  
+> **Ruta path:** `/vitrina/[slug]`  
+> **Dominios:** ver `docs/S2.4_DOMAINS_CHECKLIST.md`
 
 ## Qué es
 
@@ -11,24 +11,23 @@ El estudio monta el contenido (no hay editor self-serve en esta fase).
 
 ## Estado
 
-| Salón | Slug | Contenido |
-|-------|------|-----------|
-| Tutis | `salon-tutis` | ✅ Live |
-| Galaxy | `galaxy-barberia-infantil` | ✅ Live |
-| Pitch stock | sin live pack | `?demo=1` → Unsplash |
+| Salón | Slug | Contenido | Dominio |
+|-------|------|-----------|---------|
+| Tutis | `salon-tutis` | ✅ Live | `estudiotutis.com` (DNS pendiente) |
+| Galaxy | `galaxy-barberia-infantil` | ✅ Live | `galaxybarberiagt.com` (DNS pendiente) |
+| Pitch stock | sin live pack | `?demo=1` | — |
 
 ## Archivos
 
 | Path | Rol |
 |------|-----|
 | `src/lib/vitrina/live.ts` | Packs reales por slug |
-| `public/vitrina/[slug]/` | Logo, hero, portfolio (web) |
-| `files/vitrina/` | Fuentes crudas |
-| `src/components/vitrina/VitrinaLanding.tsx` | UI |
-| `src/components/vitrina/VitrinaPortfolioGallery.tsx` | Lightbox |
+| `src/lib/vitrina/hosts.ts` | Host → slug (S2.4) |
+| `public/vitrina/[slug]/` | Logo, hero, portfolio |
+| `src/components/vitrina/*` | UI + lightbox |
+| `src/middleware.ts` | Rewrite en dominio de salón |
 
 ## URLs
 
-- Tutis: `…/vitrina/salon-tutis`
-- Galaxy: `…/vitrina/galaxy-barberia-infantil`
-- Pitch genérico: `…/vitrina/gota-prueba-s13?demo=1`
+- Path app: `…/vitrina/salon-tutis` · `…/vitrina/galaxy-barberia-infantil`
+- Dominio (post-DNS): `https://estudiotutis.com` · `https://galaxybarberiagt.com`
