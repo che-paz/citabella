@@ -1,28 +1,28 @@
 # CITABELLA / Gota+Check — Current State
 
-> **Última actualización:** 2026-09-07  
+> **Última actualización:** 2026-09-10  
 > **Marca presentación:** Gota+Check · **Estudio:** VajaLabs (sin constituir)  
-> **Sprint activo:** **S2.3 ✅** Tutis + Galaxy live · siguiente S2.4 dominios  
-> **Fase:** MVP ✅ | Piloto founders | Vitrinas founders con contenido real
+> **Sprint activo:** **S2.4** dominios Tutis/Galaxy · S2.3 ✅ · Vercel Pro ✅  
+> **Fase:** MVP ✅ | Piloto founders | Vitrinas live · dominios en curso
 
 ## Resumen en una línea
 
-MVP operativo. **S2.3 ✅:** Tutis + Galaxy live (PR #11); lightbox corregido; dominios después.
+MVP operativo. S2.3 ✅. **S2.4:** mapeo host→vitrina en código; falta agregar dominios en Vercel + DNS.
 
 ## Estado por área
 
 | Área | Estado | Notas |
 |------|--------|-------|
-| Documentación | 🟢 S1.1 | + FEATURES/Vitrina S2.3 |
+| Documentación | 🟢 | + `S2.4_DOMAINS_CHECKLIST.md` |
 | Repositorio / código | 🟢 MVP core | Flujo reserva + validación pagos verificado |
 | Base de datos | 🟢 001–016 en cloud | `016` upsert teléfono compartido ✅ 2026-08-10 |
-| Supabase | 🟡 Free → Pro pendiente | Operativo; Pro + backups antes del taller |
-| Deploy | 🟢 Vercel | App + marketing. S1.2: Auth redirects + push smoke OK (2026-08-05) |
+| Supabase | 🟡 Free → Pro pendiente | Pro al primer cobro (backups) |
+| Deploy | 🟢 Vercel Pro | App + marketing |
 | Prototipo UI | 🟢 MVP core | Dashboard + clientas listos |
-| Finanzas / gastos | 🟢 MVP | `/finanzas` ingresos vs gastos + balance mes |
-| PWA | 🟢 Operativo | Web Push por dispositivo; iPhone requiere icono en inicio |
-| Sitio marketing Gota+Check | 🟢 Live | https://gotacheck.app → www · proyecto Vercel `gotacheck-marketing` |
-| Vitrina / landings | 🟢 S2.3 | Tutis + Galaxy live; lightbox OK; dominios = S2.4 |
+| Finanzas / gastos | 🟢 MVP | `/finanzas` |
+| PWA | 🟢 Operativo | Web Push |
+| Sitio marketing Gota+Check | 🟢 Live | https://gotacheck.app |
+| Vitrina / landings | 🟡 S2.4 | Tutis+Galaxy live; dominios código listo, DNS pendiente |
 
 ## Decisiones tomadas
 
@@ -93,12 +93,13 @@ Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta
 
 ## Próximo paso inmediato
 
-1. Revisar Galaxy: `/vitrina/galaxy-barberia-infantil`
-2. Dominios (S2.4) cuando confirmen nombres
-3. Mejoras iterativas de vitrina según feedback founders
+1. Merge S2.4 código (host → vitrina)
+2. En Vercel app: agregar `estudiotutis.com` + `galaxybarberiagt.com` (+ www)
+3. DNS según `docs/S2.4_DOMAINS_CHECKLIST.md` → smoke HTTPS
 
 ## Docs operativos
 
+- Dominios salón: `docs/S2.4_DOMAINS_CHECKLIST.md`
 - Checklist migraciones: `docs/MIGRATIONS_CHECKLIST.md`
 - Alta asistida: `docs/RUNBOOK_ALTA_SALON.md` → `npm run provision:salon -- …`
 - Reset seguro: `supabase/reset-salon-pilot.sql` (founders bloqueados)
@@ -147,6 +148,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-09-10 | S2.4: mapa host→slug + checklist dominios Tutis/Galaxy (Vercel Pro) |
 | 2026-09-07 | Fix Clientas: “Nueva clienta” ya no dispara update sin id (“Clienta no encontrada”) |
 | 2026-09-06 | S2.3: vitrina Galaxy live (pack + assets) |
 | 2026-09-06 | S2.3: vitrina Tutis live (copy + fotos reales en `public/vitrina/salon-tutis`) |
