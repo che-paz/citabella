@@ -1,8 +1,8 @@
 # Checklist de migraciones (Supabase Cloud)
 
-> **Última verificación:** 2026-09-10 (017 en repo; aplicar en SQL Editor)  
+> **Última verificación:** 2026-09-10 (017 aplicada en SQL Editor)  
 > **Proyecto:** CITABELLA / Gota+Check — esquema multi-tenant  
-> **Regla:** nunca editar una migración ya aplicada; solo agregar `017_…` en adelante.
+> **Regla:** nunca editar una migración ya aplicada; solo agregar `018_…` en adelante.
 
 ## Inventario
 
@@ -24,9 +24,9 @@
 | `014_salon_pausa_diaria_rpc.sql` | RPC pública `get_salon_pausa_diaria` | ✅ |
 | `015_reserva_otra_persona.sql` | flag + beneficiario en reserva | ✅ |
 | `016_upsert_clienta_shared_phone.sql` | upsert público seguro con WhatsApp compartido | ✅ 2026-08-10 |
-| `017_paquete_descripcion.sql` | `paquetes.descripcion` opcional | ⏳ aplicar |
+| `017_paquete_descripcion.sql` | `paquetes.descripcion` opcional | ✅ 2026-09-10 |
 
-**Conclusión:** cloud 001–016 OK; **aplicar `017`** antes de usar descripción en paquetes.
+**Conclusión:** cloud al día con el repo (001–017).
 
 ## Cómo re-verificar (rápido)
 

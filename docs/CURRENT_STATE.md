@@ -15,7 +15,7 @@ MVP operativo. **S2.3 ✅ · S2.4 ✅:** Tutis (`estudiotutis.com`) y Galaxy (`g
 |------|--------|-------|
 | Documentación | 🟢 | + `S2.4_DOMAINS_CHECKLIST.md` |
 | Repositorio / código | 🟢 MVP core | Flujo reserva + validación pagos verificado |
-| Base de datos | 🟢 001–016 en cloud · **017 pendiente** | `paquetes.descripcion` en repo |
+| Base de datos | 🟢 001–017 en cloud | `017` `paquetes.descripcion` ✅ 2026-09-10 |
 | Supabase | 🟡 Free → Pro pendiente | Pro al primer cobro (backups) |
 | Deploy | 🟢 Vercel Pro | App + marketing |
 | Prototipo UI | 🟢 MVP core | Dashboard + clientas listos |
@@ -97,8 +97,7 @@ Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta
 
 ## Próximo paso inmediato
 
-1. Aplicar migración `017_paquete_descripcion.sql` en Supabase SQL Editor
-2. Preparar oleada/taller ≤15 (negocio)
+1. Preparar oleada/taller ≤15 (negocio)
 
 ## Docs operativos
 
@@ -151,6 +150,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-09-10 | Migración 017 aplicada en cloud (`paquetes.descripcion`) |
 | 2026-09-10 | Catálogo: descripción opcional en paquetes (migración 017; paridad con servicios) |
 | 2026-09-10 | Fix UI: logo reserva → web salón; buscar clienta por nombre en agenda (móvil); duración editable permite borrar (min 5) |
 | 2026-09-10 | S2.4 ✅: `estudiotutis.com` + `galaxybarberiagt.com` live en Vercel |
