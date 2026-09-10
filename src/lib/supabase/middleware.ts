@@ -46,21 +46,30 @@ export async function updateSession(
     data: { user },
   } = await supabase.auth.getUser();
 
-  const isAuthRoute = request.nextUrl.pathname.startsWith("/login");
+  const pathname = request.nextUrl.pathname;
+  const isAuthRoute = pathname === "/login" || pathname.startsWith("/login/");
   const isDashboardRoute =
-    request.nextUrl.pathname === "/" ||
-    request.nextUrl.pathname.startsWith("/catalogo") ||
-    request.nextUrl.pathname.startsWith("/agenda") ||
-    request.nextUrl.pathname.startsWith("/clientas") ||
-    request.nextUrl.pathname.startsWith("/pagos") ||
-    request.nextUrl.pathname.startsWith("/finanzas") ||
-    request.nextUrl.pathname.startsWith("/ajustes");
+    pathname === "/" ||
+    pathname === "/catalogo" ||
+    pathname.startsWith("/catalogo/") ||
+    // Exact /agenda — not public /agendar on salon domains
+    pathname === "/agenda" ||
+    pathname.startsWith("/agenda/") ||
+    pathname === "/clientas" ||
+    pathname.startsWith("/clientas/") ||
+    pathname === "/pagos" ||
+    pathname.startsWith("/pagos/") ||
+    pathname === "/finanzas" ||
+    pathname.startsWith("/finanzas/") ||
+    pathname === "/ajustes" ||
+    pathname.startsWith("/ajustes/");
 
-  // On salon domains, "/" is the public vitrina (rewrite), not the dashboard.
-  const isRewrittenHome =
-    Boolean(options?.rewritePath) && request.nextUrl.pathname === "/";
+  // Salon-domain rewrites (vitrina / booking) are always public.
+  if (options?.rewritePath) {
+    return supabaseResponse;
+  }
 
-  if (!user && isDashboardRoute && !isRewrittenHome) {
+  if (!user && isDashboardRoute) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);
