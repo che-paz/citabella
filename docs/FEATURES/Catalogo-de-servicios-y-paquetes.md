@@ -11,7 +11,7 @@
 - [x] Crear servicio: nombre, categoría, precio, duración, descripción
 - [x] Editar y desactivar servicio (no eliminar si tiene citas)
 - [x] Reactivar servicio desactivado
-- [x] Crear paquete: nombre, servicios incluidos, precio, duración total
+- [x] Crear paquete: nombre, servicios incluidos, precio, duración total, descripción opcional
 - [x] Editar, desactivar y reactivar paquete
 - [x] Ver catálogo organizado por categoría
 

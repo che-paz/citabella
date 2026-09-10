@@ -52,6 +52,7 @@ export type Paquete = {
   precio: number;
   duracion_minutos: number;
   activo: boolean;
+  descripcion: string | null;
   created_at: string;
 };
 

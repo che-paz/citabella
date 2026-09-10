@@ -295,6 +295,11 @@ export function CatalogoList({ servicios, paquetes, isAdmin }: CatalogoListProps
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-3">
+                  {paquete.descripcion && (
+                    <p className="text-sm text-muted-foreground">
+                      {paquete.descripcion}
+                    </p>
+                  )}
                   {paquete.servicios.length > 0 && (
                     <p className="text-sm text-muted-foreground">
                       Incluye:{" "}

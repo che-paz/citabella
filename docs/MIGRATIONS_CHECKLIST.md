@@ -1,8 +1,8 @@
 # Checklist de migraciones (Supabase Cloud)
 
-> **Última verificación:** 2026-08-10 (016 aplicada en SQL Editor)  
+> **Última verificación:** 2026-09-10 (017 en repo; aplicar en SQL Editor)  
 > **Proyecto:** CITABELLA / Gota+Check — esquema multi-tenant  
-> **Regla:** nunca editar una migración ya aplicada; solo agregar `016_…` en adelante.
+> **Regla:** nunca editar una migración ya aplicada; solo agregar `017_…` en adelante.
 
 ## Inventario
 
@@ -24,8 +24,9 @@
 | `014_salon_pausa_diaria_rpc.sql` | RPC pública `get_salon_pausa_diaria` | ✅ |
 | `015_reserva_otra_persona.sql` | flag + beneficiario en reserva | ✅ |
 | `016_upsert_clienta_shared_phone.sql` | upsert público seguro con WhatsApp compartido | ✅ 2026-08-10 |
+| `017_paquete_descripcion.sql` | `paquetes.descripcion` opcional | ⏳ aplicar |
 
-**Conclusión:** cloud al día con el repo (001–016).
+**Conclusión:** cloud 001–016 OK; **aplicar `017`** antes de usar descripción en paquetes.
 
 ## Cómo re-verificar (rápido)
 
@@ -37,7 +38,8 @@ SELECT
   (SELECT COUNT(*) FROM information_schema.columns WHERE table_name='pagos' AND column_name='asegurado_at') AS m010,
   (SELECT COUNT(*) FROM information_schema.tables WHERE table_name='push_subscriptions') AS m012,
   (SELECT COUNT(*) FROM information_schema.columns WHERE table_name='salones' AND column_name='pausa_diaria_activa') AS m013,
-  (SELECT COUNT(*) FROM information_schema.columns WHERE table_name='salones' AND column_name='permite_reserva_otra_persona') AS m015;
+  (SELECT COUNT(*) FROM information_schema.columns WHERE table_name='salones' AND column_name='permite_reserva_otra_persona') AS m015,
+  (SELECT COUNT(*) FROM information_schema.columns WHERE table_name='paquetes' AND column_name='descripcion') AS m017;
 ```
 
 Esperado: todos `1`.

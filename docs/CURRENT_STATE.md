@@ -15,7 +15,7 @@ MVP operativo. **S2.3 ✅ · S2.4 ✅:** Tutis (`estudiotutis.com`) y Galaxy (`g
 |------|--------|-------|
 | Documentación | 🟢 | + `S2.4_DOMAINS_CHECKLIST.md` |
 | Repositorio / código | 🟢 MVP core | Flujo reserva + validación pagos verificado |
-| Base de datos | 🟢 001–016 en cloud | `016` upsert teléfono compartido ✅ 2026-08-10 |
+| Base de datos | 🟢 001–016 en cloud · **017 pendiente** | `paquetes.descripcion` en repo |
 | Supabase | 🟡 Free → Pro pendiente | Pro al primer cobro (backups) |
 | Deploy | 🟢 Vercel Pro | App + marketing |
 | Prototipo UI | 🟢 MVP core | Dashboard + clientas listos |
@@ -39,6 +39,7 @@ MVP operativo. **S2.3 ✅ · S2.4 ✅:** Tutis (`estudiotutis.com`) y Galaxy (`g
 - Solo `admin_salon` puede INSERT/UPDATE en servicios y paquetes (RLS)
 - zod v4 instalado (usa `.issues` en errores de validación)
 - Soft delete en catálogo (`activo=false`); reactivar con `activo=true`
+- Paquetes: descripción opcional (igual que servicios); migración `017`
 - Motor disponibilidad puro en `src/lib/availability/` (testeable sin DB)
 - Slots cada 15 min; timezone del salón vía `Intl` (sin dependencia extra)
 - vitest para tests unitarios del motor de disponibilidad
@@ -96,7 +97,7 @@ Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta
 
 ## Próximo paso inmediato
 
-1. Deploy fixes cosméticos agenda/reserva (logo → web, buscador clienta, duración)
+1. Aplicar migración `017_paquete_descripcion.sql` en Supabase SQL Editor
 2. Preparar oleada/taller ≤15 (negocio)
 
 ## Docs operativos
@@ -150,6 +151,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-09-10 | Catálogo: descripción opcional en paquetes (migración 017; paridad con servicios) |
 | 2026-09-10 | Fix UI: logo reserva → web salón; buscar clienta por nombre en agenda (móvil); duración editable permite borrar (min 5) |
 | 2026-09-10 | S2.4 ✅: `estudiotutis.com` + `galaxybarberiagt.com` live en Vercel |
 | 2026-09-10 | S2.4: mapa host→slug + checklist dominios Tutis/Galaxy (Vercel Pro) |

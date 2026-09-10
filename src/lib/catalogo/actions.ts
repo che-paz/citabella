@@ -40,6 +40,11 @@ const paqueteSchema = z.object({
     .int("La duración debe ser un número entero")
     .min(5, "Mínimo 5 minutos")
     .max(960, "Máximo 960 minutos"),
+  descripcion: z
+    .string()
+    .max(500, "Máximo 500 caracteres")
+    .optional()
+    .transform((v) => (v?.trim() ? v.trim() : null)),
   servicio_ids: z
     .array(pgUuidSchema("Servicio inválido"))
     .min(1, "Selecciona al menos un servicio"),
@@ -65,6 +70,7 @@ function parsePaqueteForm(formData: FormData) {
     nombre: formData.get("nombre"),
     precio: formData.get("precio"),
     duracion_minutos: formData.get("duracion_minutos"),
+    descripcion: formData.get("descripcion") || undefined,
     servicio_ids: formData.getAll("servicio_ids"),
   });
 }
@@ -185,6 +191,7 @@ export async function createPaqueteAction(
       nombre: parsed.data.nombre,
       precio: parsed.data.precio,
       duracion_minutos: parsed.data.duracion_minutos,
+      descripcion: parsed.data.descripcion,
     })
     .select("id")
     .single();
@@ -236,6 +243,7 @@ export async function updatePaqueteAction(
       nombre: parsed.data.nombre,
       precio: parsed.data.precio,
       duracion_minutos: parsed.data.duracion_minutos,
+      descripcion: parsed.data.descripcion,
     })
     .eq("id", id)
     .eq("salon_id", user.salon_id);

@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 type PaqueteFormProps = {
   paquete?: PaqueteConServicios;
@@ -165,6 +166,17 @@ export function PaqueteForm({
                 required
               />
             </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="paquete-descripcion">Descripción (opcional)</Label>
+            <Textarea
+              id="paquete-descripcion"
+              name="descripcion"
+              defaultValue={paquete?.descripcion ?? ""}
+              placeholder="Detalles del paquete..."
+              rows={3}
+            />
           </div>
 
           {state.error && (

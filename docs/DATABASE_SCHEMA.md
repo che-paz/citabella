@@ -89,6 +89,7 @@ salones ──┬── usuarios
 | precio | DECIMAL(10,2) | Puede diferir de suma servicios |
 | duracion_minutos | INT NOT NULL | Tiempo total estimado |
 | activo | BOOLEAN DEFAULT true | |
+| descripcion | TEXT NULL | Paridad con servicios (017) |
 | created_at | TIMESTAMPTZ | |
 
 ### `paquete_servicios` (junction)

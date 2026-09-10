@@ -45,6 +45,7 @@ export default async function CatalogoPage() {
       precio: Number(p.precio),
       duracion_minutos: p.duracion_minutos,
       activo: p.activo,
+      descripcion: (p.descripcion as string | null) ?? null,
       created_at: p.created_at,
       servicios: junction.map((j) => {
         const servicio = Array.isArray(j.servicios) ? j.servicios[0] : j.servicios;
