@@ -6,12 +6,13 @@ import { getSiteUrl } from "@/lib/utils/site-url";
 function isAppOnlyPath(pathname: string): boolean {
   if (pathname === "/login" || pathname.startsWith("/login/")) return true;
   if (pathname.startsWith("/auth/")) return true;
-  if (pathname.startsWith("/catalogo")) return true;
-  if (pathname.startsWith("/agenda")) return true;
-  if (pathname.startsWith("/clientas")) return true;
-  if (pathname.startsWith("/pagos")) return true;
-  if (pathname.startsWith("/finanzas")) return true;
-  if (pathname.startsWith("/ajustes")) return true;
+  if (pathname === "/catalogo" || pathname.startsWith("/catalogo/")) return true;
+  // Do not match "/agendar" (public booking alias on salon domains).
+  if (pathname === "/agenda" || pathname.startsWith("/agenda/")) return true;
+  if (pathname === "/clientas" || pathname.startsWith("/clientas/")) return true;
+  if (pathname === "/pagos" || pathname.startsWith("/pagos/")) return true;
+  if (pathname === "/finanzas" || pathname.startsWith("/finanzas/")) return true;
+  if (pathname === "/ajustes" || pathname.startsWith("/ajustes/")) return true;
   return false;
 }
 
