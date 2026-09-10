@@ -97,3 +97,16 @@ const BY_SLUG: Record<string, VitrinaLivePack> = {
 export function getVitrinaLivePack(slug: string): VitrinaLivePack | null {
   return BY_SLUG[slug] ?? null;
 }
+
+/** Favicon / touch icons derived from the salon logo (under public/vitrina/[slug]/). */
+export function getVitrinaFaviconIcons(slug: string) {
+  if (!BY_SLUG[slug]) return undefined;
+  const base = `/vitrina/${slug}`;
+  return {
+    icon: [
+      { url: `${base}/favicon-32.png`, sizes: "32x32", type: "image/png" },
+      { url: `${base}/icon-192.png`, sizes: "192x192", type: "image/png" },
+    ],
+    apple: [{ url: `${base}/apple-touch-icon.png`, sizes: "180x180" }],
+  };
+}

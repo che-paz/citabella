@@ -1,22 +1,26 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { ReservarWizard } from "@/components/reservar/ReservarWizard";
 import { SalonBrand } from "@/components/dashboard/SalonBrand";
 import { getCatalogoPublico, getSalonBySlug } from "@/lib/reservar/queries";
 import { getSalonLogoPublicUrl } from "@/lib/storage/logos";
 import { getSalonWebsiteHref } from "@/lib/vitrina/hosts";
+import { getVitrinaFaviconIcons } from "@/lib/vitrina/live";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export async function generateMetadata({ params }: PageProps) {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const salon = await getSalonBySlug(slug);
+  const icons = getVitrinaFaviconIcons(slug);
   return {
     title: salon ? `Reservar — ${salon.nombre}` : "Reservar",
     description: salon
       ? `Reserva tu cita en ${salon.nombre}`
       : "Reserva tu cita de belleza",
+    ...(icons ? { icons } : {}),
   };
 }
 

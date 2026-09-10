@@ -21,9 +21,9 @@ El estudio monta el contenido (no hay editor self-serve en esta fase).
 
 | Path | Rol |
 |------|-----|
-| `src/lib/vitrina/live.ts` | Packs reales por slug |
+| `src/lib/vitrina/live.ts` | Packs reales por slug + favicons |
 | `src/lib/vitrina/hosts.ts` | Host → slug (S2.4) |
-| `public/vitrina/[slug]/` | Logo, hero, portfolio |
+| `public/vitrina/[slug]/` | Logo, hero, portfolio, `favicon-32.png`, `apple-touch-icon.png` |
 | `src/components/vitrina/*` | UI + lightbox |
 | `src/middleware.ts` | Rewrite en dominio de salón |
 

@@ -1,8 +1,10 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { VitrinaLanding } from "@/components/vitrina/VitrinaLanding";
 import { isVitrinaDemoParam } from "@/lib/vitrina/demo";
 import { getCatalogoPublico, getSalonBySlug } from "@/lib/reservar/queries";
 import { getSalonLogoPublicUrl } from "@/lib/storage/logos";
+import { getVitrinaFaviconIcons } from "@/lib/vitrina/live";
 import { resolveVitrinaContent } from "@/lib/vitrina/resolve-content";
 import "./vitrina.css";
 
@@ -11,17 +13,28 @@ type PageProps = {
   searchParams: Promise<{ demo?: string | string[] }>;
 };
 
-export async function generateMetadata({ params, searchParams }: PageProps) {
+export async function generateMetadata({
+  params,
+  searchParams,
+}: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const query = await searchParams;
   const salon = await getSalonBySlug(slug);
   const demo = isVitrinaDemoParam(query.demo);
   const baseTitle = salon ? salon.nombre : "Vitrina";
+  const icons = getVitrinaFaviconIcons(slug);
+
   return {
     title: demo ? `${baseTitle} (ejemplo)` : baseTitle,
     description: salon
       ? `${salon.nombre} — agenda tu cita en línea`
       : "Vitrina del salón",
+    applicationName: baseTitle,
+    appleWebApp: {
+      capable: true,
+      title: baseTitle,
+    },
+    ...(icons ? { icons } : {}),
   };
 }
 

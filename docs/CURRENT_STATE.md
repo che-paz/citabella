@@ -150,6 +150,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-09-10 | Vitrina: favicon por salón (desde logo Tutis/Galaxy) en `/vitrina` y `/reservar` |
 | 2026-09-10 | Migración 017 aplicada en cloud (`paquetes.descripcion`) |
 | 2026-09-10 | Catálogo: descripción opcional en paquetes (migración 017; paridad con servicios) |
 | 2026-09-10 | Fix UI: logo reserva → web salón; buscar clienta por nombre en agenda (móvil); duración editable permite borrar (min 5) |
