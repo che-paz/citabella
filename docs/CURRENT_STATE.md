@@ -87,7 +87,7 @@ MVP operativo + founders live. Precios oleada 1 cerrados (A Q100 / Vitrina Q3,50
 
 ## Bloqueadores actuales
 
-Ninguno técnico duro. **Pendiente negocio:** fijar fecha taller + sondeo ≤15 + publicar precios en `gotacheck.app`.
+Ninguno técnico duro. **Pendiente negocio:** fijar fecha taller + sondeo ≤15.
 
 ## Desarrollo local
 
@@ -101,9 +101,8 @@ Ninguno técnico duro. **Pendiente negocio:** fijar fecha taller + sondeo ≤15 
 
 ## Próximo paso inmediato
 
-1. Deploy marketing (precios) → verificar gotacheck.app
-2. Sondeo founders → fijar fecha taller ≤15
-3. Optimizar proceso de enrolamiento (dueño)
+1. Sondeo founders → fijar fecha taller ≤15
+2. Optimizar proceso de enrolamiento (dueño)
 
 ## Docs operativos
 
