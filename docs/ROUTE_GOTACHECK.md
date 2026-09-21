@@ -1,29 +1,32 @@
 # Gota+Check — Ruta a mercado (fuente de verdad)
 
-> **Última actualización:** 2026-08-05  
+> **Última actualización:** 2026-09-21  
 > **Marca de presentación:** Gota+Check  
 > **Estudio / desarrollo:** VajaLabs (aún sin constituir)  
 > **Repo / dominio técnico histórico:** CITABELLA (`che-paz/citabella`)  
 > **Dominio producto:** `gotacheck.app` (marketing live)  
-> **Estado:** Piloto founders operativo · Marketing live · **Fase 1 ✅ (S1.1–S1.4)** · Vitrina (F2) pendiente · Precios/taller al final
-> **Precios / trial / fecha de taller:** **por definir en sesión exclusiva al estar listos para salir**
+> **Estado:** Piloto founders · Vitrinas Tutis/Galaxy live · **Fase 1 ✅** · **F2 mín. para pitch ✅** (S2.2 editor aparcado) · **Fase 3 en curso** (precios ✅ · fecha taller ⬜)  
+> **Precios / trial:** `DECISION_PRECIOS_TALLER.md` · Guion: `TALLER_PRESENTACION.md`
 
 Este documento traduce la estrategia a fases y sprints. No sustituye features técnicas en `FEATURES/`; define **qué construir en qué orden** y **cuándo se puede vender**.
 
 ---
 
-## 1. Oferta (3 SKUs)
+## 1. Oferta (oleada 1 — 2 SKUs)
 
-| SKU | Nombre interno | Incluye | URL de agenda (objetivo) |
-|-----|----------------|---------|---------------------------|
-| **A** | Agenda | App bajo dominio Gota+Check | `gotacheck…/reservar/[slug]` o `/agendar` |
-| **B** | Vitrina | A + dominio del salón + landing con **plantilla** rellenable | `misalon.com/agendar` |
-| **C** | Presencia | B + sesión de fotos (+ diseño asistido opcional, cupo limitado) | igual B |
+| SKU | Nombre | Precio | Incluye | URL agenda |
+|-----|--------|--------|---------|------------|
+| **A** | Agenda | **Q100/mes** · trial **30 días** | App bajo Gota+Check | `/reservar/[slug]` (hoy en Vercel app) |
+| **Vitrina** | Vitrina (servicio estudio) | **Q3,500** (único) · **sin trial** | A + dominio **1er año** + landing montada por el estudio | `misalon.com` → CTA agenda |
 
-- Landing tipo mínimo (referencia: [daysinavarroc.com](https://daysinavarroc.com/)): informativa, portafolio, servicios, CTA agendar. **Sin** carrito, blog ni e-commerce.
-- Plantillas: la dueña las llena; **diseño asistido por el founder del producto** = add-on / lista de espera.
-- Dueña del dominio del salón: quien paga el servicio.
-- Founders (Tutis, Galaxy): app founder Q0; B/C pagan solo dominio (y foto si C). Una founder prueba el editor de plantilla antes del taller.
+- Landing tipo mínimo (referencia Daysi): informativa, portafolio, servicios, CTA agendar. **Sin** carrito, blog ni e-commerce.
+- **Sin** editor self-serve (S2.2 aparcado). **Sin** sesión de fotos en oferta.
+- Renovación dominio año 2+: **Q200/año** (paga la clienta; renovamos nosotros).
+- Cupo vitrinas: **4–6/mes** con info completa.
+- Dueña del dominio: quien paga el servicio (ver §9).
+- Founders (Tutis, Galaxy): demos vivos; app founder Q0.
+
+Detalle cerrado: **`DECISION_PRECIOS_TALLER.md`**.
 
 **Marca hacia el gremio:** Gota+Check.  
 **Marca hacia desarrollo/contratos futuros:** VajaLabs.
@@ -36,13 +39,13 @@ Este documento traduce la estrategia a fases y sprints. No sustituye features t�
 |-----------|------|------|
 | 90 días post “listos para salir” | ≥10 pagos activos (mín) / **15** (stretch) | Capacidad ~10–12 h/sem |
 | 12 meses | **>50** salones | Tras taller + referidos; SKU A más self-serve después |
-| Piso ingreso recurrente | ~**Q2,500/mes** (cubre costos + margen chico) | No contar setups C como ingreso mensual |
-| Adquisición v1 | Taller con ~35 maquillistas vía founders | Sin ads hasta validar |
+| Piso ingreso recurrente | ~**Q2,500/mes** (cubre costos + margen chico) | No contar setups Vitrina (Q3,500) como ingreso mensual |
+| Adquisición v1 | Taller ≤**15** interesadas reales (sondeo founders) | Sin ads hasta validar |
 
-**Puertas de salida (sesiones exclusivas, al final):**
-1. Precios exactos A/B/C (setup + mensual).
-2. Trial sí/no y reglas.
-3. Fecha del taller (cuando sprints de salida estén ✅).
+**Puertas de salida (Fase 3):**
+1. ~~Precios A + Vitrina~~ ✅ 2026-09-21 → `DECISION_PRECIOS_TALLER.md`
+2. ~~Trial~~ ✅ 30 días solo Agenda; Vitrina sin trial
+3. Fecha del taller ⬜ (`TALLER_PRESENTACION.md`)
 
 ---
 
@@ -68,8 +71,8 @@ Leyenda de estado: ⬜ pending · 🟡 in progress · ✅ done
 | F0.1 | Marca presentación = Gota+Check | ✅ (2026-07-28) |
 | F0.2 | SKUs A/B/C + ownership dominio documentados | ✅ (este doc) |
 | F0.3 | Dominio producto Gota+Check comprado | ✅ `gotacheck.app` (2026-08-04) |
-| F0.4 | One-pager taller (borrador, sin precios finales) | ✅ Landing live `gotacheck.app` (2026-08-04; precios aún no) |
-| F0.5 | Sesión precios + trial + fecha taller | ⬜ **última**, ver §7 |
+| F0.4 | One-pager taller | ✅ Landing `gotacheck.app`; precios en web → actualizar oleada 1 |
+| F0.5 | Sesión precios + trial + fecha taller | 🟡 Precios/trial ✅ 2026-09-21 · fecha taller ⬜ |
 
 **Criterio fase:** nombre + oferta claros; dominio en camino; precios aún pueden esperar.
 
@@ -96,31 +99,31 @@ Objetivo: plantilla mínima + founders como laboratorio.
 
 | Sprint | Scope | Done cuando |
 |--------|--------|-------------|
-| **S2.0 Contenido** | Sesión dedicada: secciones landing tipo Daysi (copy, fotos, CTA) | 🟡 Borrador 2026-08-05 — `S2.0_SPEC_VITRINA.md` + `S2.0_BRIEF_FOUNDERS.md` |
-| **S2.1 Plantilla técnica** | 1 plantilla (máx 2) desplegable; dominio salón → landing → agenda | ✅ Esqueleto + `?demo=1` (2026-08-05); dominio propio = S2.4 |
-| **S2.2 Editor dueña** | Rellenar plantilla lo más intuitivo posible; founder prueba sola | Notas de fricción + fixes mínimos |
-| **S2.3 Add-on diseño** | Proceso “diseño asistido” (cupo / lista); foto con tarifa amigo | Checklist entrega C (sin sobrevender capacidad) |
-| **S2.4 URLs** | Definir rutas: app-only vs `misalon.com/agendar` | ✅ Tutis + Galaxy en dominio propio (2026-09-10) |
+| **S2.0 Contenido** | Sesión dedicada: secciones landing tipo Daysi (copy, fotos, CTA) | ✅ Packs Tutis/Galaxy en producción |
+| **S2.1 Plantilla técnica** | 1 plantilla (máx 2) desplegable; dominio salón → landing → agenda | ✅ + `?demo=1` |
+| **S2.2 Editor dueña** | Rellenar plantilla self-serve | ⏸️ **Aparcado** (oleada 1: estudio monta vitrina) |
+| **S2.3 Add-on diseño / fotos** | Sesión foto / Presencia (ex-SKU C) | ⏸️ **Fuera de oferta** oleada 1 |
+| **S2.4 URLs** | App-only vs `misalon.com` | ✅ Tutis + Galaxy (2026-09-10) |
 
-**Criterio fase:** 1–2 landings founders live + “dueña puede editar X sin nosotros”.
+**Criterio fase (ajustado oleada 1):** 1–2 landings founders **live** en dominio propio → **cumplido**. Editor dueña ya no es puerta del taller.
 
-**Capacidad:** con 10–12 h/sem, cupo sugerido **≤2 sesiones foto (C) / mes** y priorizar A/B en el taller.
+**Capacidad vitrinas:** **4–6/mes** con brief completo (sin fotos de estudio en oferta).
 
 ---
 
 ### Fase 3 — Listos para salir (sesión exclusiva)
 
-No empieza hasta F1 ✅ y F2 ✅ (mínimo S2.1 + S2.2).
+Puerta técnica: F1 ✅ + founders vitrina live (S2.1/S2.4) ✅. S2.2 no bloquea.
 
-| ID | Entregable |
-|----|------------|
-| X.1 | Precios A / B / C (setup + mensual) → meta piso Q2,500 |
-| X.2 | Reglas trial (o pago desde día 1) |
-| X.3 | Fecha taller + one-pager final |
-| X.4 | Subir Pro si aún Free; límites monitoreo |
-| X.5 | Legal mínimo informal (términos/privacidad one-pager) cuando cobres a terceros |
+| ID | Entregable | Estado |
+|----|------------|--------|
+| X.1 | Precios Agenda + Vitrina → meta piso Q2,500 | ✅ `DECISION_PRECIOS_TALLER.md` |
+| X.2 | Reglas trial | ✅ 30d Agenda; Vitrina sin trial |
+| X.3 | Fecha taller + one-pager final | 🟡 Guion + copy web ✅ · fecha ⬜ · deploy marketing |
+| X.4 | Supabase Pro | Al **primer cobro** (Vercel Pro ✅) |
+| X.5 | Legal mínimo informal | Cuando cobres a terceros |
 
-**Criterio:** fecha de taller en calendario + precios dichos en voz alta.
+**Criterio:** fecha de taller en calendario + precios en voz alta **y** en `gotacheck.app`.
 
 ---
 
@@ -128,8 +131,8 @@ No empieza hasta F1 ✅ y F2 ✅ (mínimo S2.1 + S2.2).
 
 | Sprint / bloque | Done cuando |
 |-----------------|-------------|
-| Taller demo founders + captura WhatsApp | Lista de interesados |
-| Onboarding asistido oleada (priorizar A/B; C con cupo) | ≥10 mensuales (mín) / 15 stretch |
+| Taller demo founders + captura WhatsApp (≤15) | Lista de interesados — `TALLER_PRESENTACION.md` |
+| Onboarding asistido (A trial; Vitrina cupo 4–6/mes) | ≥10 mensuales (mín) / 15 stretch |
 | Semana 6: revisar conversión y fricción plantilla | Ajuste precio o proceso |
 | Semana 12: ingreso recurrente vs Q2,500 | Go / adjust |
 
@@ -145,16 +148,15 @@ No empieza hasta F1 ✅ y F2 ✅ (mínimo S2.1 + S2.2).
 
 ---
 
-## 5. Orden de ejecución inmediato (próximos sprints)
+## 5. Orden de ejecución inmediato
 
-1. ~~**S1.1** — Docs + inventario~~ ✅  
-2. ~~**S1.2** — Infra / env / smoke~~ ✅  
-3. ~~**S1.3** — Onboarding asistido genérico~~ ✅  
-4. ~~**S1.4** — Hardening RLS + demo~~ ✅ · **Fase 1 completa**  
-5. **S2.0** — Spec contenido landing 🟡 (borrador + brief founders listos)  
-6. **S2.1 → S2.2** — Plantilla + prueba founder  
-7. **S2.3 → S2.4** — Cupo C + URLs  
-8. **Fase 3 (X.\*)** — Precios, trial, fecha taller
+1. ~~Fase 1 completa~~ ✅  
+2. ~~Vitrinas founders + dominios (S2.4)~~ ✅  
+3. ~~Precios + trial (X.1–X.2)~~ ✅ 2026-09-21  
+4. **Actualizar `gotacheck.app`** con precios y oferta A + Vitrina  
+5. **Fijar fecha taller** + sondeo ≤15 (`TALLER_PRESENTACION.md`)  
+6. Optimizar enrolamiento nuevas (proceso dueño; no self-serve aún)  
+7. Supabase Pro al primer cobro
 
 ---
 
@@ -168,15 +170,16 @@ No empieza hasta F1 ✅ y F2 ✅ (mínimo S2.1 + S2.2).
 
 ---
 
-## 7. Sesión exclusiva “salida” (pendiente)
+## 7. Sesión exclusiva “salida”
 
-Agenda cuando F1+F2 cumplan criterio:
-
-1. Precios A/B/C y qué incluye el setup absorbido en C  
-2. Trial  
-3. Fecha taller y cupos C del mes  
-4. Confirmación Pro Supabase/Vercel  
-5. Copy final one-pager  
+| Tema | Resultado |
+|------|-----------|
+| Precios | ✅ A Q100/mes · Vitrina Q3,500 · dominio año2 Q200 |
+| Trial | ✅ 30 días solo Agenda |
+| Cupos | ✅ Taller 15 · Vitrinas 4–6/mes |
+| Fecha taller | ⬜ |
+| Pro | Vercel ✅ · Supabase al primer cobro |
+| One-pager | Actualizar marketing con precios |
 
 ---
 

@@ -1,13 +1,13 @@
 # CITABELLA / Gota+Check — Current State
 
-> **Última actualización:** 2026-09-10  
+> **Última actualización:** 2026-09-21  
 > **Marca presentación:** Gota+Check · **Estudio:** VajaLabs (sin constituir)  
-> **Sprint activo:** **S2.4 ✅** dominios Tutis + Galaxy live · Vercel Pro ✅  
-> **Fase:** MVP ✅ | Piloto founders | Vitrinas + dominios en producción
+> **Sprint activo:** **Fase 3** — precios/trial ✅ · taller oleada 1 · marketing con precios  
+> **Fase:** MVP ✅ | Piloto founders | Vitrinas live | Listos para taller (falta fecha)
 
 ## Resumen en una línea
 
-MVP operativo. **S2.3 ✅ · S2.4 ✅:** Tutis (`estudiotutis.com`) y Galaxy (`galaxybarberiagt.com`) con vitrina en dominio propio.
+MVP operativo + founders live. Precios oleada 1 cerrados (A Q100 / Vitrina Q3,500). Preparando taller ≤15.
 
 ## Estado por área
 
@@ -21,14 +21,17 @@ MVP operativo. **S2.3 ✅ · S2.4 ✅:** Tutis (`estudiotutis.com`) y Galaxy (`g
 | Prototipo UI | 🟢 MVP core | Dashboard + clientas listos |
 | Finanzas / gastos | 🟢 MVP | `/finanzas` |
 | PWA | 🟢 Operativo | Web Push |
-| Sitio marketing Gota+Check | 🟢 Live | https://gotacheck.app |
+| Sitio marketing Gota+Check | 🟢 Live | Precios A/Vitrina + trial en `gotacheck.app` |
 | Vitrina / landings | 🟢 S2.4 | Tutis + Galaxy en dominio propio; paths `/vitrina` de respaldo |
+| Taller / GTM | 🟡 Fase 3 | Docs decisión + guion ✅ · fecha ⬜ |
 
 ## Decisiones tomadas
 
 - Marca de **presentación** al gremio: **Gota+Check**; estudio: VajaLabs; ruta GTM en `ROUTE_GOTACHECK.md`
-- Oferta en 3 SKUs: A Agenda · B Vitrina (plantilla+dominio) · C Presencia (+foto); landing mínima tipo Daysi
-- Sitio marketing: monorepo `marketing/` + proyecto Vercel aparte (Root Directory); apex `gotacheck.app` este sprint; app → `app.gotacheck.app` después
+- Oferta oleada 1 (**2 SKUs**): **A Agenda Q100/mes** (trial 30d) · **Vitrina Q3,500** (dominio 1er año; sin trial; sin fotos; sin editor). Renovación dominio año 2+: **Q200/año**. Detalle: `DECISION_PRECIOS_TALLER.md`
+- Taller ≤15; cupo vitrinas **4–6/mes** con info completa. Guion: `TALLER_PRESENTACION.md`
+- S2.2 editor y SKU fotos/Presencia: **fuera** de oleada 1
+- Sitio marketing: monorepo `marketing/` + proyecto Vercel aparte; apex `gotacheck.app`; app → `app.gotacheck.app` después
 - Stack: Next.js 14 + TypeScript + Tailwind + shadcn/ui + Supabase + Vercel
 - Multi-tenant vía Row Level Security (RLS) en PostgreSQL
 - Disponibilidad de agenda: cálculo dinámico por duración de servicio
@@ -76,14 +79,15 @@ MVP operativo. **S2.3 ✅ · S2.4 ✅:** Tutis (`estudiotutis.com`) y Galaxy (`g
 - [x] Dominio producto Gota+Check comprado (`gotacheck.app`, 2026-08-04)
 - [x] DNS `gotacheck.app` → Vercel marketing (Cloudflare DNS-only; live 2026-08-04)
 - [ ] `NEXT_PUBLIC_APP_URL` / `NEXT_PUBLIC_SITE_URL` en prod (app + marketing) — marketing ya con WhatsApp + app URL
-- [ ] Precios A/B/C + trial — **sesión exclusiva al estar listos** (`ROUTE_GOTACHECK.md` §7)
-- [ ] Fecha taller (~35 maquillistas vía founders) — depende de sprints F1+F2
-- [x] Spec contenido landing tipo Daysi (sesión S2.0) — borrador 2026-08-05; cierre tras reunión founders
+- [x] Precios A + Vitrina + trial — 2026-09-21 (`DECISION_PRECIOS_TALLER.md`)
+- [ ] Fecha taller ≤15 (sondeo founders) — `TALLER_PRESENTACION.md`
+- [ ] Optimizar enrolamiento / alta de nuevas (proceso dueño; script ya existe)
+- [x] Spec contenido landing tipo Daysi — packs founders en prod
 - [ ] WhatsApp: Meta Cloud API vs Twilio (Fase 2 — fuera de ruta GTM)
 
 ## Bloqueadores actuales
 
-Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta cumplir F1+F2.
+Ninguno técnico duro. **Pendiente negocio:** fijar fecha taller + sondeo ≤15 + publicar precios en `gotacheck.app`.
 
 ## Desarrollo local
 
@@ -97,7 +101,9 @@ Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta
 
 ## Próximo paso inmediato
 
-1. Preparar oleada/taller ≤15 (negocio)
+1. Deploy marketing (precios) → verificar gotacheck.app
+2. Sondeo founders → fijar fecha taller ≤15
+3. Optimizar proceso de enrolamiento (dueño)
 
 ## Docs operativos
 
@@ -110,6 +116,8 @@ Ninguno técnico duro. **Puerta de negocio:** precios/taller no se definen hasta
 - Infra / smoke S1.2: `docs/S1.2_INFRA_CHECKLIST.md`
 - Vitrina: `docs/FEATURES/Vitrina.md` · spec `docs/S2.0_SPEC_VITRINA.md`
 - Ruta GTM: `docs/ROUTE_GOTACHECK.md`
+- Precios / trial: `docs/DECISION_PRECIOS_TALLER.md`
+- Guion taller: `docs/TALLER_PRESENTACION.md`
 
 ## Piloto founders (activo)
 
@@ -150,6 +158,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-09-21 | Fase 3: precios/trial cerrados; docs `DECISION_PRECIOS_TALLER` + `TALLER_PRESENTACION`; oferta A+Vitrina (sin C/editor) |
 | 2026-09-10 | Vitrina: favicon por salón (desde logo Tutis/Galaxy) en `/vitrina` y `/reservar` |
 | 2026-09-10 | Migración 017 aplicada en cloud (`paquetes.descripcion`) |
 | 2026-09-10 | Catálogo: descripción opcional en paquetes (migración 017; paridad con servicios) |
