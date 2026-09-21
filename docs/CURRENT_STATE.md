@@ -161,6 +161,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-09-21 | `/ayuda` live en `gotacheck.app` (push `7c4c34a`) |
 | 2026-09-21 | `/ayuda`: 13 capturas en `marketing/public/ayuda/` (demo Belleza Luna; PII redactada) |
 | 2026-09-21 | `/ayuda` en marketing: 5 guías texto (login, horarios, catálogo, link, pagos); capturas/video después |
 | 2026-09-21 | `app.gotacheck.app` live (SITE_URL + Auth); agendas sin marca Vercel |
