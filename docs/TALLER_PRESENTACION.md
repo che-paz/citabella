@@ -24,9 +24,9 @@
 | Uso | URL |
 |-----|-----|
 | Marketing | https://gotacheck.app |
-| App login | https://citabella-eight.vercel.app/login |
-| Agenda Tutis | https://citabella-eight.vercel.app/reservar/salon-tutis |
-| Agenda Galaxy | https://citabella-eight.vercel.app/reservar/galaxy-barberia-infantil |
+| App login | https://app.gotacheck.app/login |
+| Agenda Tutis | https://app.gotacheck.app/reservar/salon-tutis |
+| Agenda Galaxy | https://app.gotacheck.app/reservar/galaxy-barberia-infantil |
 | Vitrina Tutis | https://www.estudiotutis.com |
 | Vitrina Galaxy | https://www.galaxybarberiagt.com |
 | WhatsApp alta | (mismo de `NEXT_PUBLIC_WHATSAPP_URL` en marketing) |

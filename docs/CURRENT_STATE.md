@@ -31,7 +31,7 @@ Precios live. Hoja asistentes imprimible + panel interno de leads/alta (`/intern
 - Oferta oleada 1 (**2 SKUs**): **A Agenda Q100/mes** (trial 30d) · **Vitrina Q3,500** (dominio 1er año; sin trial; sin fotos; sin editor). Renovación dominio año 2+: **Q200/año**. Detalle: `DECISION_PRECIOS_TALLER.md`
 - Taller ≤15; cupo vitrinas **4–6/mes** con info completa. Guion: `TALLER_PRESENTACION.md`
 - S2.2 editor y SKU fotos/Presencia: **fuera** de oleada 1
-- Sitio marketing: monorepo `marketing/` + proyecto Vercel aparte; apex `gotacheck.app`; app → `app.gotacheck.app` después
+- Sitio marketing: monorepo `marketing/` + Vercel aparte; apex `gotacheck.app`; app canónica `app.gotacheck.app` (`APP_DOMAIN_CHECKLIST.md`)
 - Stack: Next.js 14 + TypeScript + Tailwind + shadcn/ui + Supabase + Vercel
 - Multi-tenant vía Row Level Security (RLS) en PostgreSQL
 - Disponibilidad de agenda: cálculo dinámico por duración de servicio
@@ -78,17 +78,17 @@ Precios live. Hoja asistentes imprimible + panel interno de leads/alta (`/intern
 
 - [x] Dominio producto Gota+Check comprado (`gotacheck.app`, 2026-08-04)
 - [x] DNS `gotacheck.app` → Vercel marketing (Cloudflare DNS-only; live 2026-08-04)
-- [ ] `NEXT_PUBLIC_APP_URL` / `NEXT_PUBLIC_SITE_URL` en prod (app + marketing) — marketing ya con WhatsApp + app URL
+- [ ] `NEXT_PUBLIC_SITE_URL` / Auth → `app.gotacheck.app` (checklist `APP_DOMAIN_CHECKLIST.md`)
 - [x] Precios A + Vitrina + trial — 2026-09-21 (`DECISION_PRECIOS_TALLER.md`)
 - [ ] Fecha taller ≤15 (sondeo founders) — `TALLER_PRESENTACION.md`
-- [ ] Optimizar enrolamiento — panel `/interna` en código; falta mig 018 cloud + env Vercel marketing
+- [x] Panel `/interna` + mig 018 (probar en prod OK) — env + alta prueba interna OK
 - [ ] Tutoriales `/ayuda` en marketing (post primeras altas) — aparcado
 - [x] Spec contenido landing tipo Daysi — packs founders en prod
 - [ ] WhatsApp: Meta Cloud API vs Twilio (Fase 2 — fuera de ruta GTM)
 
 ## Bloqueadores actuales
 
-**Ops:** aplicar `018_onboarding_leads.sql` + env `INTERNAL_TOOLS_PASSWORD` / Supabase en proyecto marketing. **Negocio:** fecha taller.
+**Ops:** conectar `app.gotacheck.app` (DNS + env + Supabase Auth). **Negocio:** fecha taller.
 
 ## Desarrollo local
 
@@ -102,7 +102,7 @@ Precios live. Hoja asistentes imprimible + panel interno de leads/alta (`/intern
 
 ## Próximo paso inmediato
 
-1. Aplicar migración 018 + env marketing → probar `/interna`
+1. Completar `docs/APP_DOMAIN_CHECKLIST.md` (`app.gotacheck.app`)
 2. Sondeo founders → fijar fecha taller ≤15
 3. Tutoriales ayuda (después de 2–3 altas)
 
@@ -121,6 +121,7 @@ Precios live. Hoja asistentes imprimible + panel interno de leads/alta (`/intern
 - Guion taller: `docs/TALLER_PRESENTACION.md`
 - Lista asistentes PDF: `docs/TALLER_ASISTENTES.print.html`
 - Leads / alta interna: `docs/ONBOARDING_LEADS.md`
+- Dominio app: `docs/APP_DOMAIN_CHECKLIST.md`
 
 ## Piloto founders (activo)
 
@@ -161,6 +162,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-09-21 | Checklist `app.gotacheck.app` (sacar vercel.app de agendas clientas) |
 | 2026-09-21 | Taller: PDF asistentes + panel `/interna` (leads, CSV, provision); mig 018 |
 | 2026-09-21 | Fase 3: precios/trial cerrados; docs `DECISION_PRECIOS_TALLER` + `TALLER_PRESENTACION`; oferta A+Vitrina (sin C/editor) |
 | 2026-09-10 | Vitrina: favicon por salón (desde logo Tutis/Galaxy) en `/vitrina` y `/reservar` |

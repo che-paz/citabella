@@ -76,7 +76,7 @@
 
 - Vercel Pro: ✅  
 - Supabase Free → **Pro al primer cobro** a clienta (backups)  
-- App: `citabella-eight.vercel.app` · Marketing: `gotacheck.app`
+- App: `app.gotacheck.app` (canónico) · respaldo `citabella-eight.vercel.app` · Marketing: `gotacheck.app`
 
 ---
 

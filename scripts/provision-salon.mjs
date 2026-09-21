@@ -192,7 +192,7 @@ function siteUrl(env) {
   return (
     process.env.NEXT_PUBLIC_SITE_URL ||
     env.NEXT_PUBLIC_SITE_URL ||
-    "https://citabella-eight.vercel.app"
+    "https://app.gotacheck.app"
   ).replace(/\/$/, "");
 }
 
