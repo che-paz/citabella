@@ -95,12 +95,12 @@ export default function HomePage() {
       <main className="relative z-10">
         {/* Hero — one composition */}
         <section className="relative flex min-h-[100svh] flex-col justify-center overflow-x-clip px-5 pb-12 pt-8 sm:px-10 sm:pb-16 sm:pt-10 lg:px-16">
-          <div className="mx-auto grid w-full max-w-6xl items-center gap-8 sm:gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+          <div className="mx-auto grid w-full max-w-6xl items-center gap-8 sm:gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-12 xl:gap-16">
             <div className="order-2 min-w-0 lg:order-1">
-              <h1 className="animate-fade-up font-display text-[2.125rem] font-extrabold leading-[1.05] tracking-tight text-ink sm:text-5xl md:text-6xl lg:text-[5.25rem]">
+              <h1 className="animate-fade-up font-display text-[2.125rem] font-extrabold leading-[1.05] tracking-tight text-ink sm:text-5xl lg:text-[clamp(2.75rem,4.6vw,4.25rem)]">
                 Gota+Check
               </h1>
-              <p className="animate-fade-up mt-4 max-w-xl font-display text-xl font-semibold leading-snug tracking-tight text-ink sm:mt-5 sm:text-3xl md:text-[2rem] [animation-delay:120ms]">
+              <p className="animate-fade-up mt-4 max-w-xl font-display text-xl font-semibold leading-snug tracking-tight text-ink sm:mt-5 sm:text-3xl lg:text-[1.75rem] xl:text-[2rem] [animation-delay:120ms]">
                 Tu agenda de salón, sin el caos del WhatsApp.
               </p>
               <p className="animate-fade-up mt-3 max-w-md text-base leading-relaxed text-muted sm:mt-4 sm:text-lg [animation-delay:220ms]">
@@ -113,11 +113,11 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="animate-fade-in order-1 flex justify-center lg:order-2 [animation-delay:180ms]">
-              <div className="relative max-w-full overflow-hidden">
+            <div className="animate-fade-in order-1 flex justify-center lg:order-2 lg:justify-end [animation-delay:180ms]">
+              <div className="relative w-36 max-w-full overflow-hidden sm:w-52 lg:w-full lg:max-w-[22rem]">
                 <div
                   aria-hidden
-                  className="absolute -inset-6 rounded-full bg-rose-soft/40 blur-3xl sm:-inset-10"
+                  className="pointer-events-none absolute -inset-6 rounded-full bg-rose-soft/40 blur-3xl sm:-inset-8"
                 />
                 <Image
                   src="/logo.png"
@@ -125,7 +125,7 @@ export default function HomePage() {
                   width={420}
                   height={420}
                   priority
-                  className="relative h-auto w-36 drop-shadow-sm sm:w-[min(52vw,22rem)] lg:w-[min(60vw,26rem)]"
+                  className="relative h-auto w-full drop-shadow-sm"
                 />
               </div>
             </div>
