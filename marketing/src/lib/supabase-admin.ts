@@ -17,6 +17,6 @@ export function appSiteUrl(): string {
   return (
     process.env.NEXT_PUBLIC_SITE_URL ||
     process.env.NEXT_PUBLIC_APP_URL?.replace(/\/login\/?$/, "") ||
-    "https://citabella-eight.vercel.app"
+    "https://app.gotacheck.app"
   ).replace(/\/$/, "");
 }

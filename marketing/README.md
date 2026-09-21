@@ -39,10 +39,10 @@ En Vercel (proyecto marketing), configura ambas en **Settings → Environment Va
 Ejemplo de app URL (proyecto actual de founders):
 
 ```
-NEXT_PUBLIC_APP_URL=https://citabella-eight.vercel.app/login
+NEXT_PUBLIC_APP_URL=https://app.gotacheck.app/login
 ```
 
-Objetivo futuro: app en `app.gotacheck.app` y marketing en `gotacheck.app`.
+Objetivo: app en `app.gotacheck.app` y marketing en `gotacheck.app`. Checklist: `docs/APP_DOMAIN_CHECKLIST.md`.
 
 ## Deploy en Vercel
 
@@ -78,4 +78,4 @@ Registros típicos (confirma con lo que muestre Vercel):
 |-----|----------|-----------|
 | `gotacheck.app` | Este (`marketing/`) | Landing de producto |
 | App actual (`*.vercel.app`) | Repo root | Agenda, login, `/reservar` |
-| `app.gotacheck.app` (futuro) | App | Mismo proyecto app; CNAME a Vercel |
+| `app.gotacheck.app` | App | Agenda, login, `/reservar` — ver `docs/APP_DOMAIN_CHECKLIST.md` |

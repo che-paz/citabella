@@ -59,8 +59,8 @@ No self-serve público. No `platform_admin` UI todavía.
 NEXT_PUBLIC_SUPABASE_URL=
 SUPABASE_SERVICE_ROLE_KEY=
 INTERNAL_TOOLS_PASSWORD=
-NEXT_PUBLIC_APP_URL=https://citabella-eight.vercel.app/login
-NEXT_PUBLIC_SITE_URL=https://citabella-eight.vercel.app
+NEXT_PUBLIC_APP_URL=https://app.gotacheck.app/login
+NEXT_PUBLIC_SITE_URL=https://app.gotacheck.app
 ```
 
 ## Aplicar migración

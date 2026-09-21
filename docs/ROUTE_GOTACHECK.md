@@ -213,18 +213,19 @@ Advertencias registradas:
 
 | Sitio | Dónde | Notas |
 |-------|-------|-------|
-| App (agenda, pagos, `/reservar`) | Proyecto Vercel actual + Supabase | Hoy: `*.vercel.app`. Objetivo: `app.gotacheck.app` |
+| App (agenda, pagos, `/reservar`) | Proyecto Vercel app + Supabase | Canónico: `app.gotacheck.app` (ver `APP_DOMAIN_CHECKLIST.md`); respaldo `*.vercel.app` |
 | **Landings de salones** | **Mismo proyecto de la app**, multi-tenant por dominio | El contenido viene de la plantilla en DB; 1 proyecto + N dominios |
 | Sitio Gota+Check (marketing) | Proyecto Vercel **aparte**, Root Directory = `marketing/` | Código en monorepo; se edita sin arriesgar deploys de la app. Este sprint: apex `gotacheck.app` → marketing |
 | Sitio VajaLabs | Proyecto aparte, baja prioridad | Identidad del estudio |
 
 **Plan de URLs (2026-08-04):**
 
-| Host | Destino este sprint | Destino objetivo |
-|------|---------------------|------------------|
-| `gotacheck.app` | Marketing (`marketing/`) | Marketing |
-| `www.gotacheck.app` | Redirect → apex (opcional) | Idem |
-| App founders | Dominio Vercel actual | `app.gotacheck.app` |
+| Host | Destino |
+|------|---------|
+| `gotacheck.app` | Marketing (`marketing/`) |
+| `www.gotacheck.app` | Redirect → apex (opcional) |
+| `app.gotacheck.app` | App (agenda / login / reservar) — checklist `APP_DOMAIN_CHECKLIST.md` |
+| `*.vercel.app` (app) | Respaldo técnico |
 
 DNS Cloudflare → Vercel: registros en **DNS-only** (sin proxy naranja). Instrucciones: `marketing/README.md`.
 
