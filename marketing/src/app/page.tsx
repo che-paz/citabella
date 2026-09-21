@@ -61,14 +61,14 @@ function CtaGroup({
   primaryLabel?: string;
 }) {
   return (
-    <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+    <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
       <a
         href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
         className={
           primaryClassName ??
-          "inline-flex items-center justify-center rounded-xl bg-rose-deep px-6 py-3.5 text-center text-base font-semibold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-deep"
+          "inline-flex w-full items-center justify-center rounded-xl bg-rose-deep px-5 py-3.5 text-center text-[0.95rem] font-semibold leading-snug text-white transition duration-200 hover:-translate-y-0.5 hover:bg-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-deep sm:w-auto sm:px-6 sm:text-base"
         }
       >
         {primaryLabel}
@@ -76,7 +76,7 @@ function CtaGroup({
       {appUrl ? (
         <a
           href={appUrl}
-          className="inline-flex items-center justify-center rounded-xl px-6 py-3.5 text-center text-base font-medium text-ink underline-offset-4 transition duration-200 hover:text-rose-deep hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose"
+          className="inline-flex w-full items-center justify-center rounded-xl px-5 py-3 text-center text-base font-medium text-ink underline-offset-4 transition duration-200 hover:text-rose-deep hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose sm:w-auto sm:px-6 sm:py-3.5"
         >
           Ya tengo cuenta
         </a>
@@ -91,33 +91,33 @@ export default function HomePage() {
   const appUrl = appUrlRaw.length > 0 ? appUrlRaw : null;
 
   return (
-    <div className="atmosphere grain min-h-screen">
+    <div className="atmosphere grain min-h-screen overflow-x-clip">
       <main className="relative z-10">
         {/* Hero — one composition */}
-        <section className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden px-6 pb-16 pt-10 sm:px-10 lg:px-16">
-          <div className="mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
-            <div className="order-2 lg:order-1">
-              <h1 className="animate-fade-up font-display text-5xl font-extrabold tracking-tight text-ink sm:text-6xl md:text-7xl lg:text-[5.25rem]">
+        <section className="relative flex min-h-[100svh] flex-col justify-center overflow-x-clip px-5 pb-12 pt-8 sm:px-10 sm:pb-16 sm:pt-10 lg:px-16">
+          <div className="mx-auto grid w-full max-w-6xl items-center gap-8 sm:gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+            <div className="order-2 min-w-0 lg:order-1">
+              <h1 className="animate-fade-up font-display text-[2.125rem] font-extrabold leading-[1.05] tracking-tight text-ink sm:text-5xl md:text-6xl lg:text-[5.25rem]">
                 Gota+Check
               </h1>
-              <p className="animate-fade-up mt-5 max-w-xl font-display text-2xl font-semibold leading-snug tracking-tight text-ink sm:text-3xl md:text-[2rem] [animation-delay:120ms]">
+              <p className="animate-fade-up mt-4 max-w-xl font-display text-xl font-semibold leading-snug tracking-tight text-ink sm:mt-5 sm:text-3xl md:text-[2rem] [animation-delay:120ms]">
                 Tu agenda de salón, sin el caos del WhatsApp.
               </p>
-              <p className="animate-fade-up mt-4 max-w-md text-lg leading-relaxed text-muted [animation-delay:220ms]">
+              <p className="animate-fade-up mt-3 max-w-md text-base leading-relaxed text-muted sm:mt-4 sm:text-lg [animation-delay:220ms]">
                 Para salones, maquillistas y barberías en Guatemala y
                 Centroamérica. Agenda clara, link para reservar y, si quieres,
                 tu página con dominio propio.
               </p>
-              <div className="animate-fade-up mt-8 [animation-delay:320ms]">
+              <div className="animate-fade-up mt-7 sm:mt-8 [animation-delay:320ms]">
                 <CtaGroup whatsappUrl={whatsappUrl} appUrl={appUrl} />
               </div>
             </div>
 
             <div className="animate-fade-in order-1 flex justify-center lg:order-2 [animation-delay:180ms]">
-              <div className="relative">
+              <div className="relative max-w-full overflow-hidden">
                 <div
                   aria-hidden
-                  className="absolute -inset-10 rounded-full bg-rose-soft/40 blur-3xl"
+                  className="absolute -inset-6 rounded-full bg-rose-soft/40 blur-3xl sm:-inset-10"
                 />
                 <Image
                   src="/logo.png"
@@ -125,7 +125,7 @@ export default function HomePage() {
                   width={420}
                   height={420}
                   priority
-                  className="relative h-auto w-[min(72vw,22rem)] drop-shadow-sm sm:w-[min(60vw,26rem)]"
+                  className="relative h-auto w-36 drop-shadow-sm sm:w-[min(52vw,22rem)] lg:w-[min(60vw,26rem)]"
                 />
               </div>
             </div>
@@ -133,13 +133,13 @@ export default function HomePage() {
         </section>
 
         {/* Dolor */}
-        <section className="px-6 py-20 sm:px-10 lg:px-16">
+        <section className="px-5 py-14 sm:px-10 sm:py-20 lg:px-16">
           <div className="mx-auto max-w-3xl">
             <Reveal>
-              <h2 className="font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+              <h2 className="font-display text-[1.75rem] font-bold leading-tight tracking-tight text-ink sm:text-4xl">
                 ¿Te suena familiar?
               </h2>
-              <p className="mt-4 text-lg leading-relaxed text-muted">
+              <p className="mt-3 text-base leading-relaxed text-muted sm:mt-4 sm:text-lg">
                 Las citas viven en chats y en papel. Confirmás a mano. Las
                 clientas no encuentran un lugar claro para reservar. Y sin página
                 web, tu salón se ve menos de lo que es.
@@ -149,13 +149,13 @@ export default function HomePage() {
         </section>
 
         {/* Promesa */}
-        <section className="px-6 py-20 sm:px-10 lg:px-16">
+        <section className="px-5 py-14 sm:px-10 sm:py-20 lg:px-16">
           <div className="mx-auto max-w-3xl">
             <Reveal>
-              <h2 className="font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+              <h2 className="font-display text-[1.75rem] font-bold leading-tight tracking-tight text-ink sm:text-4xl">
                 Una agenda clara. Un link para reservar. Tu marca al frente.
               </h2>
-              <p className="mt-4 text-lg leading-relaxed text-muted">
+              <p className="mt-3 text-base leading-relaxed text-muted sm:mt-4 sm:text-lg">
                 Gota+Check ordena tu día a día y les da a tus clientas una forma
                 simple de pedir cita. Si quieres presencia web, el estudio te
                 monta la vitrina con tu dominio — sin tienda ni complicaciones.
@@ -165,47 +165,47 @@ export default function HomePage() {
         </section>
 
         {/* Paquetes */}
-        <section className="px-6 py-20 sm:px-10 lg:px-16">
+        <section className="px-5 py-14 sm:px-10 sm:py-20 lg:px-16">
           <div className="mx-auto max-w-5xl">
             <Reveal>
-              <h2 className="font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+              <h2 className="font-display text-[1.75rem] font-bold leading-tight tracking-tight text-ink sm:text-4xl">
                 Dos formas de empezar
               </h2>
-              <p className="mt-3 max-w-2xl text-lg text-muted">
+              <p className="mt-3 max-w-2xl text-base text-muted sm:text-lg">
                 Precios claros. Alta acompañada — no es self-serve masivo.
               </p>
             </Reveal>
 
-            <div className="mt-12 grid gap-12 md:grid-cols-2 md:gap-14">
+            <div className="mt-10 grid gap-10 sm:mt-12 md:grid-cols-2 md:gap-14">
               {packages.map((pkg, index) => (
                 <Reveal key={pkg.sku} delayMs={index * 90}>
-                  <article className="h-full border-t border-rose-soft/70 pt-6">
-                    <p className="font-display text-sm font-semibold uppercase tracking-[0.18em] text-rose-deep">
+                  <article className="h-full min-w-0 border-t border-rose-soft/70 pt-5 sm:pt-6">
+                    <p className="font-display text-xs font-semibold uppercase leading-snug tracking-[0.12em] text-rose-deep sm:text-sm sm:tracking-[0.18em]">
                       {pkg.badge}
                     </p>
-                    <h3 className="mt-3 font-display text-2xl font-bold text-ink">
+                    <h3 className="mt-2 font-display text-xl font-bold text-ink sm:mt-3 sm:text-2xl">
                       {pkg.name}
                     </h3>
-                    <p className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
-                      {pkg.price}
-                      <span className="text-xl font-semibold text-muted sm:text-2xl">
+                    <p className="mt-2 flex flex-wrap items-baseline gap-x-1 font-display text-3xl font-extrabold tracking-tight text-ink sm:mt-3 sm:text-5xl">
+                      <span>{pkg.price}</span>
+                      <span className="text-lg font-semibold text-muted sm:text-2xl">
                         {pkg.priceSuffix}
                       </span>
                     </p>
-                    <p className="mt-4 text-base font-medium text-ink">
+                    <p className="mt-3 text-base font-medium text-ink sm:mt-4">
                       {pkg.summary}
                     </p>
-                    <p className="mt-3 text-base leading-relaxed text-muted">
+                    <p className="mt-2 text-base leading-relaxed text-muted sm:mt-3">
                       {pkg.detail}
                     </p>
-                    <ul className="mt-5 space-y-2 text-base text-muted">
+                    <ul className="mt-4 space-y-2 text-base text-muted sm:mt-5">
                       {pkg.includes.map((item) => (
-                        <li key={item} className="flex gap-2">
+                        <li key={item} className="flex gap-2.5">
                           <span
                             aria-hidden
                             className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-rose-deep"
                           />
-                          <span>{item}</span>
+                          <span className="min-w-0 leading-relaxed">{item}</span>
                         </li>
                       ))}
                     </ul>
@@ -215,7 +215,7 @@ export default function HomePage() {
             </div>
 
             <Reveal delayMs={120}>
-              <p className="mt-10 max-w-2xl text-sm leading-relaxed text-muted">
+              <p className="mt-8 max-w-2xl text-sm leading-relaxed text-muted sm:mt-10">
                 Vitrina: cupo de unas 4 a 6 al mes, cuando nos pases la info
                 completa. No incluye sesión de fotos ni editor para editar sola —
                 nosotros montamos la página contigo.
@@ -225,27 +225,27 @@ export default function HomePage() {
         </section>
 
         {/* Prueba social */}
-        <section className="px-6 py-20 sm:px-10 lg:px-16">
+        <section className="px-5 py-14 sm:px-10 sm:py-20 lg:px-16">
           <div className="mx-auto max-w-3xl">
             <Reveal>
-              <h2 className="font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+              <h2 className="font-display text-[1.75rem] font-bold leading-tight tracking-tight text-ink sm:text-4xl">
                 Ya lo usan salones en Guatemala
               </h2>
-              <p className="mt-4 text-lg leading-relaxed text-muted">
-                Founders con agenda y vitrina en dominio propio. Miralos y
+              <p className="mt-3 text-base leading-relaxed text-muted sm:mt-4 sm:text-lg">
+                Founders con agenda y vitrina en dominio propio. Míralos y
                 escríbenos si quieres entrar en la oleada acompañada.
               </p>
-              <ul className="mt-8 space-y-5">
+              <ul className="mt-6 space-y-5 sm:mt-8">
                 {founders.map((f) => (
-                  <li key={f.href}>
+                  <li key={f.href} className="min-w-0">
                     <a
                       href={f.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group font-display text-xl font-semibold text-ink transition hover:text-rose-deep"
+                      className="group inline-flex max-w-full flex-wrap items-baseline gap-x-2 font-display text-lg font-semibold text-ink transition hover:text-rose-deep sm:text-xl"
                     >
-                      {f.name}
-                      <span className="ml-2 inline-block text-rose-deep transition group-hover:translate-x-0.5">
+                      <span className="min-w-0 break-words">{f.name}</span>
+                      <span className="shrink-0 text-rose-deep transition group-hover:translate-x-0.5">
                         →
                       </span>
                     </a>
@@ -258,17 +258,17 @@ export default function HomePage() {
         </section>
 
         {/* CTA final */}
-        <section className="px-6 py-20 sm:px-10 lg:px-16">
+        <section className="px-5 py-14 sm:px-10 sm:py-20 lg:px-16">
           <div className="mx-auto max-w-3xl">
             <Reveal>
-              <h2 className="font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+              <h2 className="font-display text-[1.75rem] font-bold leading-tight tracking-tight text-ink sm:text-4xl">
                 ¿Listas para ordenar la agenda?
               </h2>
-              <p className="mt-4 text-lg text-muted">
+              <p className="mt-3 text-base text-muted sm:mt-4 sm:text-lg">
                 Agenda con 30 días de prueba. Vitrina cuando haya cupo. Cuéntanos
                 de tu salón por WhatsApp.
               </p>
-              <div className="mt-8">
+              <div className="mt-7 sm:mt-8">
                 <CtaGroup
                   whatsappUrl={whatsappUrl}
                   appUrl={appUrl}
@@ -280,8 +280,8 @@ export default function HomePage() {
         </section>
       </main>
 
-      <footer className="relative z-10 border-t border-sand px-6 py-10 sm:px-10 lg:px-16">
-        <div className="mx-auto flex max-w-5xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <footer className="relative z-10 border-t border-sand px-5 py-8 sm:px-10 sm:py-10 lg:px-16">
+        <div className="mx-auto flex max-w-5xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
           <p className="font-display text-lg font-bold text-ink">Gota+Check</p>
           <a
             href={whatsappUrl}
