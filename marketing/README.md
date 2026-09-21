@@ -22,6 +22,12 @@ npm run dev                  # http://localhost:3010
 | `SUPABASE_SERVICE_ROLE_KEY` | Para `/interna` | — | Solo server; nunca `NEXT_PUBLIC_` |
 | `INTERNAL_TOOLS_PASSWORD` | Para `/interna` | — | Contraseña del panel (≥8). URL: `/interna` (no enlazada) |
 
+## Ayuda (`/ayuda`)
+
+Guías cortas post-alta (login, horarios, catálogo, link, pagos). Copy en
+`src/lib/ayuda.ts`. Capturas en `public/ayuda/{slug}/` — ver
+`public/ayuda/README.md`. Video: pendiente.
+
 ## Panel interno (leads)
 
 Tras aplicar migración `018_onboarding_leads.sql` y configurar env:

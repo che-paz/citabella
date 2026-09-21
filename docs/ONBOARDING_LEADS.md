@@ -49,7 +49,8 @@ Email / NIT / dominio propio: reunión de seguimiento (no en hoja taller ni bloq
 1. **MVP (este sprint):** botón en el listado llama provision en server (service role) = misma lógica que `scripts/provision-salon.mjs`.  
 2. Tras éxito: guarda `salon_id`, muestra login + contraseña temporal una vez (también en fila interna).  
 3. Si falla: `status=error` + mensaje (slug/email duplicado, etc.).  
-4. Export CSV (abre en Excel) desde el listado.
+4. Export CSV (abre en Excel) desde el listado.  
+5. Al entregar credenciales: incluir `https://gotacheck.app/ayuda` (guías post-alta).
 
 No self-serve público. No `platform_admin` UI todavía.
 

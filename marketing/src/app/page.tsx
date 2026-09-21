@@ -283,14 +283,22 @@ export default function HomePage() {
       <footer className="relative z-10 border-t border-sand px-5 py-8 sm:px-10 sm:py-10 lg:px-16">
         <div className="mx-auto flex max-w-5xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
           <p className="font-display text-lg font-bold text-ink">Gota+Check</p>
-          <a
-            href={whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm font-medium text-muted transition hover:text-rose-deep"
-          >
-            WhatsApp
-          </a>
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            <a
+              href="/ayuda"
+              className="text-sm font-medium text-muted transition hover:text-rose-deep"
+            >
+              Ayuda
+            </a>
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium text-muted transition hover:text-rose-deep"
+            >
+              WhatsApp
+            </a>
+          </div>
           <p className="text-xs text-muted/80">Hecho por VajaLabs</p>
         </div>
       </footer>

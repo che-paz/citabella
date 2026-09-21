@@ -87,10 +87,11 @@ Flags útiles:
 ## Entregar a la dueña
 
 1. Login: `{SITE_URL}/login` + email + contraseña temporal  
-2. Cambiar contraseña en `/ajustes`  
-3. Link reserva: `{SITE_URL}/reservar/{slug}`  
-4. Catálogo en `/catalogo` + logo en `/ajustes`  
-5. (Opcional) Push en `/ajustes`  
+2. Guías: `https://gotacheck.app/ayuda` (contraseña, horarios, catálogo, link, pagos)  
+3. Cambiar contraseña en `/ajustes`  
+4. Link reserva: `{SITE_URL}/reservar/{slug}`  
+5. Catálogo en `/catalogo` + logo en `/ajustes`  
+6. (Opcional) Push en `/ajustes`  
 
 ## Smoke checklist (nuevo salón)
 

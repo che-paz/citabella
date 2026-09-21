@@ -23,7 +23,7 @@ Precios live · `/interna` OK · app canónica **`app.gotacheck.app`** (sin verc
 | PWA | 🟢 Operativo | Web Push |
 | Sitio marketing Gota+Check | 🟢 Live | Precios A/Vitrina + trial en `gotacheck.app` |
 | Vitrina / landings | 🟢 S2.4 | Tutis + Galaxy en dominio propio; paths `/vitrina` de respaldo |
-| Taller / GTM | 🟡 Fase 3 | PDF asistentes + `/interna` leads (deploy + mig 018) |
+| Taller / GTM | 🟡 Fase 3 | PDF + `/interna` · `/ayuda` texto + capturas (video pendiente) |
 
 ## Decisiones tomadas
 
@@ -82,7 +82,7 @@ Precios live · `/interna` OK · app canónica **`app.gotacheck.app`** (sin verc
 - [x] Precios A + Vitrina + trial — 2026-09-21 (`DECISION_PRECIOS_TALLER.md`)
 - [ ] Fecha taller ≤15 (sondeo founders) — `TALLER_PRESENTACION.md`
 - [x] Panel `/interna` + mig 018 (probar en prod OK) — env + alta prueba interna OK
-- [ ] Tutoriales `/ayuda` en marketing (post primeras altas) — aparcado
+- [x] Tutoriales `/ayuda` texto + capturas (13 PNG demo) — 2026-09-21; video pendiente
 - [x] Spec contenido landing tipo Daysi — packs founders en prod
 - [ ] WhatsApp: Meta Cloud API vs Twilio (Fase 2 — fuera de ruta GTM)
 
@@ -103,7 +103,7 @@ Ninguno técnico duro. **Negocio:** fecha taller + sondeo ≤15.
 ## Próximo paso inmediato
 
 1. Sondeo founders → fijar fecha taller ≤15
-2. Tutoriales ayuda (después de 2–3 altas)
+2. Video en `/ayuda` si el texto+capturas no bajan soporte
 
 ## Docs operativos
 
@@ -161,6 +161,8 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-09-21 | `/ayuda`: 13 capturas en `marketing/public/ayuda/` (demo Belleza Luna; PII redactada) |
+| 2026-09-21 | `/ayuda` en marketing: 5 guías texto (login, horarios, catálogo, link, pagos); capturas/video después |
 | 2026-09-21 | `app.gotacheck.app` live (SITE_URL + Auth); agendas sin marca Vercel |
 | 2026-09-21 | Checklist `app.gotacheck.app` (sacar vercel.app de agendas clientas) |
 | 2026-09-21 | Taller: PDF asistentes + panel `/interna` (leads, CSV, provision); mig 018 |
