@@ -1,10 +1,17 @@
 # Runbook — Alta asistida de un salón
 
-> **Última actualización:** 2026-08-05 (S1.3)  
+> **Última actualización:** 2026-08-05 (S1.3) · panel `/interna` 2026-09-21  
 > **Objetivo:** dar de alta un salón **sin tocar** Tutis ni Galaxy.  
-> **Tooling:** `node scripts/provision-salon.mjs` (genérico). SQL manual = respaldo.
+> **Tooling:** `gotacheck.app/interna` (recomendado) o `node scripts/provision-salon.mjs`. SQL manual = respaldo.
 
-## Antes de empezar
+## Preferido — panel interno
+
+1. Aplicar migración `018_onboarding_leads.sql`  
+2. Env marketing: Supabase URL + service role + `INTERNAL_TOOLS_PASSWORD`  
+3. `https://gotacheck.app/interna` → lead → **Autorizar y dar de alta**  
+4. Detalle: `docs/ONBOARDING_LEADS.md`  
+
+## Alternativa — script CLI
 
 - [ ] Migraciones 001–015 aplicadas (`docs/MIGRATIONS_CHECKLIST.md`)
 - [ ] `.env.local` con `NEXT_PUBLIC_SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY`

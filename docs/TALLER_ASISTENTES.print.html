@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Gota+Check — Lista de asistentes (taller)</title>
+  <style>
+    @page {
+      size: letter;
+      margin: 12mm 12mm 14mm 12mm;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: #2a2220;
+      font-size: 9.5pt;
+      line-height: 1.35;
+      margin: 0;
+      padding: 8px 12px 16px;
+    }
+    .no-print {
+      margin: 0 0 16px;
+      padding: 10px 12px;
+      background: #fbf6f4;
+      border: 1px solid #e8b4b0;
+      border-radius: 8px;
+      font-size: 10pt;
+    }
+    @media print {
+      .no-print { display: none !important; }
+      body { padding: 0; }
+    }
+    .brand {
+      font-size: 18pt;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #a85a5a;
+      margin: 0 0 2px;
+    }
+    .subtitle {
+      font-size: 11pt;
+      font-weight: 600;
+      margin: 0 0 2px;
+    }
+    .meta {
+      font-size: 8.5pt;
+      color: #6f5f5a;
+      margin: 0 0 10px;
+    }
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 20px;
+      margin: 0 0 12px;
+      font-size: 9pt;
+    }
+    .meta-row span {
+      border-bottom: 1px solid #cfc4c0;
+      min-width: 140px;
+      padding-bottom: 2px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+    th, td {
+      border: 1px solid #d9cec9;
+      padding: 5px 4px;
+      vertical-align: middle;
+      text-align: left;
+    }
+    th {
+      background: #fbf6f4;
+      font-size: 8pt;
+      font-weight: 700;
+      text-align: center;
+    }
+    td {
+      height: 28px;
+      font-size: 8.5pt;
+    }
+    .c-num { width: 4%; text-align: center; color: #6f5f5a; }
+    .c-nombre { width: 16%; }
+    .c-salon { width: 16%; }
+    .c-wa { width: 14%; }
+    .c-int { width: 7%; text-align: center; }
+    .c-otro { width: 10%; }
+    .c-ok { width: 8%; text-align: center; }
+    .c-notas { width: 11%; }
+    .hint {
+      margin-top: 10px;
+      font-size: 8pt;
+      color: #6f5f5a;
+    }
+    .footer {
+      margin-top: 8px;
+      font-size: 8pt;
+      color: #6f5f5a;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="no-print">
+    <strong>Imprimir / PDF:</strong> Archivo → Imprimir → Destino “Guardar como PDF”
+    (o Cmd+P). Usa orientación vertical, Letter/A4. No hace falta márgenes extra.
+  </div>
+
+  <p class="brand">Gota+Check</p>
+  <p class="subtitle">Lista de asistentes — presentación / taller</p>
+  <p class="meta">Oleada 1 · cupo ≤15 · seguimiento post-taller · uso interno</p>
+
+  <div class="meta-row">
+    <div>Fecha: <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+    <div>Lugar: <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+    <div>Presentador: <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th class="c-num">#</th>
+        <th class="c-nombre">Nombre</th>
+        <th class="c-salon">Salón</th>
+        <th class="c-wa">WhatsApp</th>
+        <th class="c-int">A</th>
+        <th class="c-int">Vit</th>
+        <th class="c-int">Ambas</th>
+        <th class="c-otro">Otro</th>
+        <th class="c-ok">Contactar</th>
+        <th class="c-notas">Notas</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- 15 filas = cupo oleada -->
+      <tr><td class="c-num">1</td><td></td><td></td><td></td><td class="c-int">☐</td><td class="c-int">☐</td><td class="c-int">☐</td><td></td><td class="c-ok">☐</td><td></td></tr>
+      <tr><td class="c-num">2</td><td></td><td></td><td></td><td class="c-int">☐</td><td class="c-int">☐</td><td class="c-int">☐</td><td></td><td class="c-ok">☐</td><td></td></tr>
+      <tr><td class="c-num">3</td><td></td><td></td><td></td><td class="c-int">☐</td><td class="c-int">☐</td><td class="c-int">☐</td><td></td><td class="c-ok">☐</td><td></td></tr>
+      <tr><td class="c-num">4</td><td></td><td></td><td></td><td class="c-int">☐</td><td class="c-int">☐</td><td class="c-int">☐</td><td></td><td class="c-ok">☐</td><td></td></tr>
+      <tr><td class="c-num">5</td><td></td><td></td><td></td><td class="c-int">☐</td><td class="c-int">☐</td><td class="c-int">☐</td><td></td><td class="c-ok">☐</td><td></td></tr>
+      <tr><td class="c-num">6</td><td></td><td></td><td></td><td class="c-int">☐</td><td class="c-int">☐</td><td class="c-int">☐</td><td></td><td class="c-ok">☐</td><td></td></tr>
+      <tr><td class="c-num">7</td><td></td><td></td><td></td><td class="c-int">☐</td><td class="c-int">☐</td><td class="c-int">☐</td><td></td><td class="c-ok">☐</td><td></td></tr>
+      <tr><td class="c-num">8</td><td></td><td></td><td></td><td class="c-int">☐</td><td class="c-int">☐</td><td class="c-int">☐</td><td></td><td class="c-ok">☐</td><td></td></tr>
+      <tr><td class="c-num">9</td><td></td><td></td><td></td><td class="c-int">☐</td><td class="c-int">☐</td><td class="c-int">☐</td><td></td><td class="c-ok">☐</td><td></td></tr>
+      <tr><td class="c-num">10</td><td></td><td></td><td></td><td class="c-int">☐</td><td class="c-int">☐</td><td class="c-int">☐</td><td></td><td class="c-ok">☐</td><td></td></tr>
+      <tr><td class="c-num">11</td><td></td><td></td><td></td><td class="c-int">☐</td><td class="c-int">☐</td><td class="c-int">☐</td><td></td><td class="c-ok">☐</td><td></td></tr>
+      <tr><td class="c-num">12</td><td></td><td></td><td></td><td class="c-int">☐</td><td class="c-int">☐</td><td class="c-int">☐</td><td></td><td class="c-ok">☐</td><td></td></tr>
+      <tr><td class="c-num">13</td><td></td><td></td><td></td><td class="c-int">☐</td><td class="c-int">☐</td><td class="c-int">☐</td><td></td><td class="c-ok">☐</td><td></td></tr>
+      <tr><td class="c-num">14</td><td></td><td></td><td></td><td class="c-int">☐</td><td class="c-int">☐</td><td class="c-int">☐</td><td></td><td class="c-ok">☐</td><td></td></tr>
+      <tr><td class="c-num">15</td><td></td><td></td><td></td><td class="c-int">☐</td><td class="c-int">☐</td><td class="c-int">☐</td><td></td><td class="c-ok">☐</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <p class="hint">
+    <strong>A</strong> = Agenda (Q100/mes, trial 30d) ·
+    <strong>Vit</strong> = Vitrina (Q3,500) ·
+    <strong>Ambas</strong> ·
+    <strong>Otro</strong> = especificar ·
+    <strong>Contactar</strong> = quiere seguimiento.
+    Email / NIT / dominio → reunión de seguimiento (no en esta hoja).
+  </p>
+
+  <div class="footer">
+    <span>gotacheck.app · VajaLabs</span>
+    <span>Pasar a lista digital → formulario interno de alta</span>
+  </div>
+</body>
+</html>
