@@ -17,6 +17,22 @@ npm run dev                  # http://localhost:3010
 |----------|-----------|---------|-------------|
 | `NEXT_PUBLIC_WHATSAPP_URL` | No | `https://wa.me/50250460346` | CTA principal (solicitar acceso) |
 | `NEXT_PUBLIC_APP_URL` | No | _(vacío)_ | Link “Ya tengo cuenta” → login de la app. Si está vacío, el CTA secundario se oculta. |
+| `NEXT_PUBLIC_SITE_URL` | Para `/interna` | app Vercel | Base para links de reserva tras alta |
+| `NEXT_PUBLIC_SUPABASE_URL` | Para `/interna` | — | Mismo proyecto Supabase que la app |
+| `SUPABASE_SERVICE_ROLE_KEY` | Para `/interna` | — | Solo server; nunca `NEXT_PUBLIC_` |
+| `INTERNAL_TOOLS_PASSWORD` | Para `/interna` | — | Contraseña del panel (≥8). URL: `/interna` (no enlazada) |
+
+## Panel interno (leads)
+
+Tras aplicar migración `018_onboarding_leads.sql` y configurar env:
+
+1. Abrí `https://gotacheck.app/interna`
+2. Entrá con `INTERNAL_TOOLS_PASSWORD`
+3. Creá leads → completá slug/email → **Autorizar y dar de alta**
+4. **Descargar Excel (CSV)** desde el listado
+
+Detalle: `docs/ONBOARDING_LEADS.md`.
+
 
 En Vercel (proyecto marketing), configura ambas en **Settings → Environment Variables**.
 

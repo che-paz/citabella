@@ -33,6 +33,8 @@
 
 QR: imprimir marketing + WhatsApp + (opcional) una vitrina founder.
 
+**Lista asistentes (imprimir → PDF):** abrir `docs/TALLER_ASISTENTES.print.html` en el navegador → Imprimir → Guardar como PDF.
+
 ---
 
 ## Guion (15–25 min)
@@ -166,6 +168,8 @@ Preguntas frecuentes preparadas:
 ## Proceso post-taller
 
 ### 1. Lista de interesados (día 0–1)
+
+Usar la hoja impresa (`TALLER_ASISTENTES.print.html`) y pasar a digital en `/interna` (gotacheck.app) — ver `ONBOARDING_LEADS.md`.
 
 Columnas mínimas: nombre, salón, WhatsApp, interés (A / Vitrina / ambos), prioridad, estado.
 

@@ -2,12 +2,12 @@
 
 > **Última actualización:** 2026-09-21  
 > **Marca presentación:** Gota+Check · **Estudio:** VajaLabs (sin constituir)  
-> **Sprint activo:** **Fase 3** — precios/trial ✅ · taller oleada 1 · marketing con precios  
+> **Sprint activo:** **Fase 3** — taller tools (PDF + `/interna` leads)  
 > **Fase:** MVP ✅ | Piloto founders | Vitrinas live | Listos para taller (falta fecha)
 
 ## Resumen en una línea
 
-MVP operativo + founders live. Precios oleada 1 cerrados (A Q100 / Vitrina Q3,500). Preparando taller ≤15.
+Precios live. Hoja asistentes imprimible + panel interno de leads/alta (`/interna`). Falta aplicar migración 018 en cloud + env marketing.
 
 ## Estado por área
 
@@ -23,7 +23,7 @@ MVP operativo + founders live. Precios oleada 1 cerrados (A Q100 / Vitrina Q3,50
 | PWA | 🟢 Operativo | Web Push |
 | Sitio marketing Gota+Check | 🟢 Live | Precios A/Vitrina + trial en `gotacheck.app` |
 | Vitrina / landings | 🟢 S2.4 | Tutis + Galaxy en dominio propio; paths `/vitrina` de respaldo |
-| Taller / GTM | 🟡 Fase 3 | Docs decisión + guion ✅ · fecha ⬜ |
+| Taller / GTM | 🟡 Fase 3 | PDF asistentes + `/interna` leads (deploy + mig 018) |
 
 ## Decisiones tomadas
 
@@ -81,13 +81,14 @@ MVP operativo + founders live. Precios oleada 1 cerrados (A Q100 / Vitrina Q3,50
 - [ ] `NEXT_PUBLIC_APP_URL` / `NEXT_PUBLIC_SITE_URL` en prod (app + marketing) — marketing ya con WhatsApp + app URL
 - [x] Precios A + Vitrina + trial — 2026-09-21 (`DECISION_PRECIOS_TALLER.md`)
 - [ ] Fecha taller ≤15 (sondeo founders) — `TALLER_PRESENTACION.md`
-- [ ] Optimizar enrolamiento / alta de nuevas (proceso dueño; script ya existe)
+- [ ] Optimizar enrolamiento — panel `/interna` en código; falta mig 018 cloud + env Vercel marketing
+- [ ] Tutoriales `/ayuda` en marketing (post primeras altas) — aparcado
 - [x] Spec contenido landing tipo Daysi — packs founders en prod
 - [ ] WhatsApp: Meta Cloud API vs Twilio (Fase 2 — fuera de ruta GTM)
 
 ## Bloqueadores actuales
 
-Ninguno técnico duro. **Pendiente negocio:** fijar fecha taller + sondeo ≤15.
+**Ops:** aplicar `018_onboarding_leads.sql` + env `INTERNAL_TOOLS_PASSWORD` / Supabase en proyecto marketing. **Negocio:** fecha taller.
 
 ## Desarrollo local
 
@@ -101,8 +102,9 @@ Ninguno técnico duro. **Pendiente negocio:** fijar fecha taller + sondeo ≤15.
 
 ## Próximo paso inmediato
 
-1. Sondeo founders → fijar fecha taller ≤15
-2. Optimizar proceso de enrolamiento (dueño)
+1. Aplicar migración 018 + env marketing → probar `/interna`
+2. Sondeo founders → fijar fecha taller ≤15
+3. Tutoriales ayuda (después de 2–3 altas)
 
 ## Docs operativos
 
@@ -117,6 +119,8 @@ Ninguno técnico duro. **Pendiente negocio:** fijar fecha taller + sondeo ≤15.
 - Ruta GTM: `docs/ROUTE_GOTACHECK.md`
 - Precios / trial: `docs/DECISION_PRECIOS_TALLER.md`
 - Guion taller: `docs/TALLER_PRESENTACION.md`
+- Lista asistentes PDF: `docs/TALLER_ASISTENTES.print.html`
+- Leads / alta interna: `docs/ONBOARDING_LEADS.md`
 
 ## Piloto founders (activo)
 
@@ -157,6 +161,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-09-21 | Taller: PDF asistentes + panel `/interna` (leads, CSV, provision); mig 018 |
 | 2026-09-21 | Fase 3: precios/trial cerrados; docs `DECISION_PRECIOS_TALLER` + `TALLER_PRESENTACION`; oferta A+Vitrina (sin C/editor) |
 | 2026-09-10 | Vitrina: favicon por salón (desde logo Tutis/Galaxy) en `/vitrina` y `/reservar` |
 | 2026-09-10 | Migración 017 aplicada en cloud (`paquetes.descripcion`) |

@@ -215,6 +215,21 @@ salones ──┬── usuarios
 | max_citas_mes | INT NULL | |
 | precio_mensual | DECIMAL NULL | Q0 para founder/trial |
 
+### `onboarding_leads` (migración 018 — interno)
+
+Captura taller → authorize → provision. RLS on, **sin policies** (solo service_role). Ver `ONBOARDING_LEADS.md`.
+
+| Columna | Tipo | Notas |
+|---------|------|-------|
+| id | UUID PK | |
+| contact_name, salon_nombre, whatsapp | TEXT | captura |
+| interes | TEXT | agenda\|vitrina\|ambas\|otro |
+| slug, email, admin_nombre | TEXT NULL | para provision |
+| plan_tipo | TEXT | trial\|pago\|founder |
+| status | TEXT | borrador→listo→autorizado→enrolado\|error |
+| salon_id | UUID FK NULL | tras alta |
+| temp_password | TEXT NULL | solo uso interno |
+
 ## Índices críticos
 
 ```sql
