@@ -6,23 +6,46 @@ const packages = [
   {
     sku: "A",
     name: "Agenda",
+    price: "Q100",
+    priceSuffix: "/mes",
+    badge: "30 días de prueba",
     summary: "Tu agenda digital bajo Gota+Check.",
     detail:
       "Citas ordenadas, link de reserva para tus clientas y panel para ti y tu equipo. Sin pelear con el chat.",
+    includes: [
+      "Link de reserva para clientas",
+      "Panel de agenda y pagos por comprobante",
+      "Alta acompañada",
+    ],
   },
   {
-    sku: "B",
+    sku: "V",
     name: "Vitrina",
-    summary: "Agenda + tu dominio + una página simple.",
+    price: "Q3,500",
+    priceSuffix: " una vez",
+    badge: "Dominio 1er año incluido",
+    summary: "Agenda + tu dominio + página hecha por el estudio.",
     detail:
-      "Todo lo de Agenda, más un dominio propio y una landing con plantilla que puedes rellenar: servicios, fotos y botón para agendar.",
+      "Montamos tu presencia web con la info y fotos que nos pases. Sin editor complicado ni tienda online.",
+    includes: [
+      "Todo lo de Agenda",
+      "Dominio propio el primer año",
+      "Landing con CTA para agendar",
+      "Renovación desde el 2º año: Q200/año",
+    ],
+  },
+] as const;
+
+const founders = [
+  {
+    name: "Salón Tutis",
+    href: "https://www.estudiotutis.com",
+    note: "Agenda y vitrina en vivo",
   },
   {
-    sku: "C",
-    name: "Presencia",
-    summary: "Vitrina + sesión de fotos.",
-    detail:
-      "Todo lo de Vitrina, más una sesión de fotos para tu página. Diseño asistido opcional, con cupo limitado.",
+    name: "Galaxy Barbería Infantil",
+    href: "https://www.galaxybarberiagt.com",
+    note: "Agenda y vitrina en vivo",
   },
 ] as const;
 
@@ -30,10 +53,12 @@ function CtaGroup({
   whatsappUrl,
   appUrl,
   primaryClassName,
+  primaryLabel = "Solicitar acceso por WhatsApp",
 }: {
   whatsappUrl: string;
   appUrl: string | null;
   primaryClassName?: string;
+  primaryLabel?: string;
 }) {
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -46,7 +71,7 @@ function CtaGroup({
           "inline-flex items-center justify-center rounded-xl bg-rose-deep px-6 py-3.5 text-center text-base font-semibold text-white transition duration-200 hover:-translate-y-0.5 hover:bg-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-deep"
         }
       >
-        Solicitar acceso por WhatsApp
+        {primaryLabel}
       </a>
       {appUrl ? (
         <a
@@ -80,8 +105,8 @@ export default function HomePage() {
               </p>
               <p className="animate-fade-up mt-4 max-w-md text-lg leading-relaxed text-muted [animation-delay:220ms]">
                 Para salones, maquillistas y barberías en Guatemala y
-                Centroamérica que quieren orden, menos no-shows y una presencia
-                clara.
+                Centroamérica. Agenda clara, link para reservar y, si quieres,
+                tu página con dominio propio.
               </p>
               <div className="animate-fade-up mt-8 [animation-delay:320ms]">
                 <CtaGroup whatsappUrl={whatsappUrl} appUrl={appUrl} />
@@ -132,8 +157,8 @@ export default function HomePage() {
               </h2>
               <p className="mt-4 text-lg leading-relaxed text-muted">
                 Gota+Check ordena tu día a día y les da a tus clientas una forma
-                simple de pedir cita. Si quieres más, también te ayudamos con
-                dominio y una vitrina web — sin tienda ni complicaciones.
+                simple de pedir cita. Si quieres presencia web, el estudio te
+                monta la vitrina con tu dominio — sin tienda ni complicaciones.
               </p>
             </Reveal>
           </div>
@@ -144,34 +169,58 @@ export default function HomePage() {
           <div className="mx-auto max-w-5xl">
             <Reveal>
               <h2 className="font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">
-                Tres formas de empezar
+                Dos formas de empezar
               </h2>
               <p className="mt-3 max-w-2xl text-lg text-muted">
-                Elegí el paquete que encaje con tu salón. Los precios los
-                conversamos al solicitar acceso.
+                Precios claros. Alta acompañada — no es self-serve masivo.
               </p>
             </Reveal>
 
-            <div className="mt-12 grid gap-10 md:grid-cols-3 md:gap-8">
+            <div className="mt-12 grid gap-12 md:grid-cols-2 md:gap-14">
               {packages.map((pkg, index) => (
                 <Reveal key={pkg.sku} delayMs={index * 90}>
                   <article className="h-full border-t border-rose-soft/70 pt-6">
                     <p className="font-display text-sm font-semibold uppercase tracking-[0.18em] text-rose-deep">
-                      {pkg.sku}
+                      {pkg.badge}
                     </p>
                     <h3 className="mt-3 font-display text-2xl font-bold text-ink">
                       {pkg.name}
                     </h3>
-                    <p className="mt-2 text-base font-medium text-ink">
+                    <p className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
+                      {pkg.price}
+                      <span className="text-xl font-semibold text-muted sm:text-2xl">
+                        {pkg.priceSuffix}
+                      </span>
+                    </p>
+                    <p className="mt-4 text-base font-medium text-ink">
                       {pkg.summary}
                     </p>
                     <p className="mt-3 text-base leading-relaxed text-muted">
                       {pkg.detail}
                     </p>
+                    <ul className="mt-5 space-y-2 text-base text-muted">
+                      {pkg.includes.map((item) => (
+                        <li key={item} className="flex gap-2">
+                          <span
+                            aria-hidden
+                            className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-rose-deep"
+                          />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </article>
                 </Reveal>
               ))}
             </div>
+
+            <Reveal delayMs={120}>
+              <p className="mt-10 max-w-2xl text-sm leading-relaxed text-muted">
+                Vitrina: cupo de unas 4 a 6 al mes, cuando nos pases la info
+                completa. No incluye sesión de fotos ni editor para editar sola —
+                nosotros montamos la página contigo.
+              </p>
+            </Reveal>
           </div>
         </section>
 
@@ -183,10 +232,27 @@ export default function HomePage() {
                 Ya lo usan salones en Guatemala
               </h2>
               <p className="mt-4 text-lg leading-relaxed text-muted">
-                Founders como Salón Tutis y Galaxy Barbería Infantil ya trabajan
-                con la agenda en el día a día. Estamos abriendo acceso de forma
-                acompañada — escríbenos y te contamos cómo entrar.
+                Founders con agenda y vitrina en dominio propio. Miralos y
+                escríbenos si quieres entrar en la oleada acompañada.
               </p>
+              <ul className="mt-8 space-y-5">
+                {founders.map((f) => (
+                  <li key={f.href}>
+                    <a
+                      href={f.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group font-display text-xl font-semibold text-ink transition hover:text-rose-deep"
+                    >
+                      {f.name}
+                      <span className="ml-2 inline-block text-rose-deep transition group-hover:translate-x-0.5">
+                        →
+                      </span>
+                    </a>
+                    <p className="mt-1 text-sm text-muted">{f.note}</p>
+                  </li>
+                ))}
+              </ul>
             </Reveal>
           </div>
         </section>
@@ -199,10 +265,15 @@ export default function HomePage() {
                 ¿Listas para ordenar la agenda?
               </h2>
               <p className="mt-4 text-lg text-muted">
-                Cuéntanos de tu salón por WhatsApp. Te guiamos paso a paso.
+                Agenda con 30 días de prueba. Vitrina cuando haya cupo. Cuéntanos
+                de tu salón por WhatsApp.
               </p>
               <div className="mt-8">
-                <CtaGroup whatsappUrl={whatsappUrl} appUrl={appUrl} />
+                <CtaGroup
+                  whatsappUrl={whatsappUrl}
+                  appUrl={appUrl}
+                  primaryLabel="Escribir por WhatsApp"
+                />
               </div>
             </Reveal>
           </div>

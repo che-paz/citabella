@@ -19,12 +19,12 @@ const manrope = Manrope({
 export const metadata: Metadata = {
   title: "Gota+Check — Agenda para salones",
   description:
-    "Agenda clara, link de reserva para tus clientas y presencia web para salones, maquillistas y barberías en Guatemala y Centroamérica.",
+    "Agenda desde Q100/mes con 30 días de prueba. Vitrina con dominio desde Q3,500. Para salones, maquillistas y barberías en Guatemala y Centroamérica.",
   metadataBase: new URL("https://gotacheck.app"),
   openGraph: {
     title: "Gota+Check — Agenda para salones",
     description:
-      "Deja de pelear con WhatsApp y el papel. Agenda, reserva pública y vitrina para tu salón.",
+      "Agenda Q100/mes (30 días de prueba) y vitrina con dominio Q3,500. Sin el caos del WhatsApp.",
     url: "https://gotacheck.app",
     siteName: "Gota+Check",
     locale: "es_GT",
