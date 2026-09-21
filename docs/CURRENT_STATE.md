@@ -7,7 +7,7 @@
 
 ## Resumen en una línea
 
-Precios live. Hoja asistentes imprimible + panel interno de leads/alta (`/interna`). Falta aplicar migración 018 en cloud + env marketing.
+Precios live · `/interna` OK · app canónica **`app.gotacheck.app`** (sin vercel.app a clientas). Falta fecha taller.
 
 ## Estado por área
 
@@ -78,7 +78,7 @@ Precios live. Hoja asistentes imprimible + panel interno de leads/alta (`/intern
 
 - [x] Dominio producto Gota+Check comprado (`gotacheck.app`, 2026-08-04)
 - [x] DNS `gotacheck.app` → Vercel marketing (Cloudflare DNS-only; live 2026-08-04)
-- [ ] `NEXT_PUBLIC_SITE_URL` / Auth → `app.gotacheck.app` (checklist `APP_DOMAIN_CHECKLIST.md`)
+- [x] `NEXT_PUBLIC_SITE_URL` / Auth → `app.gotacheck.app` ✅ 2026-09-21 (`APP_DOMAIN_CHECKLIST.md`)
 - [x] Precios A + Vitrina + trial — 2026-09-21 (`DECISION_PRECIOS_TALLER.md`)
 - [ ] Fecha taller ≤15 (sondeo founders) — `TALLER_PRESENTACION.md`
 - [x] Panel `/interna` + mig 018 (probar en prod OK) — env + alta prueba interna OK
@@ -88,7 +88,7 @@ Precios live. Hoja asistentes imprimible + panel interno de leads/alta (`/intern
 
 ## Bloqueadores actuales
 
-**Ops:** conectar `app.gotacheck.app` (DNS + env + Supabase Auth). **Negocio:** fecha taller.
+Ninguno técnico duro. **Negocio:** fecha taller + sondeo ≤15.
 
 ## Desarrollo local
 
@@ -102,9 +102,8 @@ Precios live. Hoja asistentes imprimible + panel interno de leads/alta (`/intern
 
 ## Próximo paso inmediato
 
-1. Completar `docs/APP_DOMAIN_CHECKLIST.md` (`app.gotacheck.app`)
-2. Sondeo founders → fijar fecha taller ≤15
-3. Tutoriales ayuda (después de 2–3 altas)
+1. Sondeo founders → fijar fecha taller ≤15
+2. Tutoriales ayuda (después de 2–3 altas)
 
 ## Docs operativos
 
@@ -162,6 +161,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-09-21 | `app.gotacheck.app` live (SITE_URL + Auth); agendas sin marca Vercel |
 | 2026-09-21 | Checklist `app.gotacheck.app` (sacar vercel.app de agendas clientas) |
 | 2026-09-21 | Taller: PDF asistentes + panel `/interna` (leads, CSV, provision); mig 018 |
 | 2026-09-21 | Fase 3: precios/trial cerrados; docs `DECISION_PRECIOS_TALLER` + `TALLER_PRESENTACION`; oferta A+Vitrina (sin C/editor) |

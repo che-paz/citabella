@@ -1,6 +1,6 @@
 # App domain — `app.gotacheck.app`
 
-> **Objetivo:** que clientas y dueñas vean Gota+Check, no `*.vercel.app`, en login y `/reservar`.  
+> **Estado:** ✅ live 2026-09-21 — clientas ven `app.gotacheck.app`, no `*.vercel.app`  
 > **Proyecto Vercel:** app (`citabella` / `citabella-eight`) — **no** `gotacheck-marketing`  
 > **Marketing** se queda en apex `gotacheck.app`
 
