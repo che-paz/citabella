@@ -2,6 +2,7 @@ import {
   addDaysToDateKey,
   formatSalonDate,
   formatSalonTime,
+  formatSalonTimeHHmm,
   getSalonDateKey,
   salonLocalToUtc,
   startOfSalonDayUtc,
@@ -22,6 +23,11 @@ export function getWeekDateKeys(startDateKey: string): string[] {
 
 export function formatAgendaTime(iso: string, timezone: string): string {
   return formatSalonTime(new Date(iso), timezone);
+}
+
+/** HH:mm for <input type="time"> and server actions. */
+export function formatAgendaTimeHHmm(iso: string, timezone: string): string {
+  return formatSalonTimeHHmm(new Date(iso), timezone);
 }
 
 export function formatAgendaDate(iso: string, timezone: string): string {

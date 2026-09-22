@@ -8,7 +8,7 @@ import { fetchAvailabilitySlots, isCitaOverlapDbError } from "@/lib/availability
 import { validateNoOverlap } from "@/lib/availability/engine";
 import { BLOCKING_CITA_ESTADOS } from "@/lib/availability/slots";
 import { resolveSlotStepMinutes } from "@/lib/availability/salon-config";
-import { salonLocalToUtc } from "@/lib/availability/timezone";
+import { salonLocalToUtc, formatHHmmTo12h } from "@/lib/availability/timezone";
 import { createClient } from "@/lib/supabase/server";
 import { optionalPgUuidSchema, pgUuidSchema } from "@/lib/utils/validation";
 import type { CitaEstado } from "@/types/database";
@@ -263,7 +263,7 @@ export async function saveHorariosAction(
 
   const pausaMsg =
     pausa?.activa && pausa.hora_inicio && pausa.hora_fin
-      ? ` Pausa diaria ${pausa.hora_inicio}–${pausa.hora_fin} activa.`
+      ? ` Pausa diaria ${formatHHmmTo12h(pausa.hora_inicio)}–${formatHHmmTo12h(pausa.hora_fin)} activa.`
       : pausa?.activa === false
         ? " Pausa diaria desactivada."
         : "";

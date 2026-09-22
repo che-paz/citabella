@@ -90,9 +90,40 @@ export function salonLocalToUtc(
   return candidate;
 }
 
-export function formatSalonTime(date: Date, timezone: string): string {
+export function formatSalonTimeHHmm(date: Date, timezone: string): string {
   const parts = getLocalParts(date, timezone);
   return `${String(parts.hour).padStart(2, "0")}:${String(parts.minute).padStart(2, "0")}`;
+}
+
+/** Display time for founders/clientas: "2:00 PM". */
+export function formatSalonTime(date: Date, timezone: string): string {
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: timezone,
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  }).format(date);
+}
+
+/** Format a stored HH:mm / HH:mm:ss wall-clock string as "2:00 PM". */
+export function formatHHmmTo12h(time: string): string {
+  const match = /^(\d{1,2}):(\d{2})/.exec(time.trim());
+  if (!match) return time;
+  const hour = Number(match[1]);
+  const minute = Number(match[2]);
+  if (
+    !Number.isFinite(hour) ||
+    !Number.isFinite(minute) ||
+    hour < 0 ||
+    hour > 23 ||
+    minute < 0 ||
+    minute > 59
+  ) {
+    return time;
+  }
+  const period = hour >= 12 ? "PM" : "AM";
+  const hour12 = hour % 12 || 12;
+  return `${hour12}:${String(minute).padStart(2, "0")} ${period}`;
 }
 
 export function formatSalonDate(date: Date, timezone: string): string {

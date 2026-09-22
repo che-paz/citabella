@@ -11,6 +11,7 @@ import {
   type AgendaActionState,
 } from "@/lib/agenda/actions";
 import { DIA_SEMANA_LABELS, type ExcepcionHorario, type HorarioSalon, type PausaDiaria } from "@/types/database";
+import { formatHHmmTo12h } from "@/lib/availability/timezone";
 import { Button } from "@/components/ui/button";
 import {
   FormSubmitButton,
@@ -313,7 +314,7 @@ export function HorariosConfig({
                       {exc.fecha} —{" "}
                       {exc.cerrado
                         ? "Cerrado"
-                        : `${exc.hora_inicio?.slice(0, 5)} – ${exc.hora_fin?.slice(0, 5)}`}
+                        : `${formatHHmmTo12h(exc.hora_inicio ?? "")} – ${formatHHmmTo12h(exc.hora_fin ?? "")}`}
                     </span>
                     <Button
                       type="button"

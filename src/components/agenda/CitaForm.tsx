@@ -10,7 +10,7 @@ import {
   type AgendaActionState,
 } from "@/lib/agenda/actions";
 import {
-  formatAgendaTime,
+  formatAgendaTimeHHmm,
   getSalonDateKey,
   maxBookingDateKey,
   todayDateKey,
@@ -100,7 +100,7 @@ function buildInitialState(
       clientaId: editingCita.clienta_id,
       colaboradoraId: editingCita.colaboradora_id ?? "",
       fecha: getSalonDateKey(new Date(editingCita.inicio), timezone),
-      horaInicio: formatAgendaTime(editingCita.inicio, timezone),
+      horaInicio: formatAgendaTimeHHmm(editingCita.inicio, timezone),
       duracionMinutos: durationFromRange(editingCita.inicio, editingCita.fin),
     };
   }
@@ -453,7 +453,7 @@ export function CitaForm({
               </div>
             </div>
             <p className="text-xs text-muted-foreground">
-              Puedes poner cualquier hora (ej. 10:40) y acortar la duración para
+              Puedes poner cualquier hora (ej. 10:40 AM) y acortar la duración para
               emergencias. No debe cruzarse con otra cita ni con la pausa.
               {typeof duracionMinutos === "number" &&
                 duracionMinutos !== catalogMins && (

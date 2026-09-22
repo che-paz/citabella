@@ -74,6 +74,7 @@ App en **`app.gotacheck.app`**. Marketing sin montos públicos (precios por What
 - Clientas: mismo teléfono permitido en varias fichas (admin); `upsert_clienta_public` no pisa hermanos si hay 2+ con ese WhatsApp (migración 016)
 - Clientas form: una sola action `saveClientaAction` (create vs update por `id`) para evitar “Clienta no encontrada” al crear
 - Agenda: trigger DB `prevent_cita_overlap` (019) + fail-closed si falla lectura de citas/horarios
+- Horas en UI: formato 12 h con AM/PM (ej. 2:00 PM); inputs `type="time"` siguen en 24 h
 
 ## Decisiones pendientes
 
@@ -162,6 +163,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-09-22 | UX: horarios en 12 h (AM/PM) en agenda, reserva, pagos, WhatsApp |
 | 2026-09-22 | UX: FormSubmitButton + submit gate (evita doble click en citas/clientas) |
 | 2026-09-22 | Fix agenda: trigger anti-solape citas (019) + disponibilidad fail-closed |
 | 2026-09-22 | Marketing: ocultar precios públicos; CTA “Consultar precios por WhatsApp” |
