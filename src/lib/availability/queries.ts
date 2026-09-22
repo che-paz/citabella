@@ -10,6 +10,20 @@ import { BLOCKING_CITA_ESTADOS, DEFAULT_SLOT_STEP_MINUTES } from "./slots";
 import { getSalonDateKey, startOfSalonDayUtc, endOfSalonDayUtc } from "./timezone";
 import type { TimeRange } from "./slots";
 
+export type FetchAvailabilityResult =
+  | { ok: true; slots: TimeRange[] }
+  | { ok: false; error: string };
+
+/** True when Postgres trigger/constraint rejected an overlapping cita. */
+export function isCitaOverlapDbError(error: {
+  code?: string;
+  message?: string;
+} | null): boolean {
+  if (!error) return false;
+  if (error.code === "23P01") return true;
+  return (error.message ?? "").includes("CITA_OVERLAP");
+}
+
 export async function fetchAvailabilitySlots(params: {
   salonId: string;
   date: Date;
@@ -19,7 +33,7 @@ export async function fetchAvailabilitySlots(params: {
   excludeCitaId?: string;
   slotStepMinutes?: number;
   pausaDiaria?: PausaDiariaInput | null;
-}): Promise<TimeRange[]> {
+}): Promise<FetchAvailabilityResult> {
   const supabase = await createClient();
   const dateKey = getSalonDateKey(params.date, params.timezone);
   const dayStart = startOfSalonDayUtc(dateKey, params.timezone).toISOString();
@@ -46,6 +60,25 @@ export async function fetchAvailabilitySlots(params: {
     fetchSalonPausaDiaria(params.salonId, params.pausaDiaria),
   ]);
 
+  // Fail closed: never treat a failed citas/horarios read as an empty free day.
+  if (horariosRes.error) {
+    console.error("[availability] horarios query failed", horariosRes.error.message);
+    return { ok: false, error: "No se pudo verificar la disponibilidad" };
+  }
+
+  if (citasRes.error) {
+    console.error("[availability] citas query failed", citasRes.error.message);
+    return { ok: false, error: "No se pudo verificar la disponibilidad" };
+  }
+
+  if (excepcionRes.error) {
+    console.error(
+      "[availability] excepcion query failed",
+      excepcionRes.error.message
+    );
+    return { ok: false, error: "No se pudo verificar la disponibilidad" };
+  }
+
   const citas: CitaOcupadaInput[] = (citasRes.data ?? []).map((c) => ({
     id: c.id,
     inicio: new Date(c.inicio),
@@ -67,5 +100,5 @@ export async function fetchAvailabilitySlots(params: {
     slotStepMinutes: params.slotStepMinutes ?? DEFAULT_SLOT_STEP_MINUTES,
   };
 
-  return computeAvailability(input);
+  return { ok: true, slots: computeAvailability(input) };
 }

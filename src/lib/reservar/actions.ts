@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { fetchAvailabilitySlots } from "@/lib/availability/queries";
+import { fetchAvailabilitySlots, isCitaOverlapDbError } from "@/lib/availability/queries";
 import { resolvePausaDiariaFromSalon } from "@/lib/availability/pausa";
 import { resolveSlotStepMinutes } from "@/lib/availability/salon-config";
 import { getSalonDateKey } from "@/lib/availability/timezone";
@@ -127,7 +127,7 @@ export async function getPublicSlotsAction(params: {
   }
 
   try {
-    const slots = await fetchAvailabilitySlots({
+    const slotsResult = await fetchAvailabilitySlots({
       salonId: salon.id,
       date: new Date(`${params.fecha}T12:00:00`),
       timezone: salon.timezone,
@@ -136,13 +136,17 @@ export async function getPublicSlotsAction(params: {
       pausaDiaria: resolvePausaDiariaFromSalon(salon),
     });
 
+    if (!slotsResult.ok) {
+      return { slots: [], error: slotsResult.error };
+    }
+
     const dateKey = params.fecha;
     const isToday = dateKey === getSalonDateKey(new Date(), salon.timezone);
     const now = Date.now();
 
     const available = isToday
-      ? slots.filter((s) => s.inicio.getTime() > now)
-      : slots;
+      ? slotsResult.slots.filter((s) => s.inicio.getTime() > now)
+      : slotsResult.slots;
 
     return {
       slots: available.map((s) => ({
@@ -223,7 +227,7 @@ export async function createReservaAction(
   const fecha = getSalonDateKey(inicio, salon.timezone);
   const fin = new Date(inicio.getTime() + item.duracion * 60_000);
 
-  const slots = await fetchAvailabilitySlots({
+  const slotsResult = await fetchAvailabilitySlots({
     salonId: salon.id,
     date: new Date(`${fecha}T12:00:00`),
     timezone: salon.timezone,
@@ -232,10 +236,14 @@ export async function createReservaAction(
     pausaDiaria: resolvePausaDiariaFromSalon(salon),
   });
 
+  if (!slotsResult.ok) {
+    return { error: slotsResult.error };
+  }
+
   const now = Date.now();
   const isToday = fecha === getSalonDateKey(new Date(), salon.timezone);
 
-  const slotValid = slots.some((s) => {
+  const slotValid = slotsResult.slots.some((s) => {
     if (s.inicio.getTime() !== inicio.getTime()) return false;
     if (isToday && s.inicio.getTime() <= now) return false;
     return true;
@@ -346,6 +354,9 @@ export async function createReservaAction(
     .single();
 
   if (citaError || !cita) {
+    if (isCitaOverlapDbError(citaError)) {
+      return { error: "El horario seleccionado ya no está disponible" };
+    }
     return { error: "No se pudo crear la reserva" };
   }
 

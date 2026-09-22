@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useFormState } from "react-dom";
 import { useRouter } from "next/navigation";
+import { useFormState } from "react-dom";
+import { CheckCircle2 } from "lucide-react";
 import {
   createCitaAction,
   rescheduleCitaAction,
@@ -22,7 +23,10 @@ import type {
   Servicio,
   Usuario,
 } from "@/types/database";
-import { Button } from "@/components/ui/button";
+import {
+  FormSubmitButton,
+  useSubmitGate,
+} from "@/components/ui/form-submit-button";
 import {
   Dialog,
   DialogContent,
@@ -137,6 +141,7 @@ export function CitaForm({
   const isEditing = Boolean(editingCita);
   const action = isEditing ? rescheduleCitaAction : createCitaAction;
   const [state, formAction] = useFormState(action, initialState);
+  const { locked, formProps } = useSubmitGate(state);
 
   const initial = buildInitialState(
     editingCita,
@@ -187,17 +192,19 @@ export function CitaForm({
   const selectedClienta = clientas.find((c) => c.id === clientaId);
 
   useEffect(() => {
+    if (!state.success) return;
+    const t = window.setTimeout(() => {
+      onOpenChange(false);
+      router.refresh();
+    }, 700);
+    return () => window.clearTimeout(t);
+  }, [state.success, onOpenChange, router]);
+
+  useEffect(() => {
     if (!durationTouched) {
       setDuracionMinutos(catalogMins);
     }
   }, [catalogMins, durationTouched]);
-
-  useEffect(() => {
-    if (state.success) {
-      onOpenChange(false);
-      router.refresh();
-    }
-  }, [state.success, onOpenChange, router]);
 
   const durationOk =
     typeof duracionMinutos === "number" &&
@@ -225,7 +232,7 @@ export function CitaForm({
             No hay clientas registradas. Ejecuta el seed de agenda en Supabase.
           </p>
         ) : (
-          <form action={formAction} className="space-y-4">
+          <form action={formAction} className="space-y-4" {...formProps}>
             {isEditing && (
               <input type="hidden" name="cita_id" value={editingCita?.id} />
             )}
@@ -475,10 +482,24 @@ export function CitaForm({
             {state.error && (
               <p className="text-sm text-destructive">{state.error}</p>
             )}
+            {state.success && (
+              <p
+                className="flex items-center gap-2 text-sm text-green-700"
+                role="status"
+              >
+                <CheckCircle2 className="h-4 w-4 shrink-0" aria-hidden />
+                {isEditing ? "Cita actualizada" : "Cita agendada"}
+              </p>
+            )}
 
-            <Button type="submit" disabled={!canSubmit} className="w-full">
-              {isEditing ? "Guardar cambios" : "Crear cita"}
-            </Button>
+            <FormSubmitButton
+              className="w-full"
+              disabled={!canSubmit || locked}
+              idleLabel={isEditing ? "Guardar cambios" : "Crear cita"}
+              pendingLabel={isEditing ? "Guardando…" : "Agendando…"}
+              successLabel="Listo"
+              success={Boolean(state.success)}
+            />
           </form>
         )}
       </DialogContent>

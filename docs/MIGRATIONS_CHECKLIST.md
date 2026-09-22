@@ -1,6 +1,6 @@
 # Checklist de migraciones (Supabase Cloud)
 
-> **Última verificación:** 2026-09-21 (018 en repo; aplicar en cloud)  
+> **Última verificación:** 2026-09-22 (019 anti-solape en repo)  
 > **Proyecto:** CITABELLA / Gota+Check — esquema multi-tenant  
 > **Regla:** nunca editar una migración ya aplicada; solo agregar `019_…` en adelante.
 
@@ -26,8 +26,10 @@
 | `016_upsert_clienta_shared_phone.sql` | upsert público seguro con WhatsApp compartido | ✅ 2026-08-10 |
 | `017_paquete_descripcion.sql` | `paquetes.descripcion` opcional | ✅ 2026-09-10 |
 | `018_onboarding_leads.sql` | leads internos → provision | ⬜ aplicar en SQL Editor |
+| `019_prevent_cita_overlap.sql` | trigger anti-solape citas (misma colaboradora / salon-wide si null) | ⏳ aplicar en SQL Editor |
 
-**Conclusión:** repo incluye 018; cloud OK hasta 017 hasta que apliques 018.
+**Pendiente:** aplicar `018` (si aún no) y **`019`** en cloud (SQL Editor).  
+**Nota 019:** no mueve citas existentes; solo bloquea nuevos solapes. Andrea debe reagendar Emma/Santiago del 10-oct a mano.
 
 ## Cómo re-verificar (rápido)
 

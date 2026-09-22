@@ -117,7 +117,7 @@ salones ──┬── usuarios
 | beneficiario_nombre | TEXT NULL | Quien asiste si ≠ clienta de contacto |
 | creada_por | ENUM | `admin`, `clienta`, `colaboradora` |
 | created_at | TIMESTAMPTZ | |
-| updated_at | TIMESTAMPTZ | |
+| updated_at | TIMESTAMPTZ | Trigger `citas_prevent_overlap` (019) bloquea solapes en estados bloqueantes |
 
 ### `pagos`
 

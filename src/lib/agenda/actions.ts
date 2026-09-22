@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { requireAdminUser, requireAuthUser } from "@/lib/auth/get-user";
 import { getAgendaCitas } from "@/lib/agenda/queries";
-import { fetchAvailabilitySlots } from "@/lib/availability/queries";
+import { fetchAvailabilitySlots, isCitaOverlapDbError } from "@/lib/availability/queries";
 import { validateNoOverlap } from "@/lib/availability/engine";
 import { BLOCKING_CITA_ESTADOS } from "@/lib/availability/slots";
 import { resolveSlotStepMinutes } from "@/lib/availability/salon-config";
@@ -146,7 +146,7 @@ async function resolveAdminCitaRange(params: {
   );
   const fin = new Date(inicio.getTime() + params.duracionMinutos * 60_000);
 
-  const slots = await fetchAvailabilitySlots({
+  const slotsResult = await fetchAvailabilitySlots({
     salonId: params.salonId,
     date: new Date(`${params.fecha}T12:00:00`),
     timezone: params.timezone,
@@ -157,7 +157,13 @@ async function resolveAdminCitaRange(params: {
     slotStepMinutes: 1,
   });
 
-  const fits = slots.some((s) => s.inicio.getTime() === inicio.getTime());
+  if (!slotsResult.ok) {
+    return { error: slotsResult.error };
+  }
+
+  const fits = slotsResult.slots.some(
+    (s) => s.inicio.getTime() === inicio.getTime()
+  );
   if (!fits) {
     return {
       error:
@@ -342,7 +348,7 @@ export async function getAvailableSlotsAction(params: {
   const timezone = await getSalonTimezone(user.salon_id);
 
   try {
-    const slots = await fetchAvailabilitySlots({
+    const slotsResult = await fetchAvailabilitySlots({
       salonId: user.salon_id,
       date: new Date(`${params.fecha}T12:00:00`),
       timezone,
@@ -352,8 +358,12 @@ export async function getAvailableSlotsAction(params: {
       slotStepMinutes: resolveSlotStepMinutes(user.salon),
     });
 
+    if (!slotsResult.ok) {
+      return { slots: [], error: slotsResult.error };
+    }
+
     return {
-      slots: slots.map((s) => ({
+      slots: slotsResult.slots.map((s) => ({
         inicio: s.inicio.toISOString(),
         fin: s.fin.toISOString(),
       })),
@@ -441,6 +451,11 @@ export async function createCitaAction(
   });
 
   if (error) {
+    if (isCitaOverlapDbError(error)) {
+      return {
+        error: "Ese horario ya está ocupado. Elige otra hora o colaboradora.",
+      };
+    }
     return { error: "No se pudo crear la cita" };
   }
 
@@ -543,6 +558,11 @@ export async function rescheduleCitaAction(
     .eq("salon_id", user.salon_id);
 
   if (error) {
+    if (isCitaOverlapDbError(error)) {
+      return {
+        error: "Ese horario ya está ocupado. Elige otra hora o colaboradora.",
+      };
+    }
     return { error: "No se pudo reagendar la cita" };
   }
 
@@ -723,6 +743,9 @@ export async function reactivarCitaAction(
     .eq("salon_id", user.salon_id);
 
   if (citaError) {
+    if (isCitaOverlapDbError(citaError)) {
+      return { error: "El horario ya está ocupado; no se puede reactivar" };
+    }
     return { error: "No se pudo reactivar la cita" };
   }
 

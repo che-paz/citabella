@@ -30,6 +30,8 @@
 3. Slot ocupado no aparece como disponible ✅
 4. Link de reserva funciona 24/7 sin auth ✅
 5. Reagendar respeta nueva disponibilidad ✅
+6. DB: trigger `citas_prevent_overlap` (migración 019) bloquea solapes en estados bloqueantes ✅
+7. Disponibilidad falla cerrado si no se pueden leer citas/horarios ✅
 
 ## Motor de disponibilidad
 
@@ -67,7 +69,7 @@ src/lib/agenda/dates.ts
 
 - `citas`, `horarios_salon`, `excepciones_horario`, `clientas`, `pagos`
 - FK a `servicios`, `paquetes`, `clientas`, `usuarios`
-- Migraciones: `003_agenda_schema.sql`, `004_agenda_rls.sql`, `005_public_booking_rls.sql`
+- Migraciones: `003_agenda_schema.sql`, `004_agenda_rls.sql`, `005_public_booking_rls.sql`, `019_prevent_cita_overlap.sql`
 
 ## Dependencias
 

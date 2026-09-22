@@ -15,7 +15,7 @@ App en **`app.gotacheck.app`**. Marketing sin montos públicos (precios por What
 |------|--------|-------|
 | Documentación | 🟢 | + `S2.4_DOMAINS_CHECKLIST.md` |
 | Repositorio / código | 🟢 MVP core | Flujo reserva + validación pagos verificado |
-| Base de datos | 🟢 001–017 en cloud | `017` `paquetes.descripcion` ✅ 2026-09-10 |
+| Base de datos | 🟢 001–017 · ⏳ 018–019 | `019` trigger anti-solape citas — aplicar en SQL Editor |
 | Supabase | 🟡 Free → Pro pendiente | Pro al primer cobro (backups) |
 | Deploy | 🟢 Vercel Pro | App + marketing |
 | Prototipo UI | 🟢 MVP core | Dashboard + clientas listos |
@@ -73,6 +73,7 @@ App en **`app.gotacheck.app`**. Marketing sin montos públicos (precios por What
 - Duración de cita: el campo permite borrarse al editar; validación mínimo 5 min
 - Clientas: mismo teléfono permitido en varias fichas (admin); `upsert_clienta_public` no pisa hermanos si hay 2+ con ese WhatsApp (migración 016)
 - Clientas form: una sola action `saveClientaAction` (create vs update por `id`) para evitar “Clienta no encontrada” al crear
+- Agenda: trigger DB `prevent_cita_overlap` (019) + fail-closed si falla lectura de citas/horarios
 
 ## Decisiones pendientes
 
@@ -161,6 +162,8 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-09-22 | UX: FormSubmitButton + submit gate (evita doble click en citas/clientas) |
+| 2026-09-22 | Fix agenda: trigger anti-solape citas (019) + disponibilidad fail-closed |
 | 2026-09-22 | Marketing: ocultar precios públicos; CTA “Consultar precios por WhatsApp” |
 | 2026-09-21 | `/ayuda` live en `gotacheck.app` (push `7c4c34a`) |
 | 2026-09-21 | `/ayuda`: 13 capturas en `marketing/public/ayuda/` (demo Belleza Luna; PII redactada) |

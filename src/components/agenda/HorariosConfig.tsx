@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useFormState } from "react-dom";
 import { useRouter } from "next/navigation";
-import { CheckCircle2, Trash2 } from "lucide-react";
+import { CheckCircle2, Loader2, Trash2 } from "lucide-react";
 import {
   createExcepcionAction,
   deleteExcepcionAction,
@@ -12,6 +12,10 @@ import {
 } from "@/lib/agenda/actions";
 import { DIA_SEMANA_LABELS, type ExcepcionHorario, type HorarioSalon, type PausaDiaria } from "@/types/database";
 import { Button } from "@/components/ui/button";
+import {
+  FormSubmitButton,
+  useSubmitGate,
+} from "@/components/ui/form-submit-button";
 import {
   Dialog,
   DialogContent,
@@ -104,6 +108,8 @@ export function HorariosConfig({
     createExcepcionAction,
     initialState
   );
+  const { locked: excepcionLocked, formProps: excepcionFormProps } =
+    useSubmitGate(excepcionState, { unlockOnSuccess: true });
   const [excepcionTipo, setExcepcionTipo] = useState<"cerrado" | "especial">("cerrado");
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
@@ -231,14 +237,26 @@ export function HorariosConfig({
               onClick={handleSaveHorarios}
               className="w-full sm:w-auto"
               disabled={savingHorarios}
+              aria-busy={savingHorarios}
             >
-              {savingHorarios ? "Guardando…" : "Guardar horarios"}
+              {savingHorarios ? (
+                <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+              ) : null}
+              {savingHorarios
+                ? "Guardando…"
+                : horarioSaveState?.success
+                  ? "Listo"
+                  : "Guardar horarios"}
             </Button>
           </section>
 
           <section className="space-y-3">
             <h3 className="text-sm font-medium">Excepciones (feriados / cierres)</h3>
-            <form action={createExcepcion} className="space-y-3 rounded-lg border p-3">
+            <form
+              action={createExcepcion}
+              className="space-y-3 rounded-lg border p-3"
+              {...excepcionFormProps}
+            >
               <div className="space-y-1">
                 <Label htmlFor="fecha">Fecha</Label>
                 <Input id="fecha" name="fecha" type="date" required />
@@ -275,13 +293,13 @@ export function HorariosConfig({
               {excepcionState.error && (
                 <p className="text-sm text-destructive">{excepcionState.error}</p>
               )}
-              <Button
-                type="submit"
+              <FormSubmitButton
                 variant="secondary"
                 className="w-full sm:w-auto"
-              >
-                Agregar excepción
-              </Button>
+                disabled={excepcionLocked}
+                idleLabel="Agregar excepción"
+                pendingLabel="Guardando…"
+              />
             </form>
 
             {excepciones.length > 0 && (
