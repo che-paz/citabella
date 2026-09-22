@@ -1,8 +1,9 @@
 # Decisión — Precios, trial y taller (oleada 1)
 
-> **Fecha decisión:** 2026-09-21  
+> **Fecha decisión:** 2026-09-21 · **Actualización web:** 2026-09-22  
 > **Estado:** Aprobado para presentación / taller (Fase 3)  
-> **Fuente de verdad** para copy, guion y `gotacheck.app`.  
+> **Fuente de verdad** de montos: este doc + guion taller.  
+> **Web pública (`gotacheck.app`):** **no mostrar precios**; CTA WhatsApp “Consultar precios”. Se reevalúa más adelante.  
 > Relacionado: `ROUTE_GOTACHECK.md` · `TALLER_PRESENTACION.md`
 
 ---
@@ -80,12 +81,18 @@
 
 ---
 
-## 7. Copy mínimo aprobado (voz alta / web)
+## 7. Copy mínimo aprobado
 
+### En taller / voz alta / WhatsApp (sí decir montos)
 - “Agenda: Q100 al mes, con **30 días de prueba**.”
 - “Vitrina: **Q3,500** una vez — te dejamos página + dominio el primer año; después renovación **Q200/año**.”
 - “No vendemos sesión de fotos ni editor para que edites sola: nosotros montamos la vitrina contigo.”
 - “Cupo de vitrinas: unas **4 a 6 al mes**, cuando nos pasen la info completa.”
+
+### En `gotacheck.app` (público)
+- Oferta Agenda + Vitrina **sin cifras**.
+- Botón: **“Consultar precios por WhatsApp”**.
+- No poner Q100 / Q3,500 / Q200 en meta, OG ni copy visible.
 
 ---
 
@@ -93,4 +100,5 @@
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-09-22 | Web pública: ocultar precios; consultar por WhatsApp (montos siguen válidos en taller/docs) |
 | 2026-09-21 | Decisión founders/producto: A Q100 + trial 30d; Vitrina Q3500; dominio año2 Q200; cupo vitrina 4–6/mes; taller ≤15; sin fotos/editor |

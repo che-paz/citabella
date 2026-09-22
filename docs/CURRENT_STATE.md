@@ -1,13 +1,13 @@
 # CITABELLA / Gota+Check — Current State
 
-> **Última actualización:** 2026-09-21  
+> **Última actualización:** 2026-09-22  
 > **Marca presentación:** Gota+Check · **Estudio:** VajaLabs (sin constituir)  
-> **Sprint activo:** **Fase 3** — taller tools (PDF + `/interna` leads)  
+> **Sprint activo:** **Fase 3** — taller / GTM · marketing sin precios públicos  
 > **Fase:** MVP ✅ | Piloto founders | Vitrinas live | Listos para taller (falta fecha)
 
 ## Resumen en una línea
 
-Precios live · `/interna` OK · app canónica **`app.gotacheck.app`** (sin vercel.app a clientas). Falta fecha taller.
+App en **`app.gotacheck.app`**. Marketing sin montos públicos (precios por WhatsApp). Falta fecha taller.
 
 ## Estado por área
 
@@ -21,14 +21,14 @@ Precios live · `/interna` OK · app canónica **`app.gotacheck.app`** (sin verc
 | Prototipo UI | 🟢 MVP core | Dashboard + clientas listos |
 | Finanzas / gastos | 🟢 MVP | `/finanzas` |
 | PWA | 🟢 Operativo | Web Push |
-| Sitio marketing Gota+Check | 🟢 Live | Precios A/Vitrina + trial en `gotacheck.app` |
+| Sitio marketing Gota+Check | 🟢 Live | Oferta A/Vitrina **sin precios públicos**; CTA WhatsApp |
 | Vitrina / landings | 🟢 S2.4 | Tutis + Galaxy en dominio propio; paths `/vitrina` de respaldo |
 | Taller / GTM | 🟡 Fase 3 | PDF + `/interna` · `/ayuda` texto + capturas (video pendiente) |
 
 ## Decisiones tomadas
 
 - Marca de **presentación** al gremio: **Gota+Check**; estudio: VajaLabs; ruta GTM en `ROUTE_GOTACHECK.md`
-- Oferta oleada 1 (**2 SKUs**): **A Agenda Q100/mes** (trial 30d) · **Vitrina Q3,500** (dominio 1er año; sin trial; sin fotos; sin editor). Renovación dominio año 2+: **Q200/año**. Detalle: `DECISION_PRECIOS_TALLER.md`
+- Oferta oleada 1 (**2 SKUs**): **A Agenda Q100/mes** (trial 30d) · **Vitrina Q3,500** (dominio 1er año; sin trial; sin fotos; sin editor). Renovación dominio año 2+: **Q200/año**. Detalle: `DECISION_PRECIOS_TALLER.md`. **Web pública no muestra montos** (consulta por WhatsApp; 2026-09-22).
 - Taller ≤15; cupo vitrinas **4–6/mes** con info completa. Guion: `TALLER_PRESENTACION.md`
 - S2.2 editor y SKU fotos/Presencia: **fuera** de oleada 1
 - Sitio marketing: monorepo `marketing/` + Vercel aparte; apex `gotacheck.app`; app canónica `app.gotacheck.app` (`APP_DOMAIN_CHECKLIST.md`)
