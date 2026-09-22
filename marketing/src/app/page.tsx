@@ -6,9 +6,7 @@ const packages = [
   {
     sku: "A",
     name: "Agenda",
-    price: "Q100",
-    priceSuffix: "/mes",
-    badge: "30 días de prueba",
+    badge: "Con periodo de prueba",
     summary: "Tu agenda digital bajo Gota+Check.",
     detail:
       "Citas ordenadas, link de reserva para tus clientas y panel para ti y tu equipo. Sin pelear con el chat.",
@@ -21,8 +19,6 @@ const packages = [
   {
     sku: "V",
     name: "Vitrina",
-    price: "Q3,500",
-    priceSuffix: " una vez",
     badge: "Dominio 1er año incluido",
     summary: "Agenda + tu dominio + página hecha por el estudio.",
     detail:
@@ -31,7 +27,7 @@ const packages = [
       "Todo lo de Agenda",
       "Dominio propio el primer año",
       "Landing con CTA para agendar",
-      "Renovación desde el 2º año: Q200/año",
+      "Renovación de dominio acompañada",
     ],
   },
 ] as const;
@@ -87,6 +83,9 @@ function CtaGroup({
 
 export default function HomePage() {
   const whatsappUrl = getWhatsAppUrl();
+  const pricesWhatsAppUrl = getWhatsAppUrl(
+    "Hola, quiero consultar los precios de Gota+Check (Agenda / Vitrina)."
+  );
   const appUrlRaw = getAppUrl();
   const appUrl = appUrlRaw.length > 0 ? appUrlRaw : null;
 
@@ -164,7 +163,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Paquetes */}
+        {/* Paquetes — sin precios públicos */}
         <section className="px-5 py-14 sm:px-10 sm:py-20 lg:px-16">
           <div className="mx-auto max-w-5xl">
             <Reveal>
@@ -172,7 +171,8 @@ export default function HomePage() {
                 Dos formas de empezar
               </h2>
               <p className="mt-3 max-w-2xl text-base text-muted sm:text-lg">
-                Precios claros. Alta acompañada — no es self-serve masivo.
+                Alta acompañada — no es self-serve masivo. Los precios te los
+                contamos por WhatsApp.
               </p>
             </Reveal>
 
@@ -186,12 +186,6 @@ export default function HomePage() {
                     <h3 className="mt-2 font-display text-xl font-bold text-ink sm:mt-3 sm:text-2xl">
                       {pkg.name}
                     </h3>
-                    <p className="mt-2 flex flex-wrap items-baseline gap-x-1 font-display text-3xl font-extrabold tracking-tight text-ink sm:mt-3 sm:text-5xl">
-                      <span>{pkg.price}</span>
-                      <span className="text-lg font-semibold text-muted sm:text-2xl">
-                        {pkg.priceSuffix}
-                      </span>
-                    </p>
                     <p className="mt-3 text-base font-medium text-ink sm:mt-4">
                       {pkg.summary}
                     </p>
@@ -215,11 +209,21 @@ export default function HomePage() {
             </div>
 
             <Reveal delayMs={120}>
-              <p className="mt-8 max-w-2xl text-sm leading-relaxed text-muted sm:mt-10">
-                Vitrina: cupo de unas 4 a 6 al mes, cuando nos pases la info
-                completa. No incluye sesión de fotos ni editor para editar sola —
-                nosotros montamos la página contigo.
-              </p>
+              <div className="mt-10 max-w-xl sm:mt-12">
+                <p className="text-base leading-relaxed text-muted">
+                  Vitrina con cupo mensual cuando nos pases la info completa. No
+                  incluye sesión de fotos ni editor para editar sola — nosotros
+                  montamos la página contigo.
+                </p>
+                <a
+                  href={pricesWhatsAppUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-5 inline-flex w-full items-center justify-center rounded-xl border border-rose-deep/40 bg-white/70 px-5 py-3.5 text-center text-[0.95rem] font-semibold text-rose-deep transition duration-200 hover:-translate-y-0.5 hover:border-rose-deep hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-deep sm:w-auto sm:px-6 sm:text-base"
+                >
+                  Consultar precios por WhatsApp
+                </a>
+              </div>
             </Reveal>
           </div>
         </section>
@@ -265,8 +269,8 @@ export default function HomePage() {
                 ¿Listas para ordenar la agenda?
               </h2>
               <p className="mt-3 text-base text-muted sm:mt-4 sm:text-lg">
-                Agenda con 30 días de prueba. Vitrina cuando haya cupo. Cuéntanos
-                de tu salón por WhatsApp.
+                Cuéntanos de tu salón por WhatsApp. Te explicamos opciones,
+                precios y cómo empezar.
               </p>
               <div className="mt-7 sm:mt-8">
                 <CtaGroup
