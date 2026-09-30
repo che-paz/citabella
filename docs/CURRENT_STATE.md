@@ -87,8 +87,7 @@ App en **`app.gotacheck.app`**. Marketing sin montos públicos (precios por What
 - [x] Tutoriales `/ayuda` texto + capturas (13 PNG demo) — 2026-09-21; video pendiente
 - [x] Spec contenido landing tipo Daysi — packs founders en prod
 - [ ] WhatsApp: Meta Cloud API vs Twilio (Fase 2 — fuera de ruta GTM)
-- [ ] Rediseño landing: decidir si `/nuevo` (preview noindex, fondo blanco + teléfonos) reemplaza `/`; testimonios reales Ruth/Andrea antes de publicar
-- [ ] Fix `/reservar`: con sesión de otro salón muestra “Salón no encontrado” (consulta con cookies → RLS `authenticated`); errores de Supabase también caen en 404
+- [ ] Rediseño landing: decidir si `/nuevo` (preview noindex, fondo blanco + teléfonos, copy neutro clientes) reemplaza `/`; textos de opiniones aprobados — avisar a Ruth/Andrea antes de publicar
 
 ## Bloqueadores actuales
 

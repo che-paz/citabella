@@ -27,13 +27,13 @@ const steps = [
   {
     n: "1",
     title: "Compartes tu link",
-    body: "Lo pegas en tu WhatsApp, Instagram o Facebook. Tus clientas no descargan nada ni crean cuenta.",
-    img: "/ayuda/link-reserva/02-copiar.png",
+    body: "Lo pegas en tu WhatsApp, Instagram o Facebook. Tus clientes no descargan nada ni crean cuenta.",
+    img: "/nuevo/panel-link.png",
     alt: "Panel con el link de reserva listo para copiar",
   },
   {
     n: "2",
-    title: "Tu clienta elige servicio y hora",
+    title: "Tu cliente elige servicio y hora",
     body: "Ve tu catálogo con precios y solo los horarios libres. Reserva en menos de un minuto, desde el celular.",
     img: "/nuevo/reservar-galaxy.jpg",
     alt: "Página de reserva de Galaxy Barbería Infantil",
@@ -42,7 +42,7 @@ const steps = [
     n: "3",
     title: "Validas el pago y confirmas",
     body: "Revisas el comprobante, apruebas con un toque y le avisas por WhatsApp con el mensaje ya escrito.",
-    img: "/ayuda/validar-pago/01-cola-pagos.png",
+    img: "/nuevo/panel-pagos.png",
     alt: "Pantalla de pagos por validar con botón de confirmar por WhatsApp",
   },
 ] as const;
@@ -55,7 +55,7 @@ const features: { title: string; body: string; icon: ReactNode }[] = [
   },
   {
     title: "Link de reserva 24/7",
-    body: "Tus clientas reservan aunque estés atendiendo o dormida.",
+    body: "Tus clientes reservan aunque estés atendiendo o fuera de horario.",
     icon: <IconLink />,
   },
   {
@@ -74,8 +74,8 @@ const features: { title: string; body: string; icon: ReactNode }[] = [
     icon: <IconClock />,
   },
   {
-    title: "Clientas y equipo",
-    body: "Fichas de clientas y acceso para tus colaboradoras, cada una con su agenda.",
+    title: "Clientes y equipo",
+    body: "Fichas de clientes y acceso para tu equipo, cada quien con su agenda.",
     icon: <IconUsers />,
   },
 ];
@@ -101,7 +101,7 @@ const testimonials = [
 
 const faqs = [
   {
-    q: "¿Mis clientas tienen que descargar una app?",
+    q: "¿Mis clientes tienen que descargar una app?",
     a: "No. Reservan desde un link que abre en el navegador del celular. Sin cuenta ni contraseña.",
   },
   {
@@ -110,7 +110,7 @@ const faqs = [
   },
   {
     q: "¿Cómo cobro anticipos?",
-    a: "Tu clienta sube el comprobante de transferencia o elige efectivo. Tú lo validas y la cita queda confirmada.",
+    a: "Tu cliente sube el comprobante de transferencia o elige efectivo. Tú lo validas y la cita queda confirmada.",
   },
   {
     q: "¿Necesito saber de tecnología?",
@@ -200,7 +200,7 @@ export default function LandingPreviewPage() {
                 Salones · Barberías · Maquillistas
               </p>
               <h1 className="animate-fade-up mt-5 text-[2.35rem] font-bold leading-[1.08] tracking-tight sm:text-5xl lg:text-[3.6rem] [animation-delay:80ms]">
-                Tus clientas reservan solas.{" "}
+                Tus clientes reservan solos.{" "}
                 <span className="text-lp-coral">Tú solo atiendes.</span>
               </h1>
               <p className="animate-fade-up mt-5 max-w-xl text-lg leading-relaxed text-lp-muted [animation-delay:160ms]">
@@ -236,7 +236,7 @@ export default function LandingPreviewPage() {
             <div className="animate-fade-in relative mx-auto w-full max-w-[26rem] [animation-delay:200ms] lg:max-w-none">
               <div className="relative mx-auto flex h-[25rem] max-w-[24rem] items-center justify-center sm:h-[34rem] sm:max-w-[30rem]">
                 <PhoneFrame
-                  src="/ayuda/entrar-y-contrasena/02-inicio.png"
+                  src="/nuevo/panel-inicio.png"
                   alt="Panel de Gota+Check con acciones rápidas y pagos por validar"
                   className="absolute left-0 top-8 w-[50%] -rotate-6 sm:top-12"
                   priority
@@ -307,7 +307,7 @@ export default function LandingPreviewPage() {
             <SectionHeading
               eyebrow="Cómo funciona"
               title="Así de fácil, en 3 pasos"
-              body="Tú compartes un link. Tus clientas hacen el resto."
+              body="Tú compartes un link. Tus clientes hacen el resto."
             />
             <div className="mt-14 space-y-20 lg:mt-20 lg:space-y-28">
               {steps.map((step, index) => (
@@ -395,7 +395,7 @@ export default function LandingPreviewPage() {
               </h2>
               <p className="mt-4 max-w-lg text-lg leading-relaxed text-lp-muted">
                 Montamos tu página con tu dominio, tus fotos y tus colores.
-                Tus clientas te encuentran en Google y reservan directo en tu
+                Tus clientes te encuentran en Google y reservan directo en tu
                 agenda.
               </p>
               <ul className="mt-6 space-y-3 text-base font-medium">
@@ -463,9 +463,6 @@ export default function LandingPreviewPage() {
               {testimonials.map((t, i) => (
                 <Reveal key={t.salon} delayMs={i * 100}>
                   <figure className="relative flex h-full flex-col rounded-3xl bg-white p-7 shadow-[0_20px_40px_-24px_rgba(29,23,24,0.25)] ring-1 ring-lp-line sm:p-9">
-                    <span className="absolute right-5 top-5 rounded-full bg-amber-100 px-2.5 py-1 text-[0.7rem] font-bold uppercase tracking-wide text-amber-800">
-                      Borrador · por validar
-                    </span>
                     <div className="flex gap-1 text-amber-400" aria-label="5 estrellas">
                       {Array.from({ length: 5 }).map((_, k) => (
                         <IconStar key={k} />
@@ -524,8 +521,8 @@ export default function LandingPreviewPage() {
                 name="Agenda"
                 summary="Tu agenda digital con link de reserva."
                 items={[
-                  "Link de reserva para tus clientas",
-                  "Agenda, clientas y equipo",
+                  "Link de reserva para tus clientes",
+                  "Agenda, clientes y equipo",
                   "Anticipos por comprobante",
                   "Alta acompañada",
                 ]}
@@ -573,7 +570,7 @@ export default function LandingPreviewPage() {
               ))}
             </div>
             <p className="mt-6 text-center text-sm text-lp-muted">
-              ¿Ya eres clienta?{" "}
+              ¿Ya usas Gota+Check?{" "}
               <a href="/ayuda" className="font-semibold text-lp-coral-deep underline-offset-4 hover:underline">
                 Mira las guías de uso
               </a>
