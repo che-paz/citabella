@@ -1,11 +1,16 @@
-import { createClient } from "@/lib/supabase/server";
+import { createAnonymousClient } from "@/lib/supabase/anon";
 import type { ReservaItem, SalonPublico } from "@/types/database";
 
+/**
+ * Public booking reads always run as `anon`: a visitor logged into another
+ * salon would otherwise be filtered by `authenticated` RLS and see a 404.
+ * Throws on DB errors so outages show a retry page instead of "no encontrado".
+ */
 export async function getSalonBySlug(
   slug: string
 ): Promise<SalonPublico | null> {
-  const supabase = await createClient();
-  const { data } = await supabase
+  const supabase = createAnonymousClient();
+  const { data, error } = await supabase
     .from("salones")
     .select(
       "id, nombre, slug, moneda, timezone, fri_link, politica_reembolso, logo_url, slot_step_minutes, pausa_diaria_activa, pausa_hora_inicio, pausa_hora_fin, permite_reserva_otra_persona"
@@ -14,13 +19,18 @@ export async function getSalonBySlug(
     .eq("activo", true)
     .maybeSingle();
 
+  if (error) {
+    console.error("[reservar] salon lookup failed", error.message);
+    throw new Error("SALON_LOOKUP_FAILED");
+  }
+
   return data;
 }
 
 export async function getCatalogoPublico(
   salonId: string
 ): Promise<ReservaItem[]> {
-  const supabase = await createClient();
+  const supabase = createAnonymousClient();
 
   const [serviciosRes, paquetesRes] = await Promise.all([
     supabase
@@ -48,6 +58,14 @@ export async function getCatalogoPublico(
       .eq("activo", true)
       .order("nombre"),
   ]);
+
+  if (serviciosRes.error || paquetesRes.error) {
+    console.error(
+      "[reservar] catalog query failed",
+      serviciosRes.error?.message ?? paquetesRes.error?.message
+    );
+    throw new Error("CATALOGO_LOOKUP_FAILED");
+  }
 
   const servicios: ReservaItem[] = (serviciosRes.data ?? []).map((s) => ({
     tipo: "servicio" as const,
@@ -100,7 +118,7 @@ export async function getConfirmacionReserva(
   slug: string,
   citaId: string
 ): Promise<ConfirmacionReserva | null> {
-  const supabase = await createClient();
+  const supabase = createAnonymousClient();
 
   const salon = await getSalonBySlug(slug);
   if (!salon) return null;

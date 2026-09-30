@@ -52,7 +52,7 @@ App en **`app.gotacheck.app`**. Marketing sin montos públicos (precios por What
 - Comprobantes: Storage privado + `SUPABASE_SERVICE_ROLE_KEY` en server para upload
 - Slots disponibles: query solo citas bloqueantes (`pendiente`, `pendiente_validacion`, `confirmada`)
 - Link de reserva visible en dashboard (`LinkReserva`) + URL production Vercel
-- Reserva pública usa cliente Supabase anónimo (RLS `anon`)
+- Reserva pública usa cliente Supabase anónimo (RLS `anon`) en todas las lecturas (salón, catálogo, disponibilidad, confirmación) — nunca la sesión del visitante; errores de DB → página “Intentar de nuevo” (no 404)
 - `/ajustes`: perfil (nombre, contraseña); admin: nombre salón, logo, política reembolso
 - Bucket `logos-salon` (público); migración `007_salon_branding.sql`
 - Menú móvil cierra al seleccionar sección; identidad salón en sidebar (logo + nombre)
@@ -165,6 +165,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 | Fecha | Cambio |
 |-------|--------|
 | 2026-09-30 | Marketing: preview rediseño `/nuevo` (noindex, sin link desde `/`; capturas reales Tutis/Galaxy en `marketing/public/nuevo/`) |
+| 2026-09-30 | Fix `/reservar` + `/vitrina`: con sesión de otro salón ya no sale “Salón no encontrado”; fallas de Supabase muestran reintento |
 | 2026-09-22 | UX: horarios en 12 h (AM/PM) en agenda, reserva, pagos, WhatsApp |
 | 2026-09-22 | UX: FormSubmitButton + submit gate (evita doble click en citas/clientas) |
 | 2026-09-22 | Fix agenda: trigger anti-solape citas (019) + disponibilidad fail-closed |
