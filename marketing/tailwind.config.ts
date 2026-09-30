@@ -18,6 +18,18 @@ const config: Config = {
           soft: "var(--rose-soft)",
         },
         sand: "var(--sand)",
+        lp: {
+          ink: "#1d1718",
+          muted: "#5f5557",
+          line: "#eee6e4",
+          blush: "#fff4f2",
+          coral: "#e8615a",
+          "coral-deep": "#c9463f",
+          violet: "#6d4bd8",
+          "violet-soft": "#f1ecfd",
+          wa: "#25d366",
+          "wa-deep": "#128c4b",
+        },
       },
       fontFamily: {
         display: ["var(--font-display)", "sans-serif"],

@@ -87,6 +87,7 @@ App en **`app.gotacheck.app`**. Marketing sin montos públicos (precios por What
 - [x] Tutoriales `/ayuda` texto + capturas (13 PNG demo) — 2026-09-21; video pendiente
 - [x] Spec contenido landing tipo Daysi — packs founders en prod
 - [ ] WhatsApp: Meta Cloud API vs Twilio (Fase 2 — fuera de ruta GTM)
+- [ ] Rediseño landing: decidir si `/nuevo` (preview noindex, fondo blanco + teléfonos, copy neutro clientes) reemplaza `/`; textos de opiniones aprobados — avisar a Ruth/Andrea antes de publicar
 
 ## Bloqueadores actuales
 
@@ -163,6 +164,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-09-30 | Marketing: preview rediseño `/nuevo` (noindex, sin link desde `/`; capturas reales Tutis/Galaxy en `marketing/public/nuevo/`) |
 | 2026-09-30 | Fix `/reservar` + `/vitrina`: con sesión de otro salón ya no sale “Salón no encontrado”; fallas de Supabase muestran reintento |
 | 2026-09-22 | UX: horarios en 12 h (AM/PM) en agenda, reserva, pagos, WhatsApp |
 | 2026-09-22 | UX: FormSubmitButton + submit gate (evita doble click en citas/clientas) |
