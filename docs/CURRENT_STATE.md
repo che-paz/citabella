@@ -21,7 +21,7 @@ App en **`app.gotacheck.app`**. Marketing sin montos públicos (precios por What
 | Prototipo UI | 🟢 MVP core | Dashboard + clientas listos |
 | Finanzas / gastos | 🟢 MVP | `/finanzas` |
 | PWA | 🟢 Operativo | Web Push |
-| Sitio marketing Gota+Check | 🟢 Live | Oferta A/Vitrina **sin precios públicos**; CTA WhatsApp |
+| Sitio marketing Gota+Check | 🟢 Live | Diseño nuevo (blanco + teléfonos con la app); A/Vitrina **sin precios públicos**; CTA WhatsApp |
 | Vitrina / landings | 🟢 S2.4 | Tutis + Galaxy en dominio propio; paths `/vitrina` de respaldo |
 | Taller / GTM | 🟡 Fase 3 | PDF + `/interna` · `/ayuda` texto + capturas (video pendiente) |
 
@@ -87,7 +87,7 @@ App en **`app.gotacheck.app`**. Marketing sin montos públicos (precios por What
 - [x] Tutoriales `/ayuda` texto + capturas (13 PNG demo) — 2026-09-21; video pendiente
 - [x] Spec contenido landing tipo Daysi — packs founders en prod
 - [ ] WhatsApp: Meta Cloud API vs Twilio (Fase 2 — fuera de ruta GTM)
-- [ ] Rediseño landing: decidir si `/nuevo` (preview noindex, fondo blanco + teléfonos, copy neutro clientes) reemplaza `/`; textos de opiniones aprobados — avisar a Ruth/Andrea antes de publicar
+- [x] Rediseño landing en `/` (2026-09-30); `/nuevo` redirige a `/`. Pendiente negocio: avisar a Ruth/Andrea que sus opiniones aparecen en la web
 
 ## Bloqueadores actuales
 
@@ -164,6 +164,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-09-30 | Marketing: diseño nuevo publicado en `gotacheck.app/` (reemplaza landing anterior; `/nuevo` → 308 a `/`) |
 | 2026-09-30 | Marketing: preview rediseño `/nuevo` (noindex, sin link desde `/`; capturas reales Tutis/Galaxy en `marketing/public/nuevo/`) |
 | 2026-09-30 | Fix `/reservar` + `/vitrina`: con sesión de otro salón ya no sale “Salón no encontrado”; fallas de Supabase muestran reintento |
 | 2026-09-22 | UX: horarios en 12 h (AM/PM) en agenda, reserva, pagos, WhatsApp |
