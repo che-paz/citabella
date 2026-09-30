@@ -1,6 +1,6 @@
 # CITABELLA / Gota+Check — Current State
 
-> **Última actualización:** 2026-09-22  
+> **Última actualización:** 2026-09-30  
 > **Marca presentación:** Gota+Check · **Estudio:** VajaLabs (sin constituir)  
 > **Sprint activo:** **Fase 3** — taller / GTM · marketing sin precios públicos  
 > **Fase:** MVP ✅ | Piloto founders | Vitrinas live | Listos para taller (falta fecha)
@@ -87,6 +87,8 @@ App en **`app.gotacheck.app`**. Marketing sin montos públicos (precios por What
 - [x] Tutoriales `/ayuda` texto + capturas (13 PNG demo) — 2026-09-21; video pendiente
 - [x] Spec contenido landing tipo Daysi — packs founders en prod
 - [ ] WhatsApp: Meta Cloud API vs Twilio (Fase 2 — fuera de ruta GTM)
+- [ ] Rediseño landing: decidir si `/nuevo` (preview noindex, fondo blanco + teléfonos) reemplaza `/`; testimonios reales Ruth/Andrea antes de publicar
+- [ ] Fix `/reservar`: con sesión de otro salón muestra “Salón no encontrado” (consulta con cookies → RLS `authenticated`); errores de Supabase también caen en 404
 
 ## Bloqueadores actuales
 
@@ -163,6 +165,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-09-30 | Marketing: preview rediseño `/nuevo` (noindex, sin link desde `/`; capturas reales Tutis/Galaxy en `marketing/public/nuevo/`) |
 | 2026-09-22 | UX: horarios en 12 h (AM/PM) en agenda, reserva, pagos, WhatsApp |
 | 2026-09-22 | UX: FormSubmitButton + submit gate (evita doble click en citas/clientas) |
 | 2026-09-22 | Fix agenda: trigger anti-solape citas (019) + disponibilidad fail-closed |
