@@ -13,7 +13,7 @@ type PageProps = {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const salon = await getSalonBySlug(slug);
+  const salon = await getSalonBySlug(slug).catch(() => null);
   const icons = getVitrinaFaviconIcons(slug);
   return {
     title: salon ? `Reservar — ${salon.nombre}` : "Reservar",
