@@ -8,6 +8,10 @@ import { getVitrinaFaviconIcons } from "@/lib/vitrina/live";
 import { resolveVitrinaContent } from "@/lib/vitrina/resolve-content";
 import "./vitrina.css";
 
+/** Catalog/prices must reflect edits immediately (anon client has no cookies). */
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
+
 type PageProps = {
   params: Promise<{ slug: string }>;
   searchParams: Promise<{ demo?: string | string[] }>;
@@ -19,7 +23,7 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const query = await searchParams;
-  const salon = await getSalonBySlug(slug);
+  const salon = await getSalonBySlug(slug).catch(() => null);
   const demo = isVitrinaDemoParam(query.demo);
   const baseTitle = salon ? salon.nombre : "Vitrina";
   const icons = getVitrinaFaviconIcons(slug);

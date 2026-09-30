@@ -1,3 +1,4 @@
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
 import {
   computeAvailability,
@@ -33,8 +34,10 @@ export async function fetchAvailabilitySlots(params: {
   excludeCitaId?: string;
   slotStepMinutes?: number;
   pausaDiaria?: PausaDiariaInput | null;
+  /** Public booking passes an anon client; dashboard uses the session. */
+  client?: SupabaseClient;
 }): Promise<FetchAvailabilityResult> {
-  const supabase = await createClient();
+  const supabase = params.client ?? (await createClient());
   const dateKey = getSalonDateKey(params.date, params.timezone);
   const dayStart = startOfSalonDayUtc(dateKey, params.timezone).toISOString();
   const dayEnd = endOfSalonDayUtc(dateKey, params.timezone).toISOString();

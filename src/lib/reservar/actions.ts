@@ -11,7 +11,6 @@ import {
   uploadComprobante,
 } from "@/lib/storage/comprobantes";
 import { createAnonymousClient } from "@/lib/supabase/anon";
-import { createClient } from "@/lib/supabase/server";
 import { optionalPgUuidSchema } from "@/lib/utils/validation";
 import { normalizePhone } from "@/lib/utils/phone";
 import { notifySalonNewReservation } from "@/lib/push/notify";
@@ -63,12 +62,23 @@ const reservaSchema = z
     { message: "Indica el nombre de quien asiste a la cita" }
   );
 
+const SALON_UNAVAILABLE_ERROR =
+  "No pudimos cargar el salón. Intenta de nuevo en un momento.";
+
+async function getSalonBySlugSafe(slug: string) {
+  try {
+    return await getSalonBySlug(slug);
+  } catch {
+    return "error" as const;
+  }
+}
+
 async function getItemDetails(
   salonId: string,
   servicioId: string | null | undefined,
   paqueteId: string | null | undefined
 ): Promise<{ duracion: number; precio: number; nombre: string } | null> {
-  const supabase = await createClient();
+  const supabase = createAnonymousClient();
 
   if (servicioId) {
     const { data } = await supabase
@@ -111,7 +121,10 @@ export async function getPublicSlotsAction(params: {
   servicioId?: string;
   paqueteId?: string;
 }): Promise<{ slots: { inicio: string; fin: string }[]; error?: string }> {
-  const salon = await getSalonBySlug(params.slug);
+  const salon = await getSalonBySlugSafe(params.slug);
+  if (salon === "error") {
+    return { slots: [], error: SALON_UNAVAILABLE_ERROR };
+  }
   if (!salon) {
     return { slots: [], error: "Salón no encontrado" };
   }
@@ -134,6 +147,7 @@ export async function getPublicSlotsAction(params: {
       duracionMinutos: item.duracion,
       slotStepMinutes: resolveSlotStepMinutes(salon),
       pausaDiaria: resolvePausaDiariaFromSalon(salon),
+      client: createAnonymousClient(),
     });
 
     if (!slotsResult.ok) {
@@ -192,7 +206,10 @@ export async function createReservaAction(
     }
   }
 
-  const salon = await getSalonBySlug(parsed.data.slug);
+  const salon = await getSalonBySlugSafe(parsed.data.slug);
+  if (salon === "error") {
+    return { error: SALON_UNAVAILABLE_ERROR };
+  }
   if (!salon) {
     return { error: "Salón no encontrado" };
   }
@@ -234,6 +251,7 @@ export async function createReservaAction(
     duracionMinutos: item.duracion,
     slotStepMinutes: resolveSlotStepMinutes(salon),
     pausaDiaria: resolvePausaDiariaFromSalon(salon),
+    client: createAnonymousClient(),
   });
 
   if (!slotsResult.ok) {
