@@ -107,6 +107,7 @@ Fundación    5-7 sem        4-5 sem     4-6 sem
 | Fotos servicio | Upload + galería por clienta |
 | Cumpleaños | Alertas fidelización |
 | WhatsApp | Recordatorios y confirmaciones automáticas |
+| Bloqueos de agenda *(propuesto 2026-10-12, pedido en taller)* | Eventos personales (“reunión 10–11”) que ocupan la agenda y no se pueden reservar. v1: una vez, título + notas, cualquier hora/día, no se crean encima de citas, título privado (link público solo ve “ocupado”). Fuera: repetición semanal (v2), recordatorios (v2), sync Google Calendar (no) |
 
 **Dependencias:** MVP estable en producción con founders  
 **Riesgos:** Costos/límites WhatsApp Business API

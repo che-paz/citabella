@@ -3,11 +3,11 @@
 > **Última actualización:** 2026-09-30  
 > **Marca presentación:** Gota+Check · **Estudio:** VajaLabs (sin constituir)  
 > **Sprint activo:** **Fase 3** — taller / GTM · marketing sin precios públicos  
-> **Fase:** MVP ✅ | Piloto founders | Vitrinas live | Listos para taller (falta fecha)
+> **Fase:** MVP ✅ | Piloto founders | Vitrinas live | Taller **dom 11 oct 2026, 4:00 pm — Salón Yaya**
 
 ## Resumen en una línea
 
-App en **`app.gotacheck.app`**. Marketing sin montos públicos (precios por WhatsApp). Falta fecha taller.
+App en **`app.gotacheck.app`**. Marketing sin montos públicos (precios por WhatsApp). Taller: dom 11 oct, 4:00 pm, Salón Yaya (Esquipulas).
 
 ## Estado por área
 
@@ -82,7 +82,8 @@ App en **`app.gotacheck.app`**. Marketing sin montos públicos (precios por What
 - [x] DNS `gotacheck.app` → Vercel marketing (Cloudflare DNS-only; live 2026-08-04)
 - [x] `NEXT_PUBLIC_SITE_URL` / Auth → `app.gotacheck.app` ✅ 2026-09-21 (`APP_DOMAIN_CHECKLIST.md`)
 - [x] Precios A + Vitrina + trial — 2026-09-21 (`DECISION_PRECIOS_TALLER.md`)
-- [ ] Fecha taller ≤15 (sondeo founders) — `TALLER_PRESENTACION.md`
+- [x] Fecha taller: dom 11 oct 2026, 4:00 pm, Salón Yaya — `TALLER_PRESENTACION.md`
+- [ ] Enviar invitación (`files/invitacion/`) y llegar a ≤15 confirmadas
 - [x] Panel `/interna` + mig 018 (probar en prod OK) — env + alta prueba interna OK
 - [x] Tutoriales `/ayuda` texto + capturas (13 PNG demo) — 2026-09-21; video pendiente
 - [x] Spec contenido landing tipo Daysi — packs founders en prod
@@ -91,7 +92,7 @@ App en **`app.gotacheck.app`**. Marketing sin montos públicos (precios por What
 
 ## Bloqueadores actuales
 
-Ninguno técnico duro. **Negocio:** fecha taller + sondeo ≤15.
+Ninguno técnico duro. **Negocio:** confirmaciones taller (≤15) para el 11 oct.
 
 ## Desarrollo local
 
@@ -105,8 +106,9 @@ Ninguno técnico duro. **Negocio:** fecha taller + sondeo ≤15.
 
 ## Próximo paso inmediato
 
-1. Sondeo founders → fijar fecha taller ≤15
-2. Video en `/ayuda` si el texto+capturas no bajan soporte
+1. Taller hecho (2026-10-11, sin fallas) → alta asistida de interesadas (`/interna`)
+2. **Bloqueos de agenda v1** (pedido en taller) — alcance en `ROADMAP.md` Fase 2; probar solo en Belleza Luna antes de publicar
+3. Video en `/ayuda` si el texto+capturas no bajan soporte
 
 ## Docs operativos
 
@@ -122,6 +124,7 @@ Ninguno técnico duro. **Negocio:** fecha taller + sondeo ≤15.
 - Precios / trial: `docs/DECISION_PRECIOS_TALLER.md`
 - Guion taller: `docs/TALLER_PRESENTACION.md`
 - Lista asistentes PDF: `docs/TALLER_ASISTENTES.print.html`
+- Guion imprimible (equipo, 2 págs): `docs/TALLER_GUION.print.html` → `docs/TALLER_GUION.pdf`
 - Leads / alta interna: `docs/ONBOARDING_LEADS.md`
 - Dominio app: `docs/APP_DOMAIN_CHECKLIST.md`
 
@@ -164,6 +167,9 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-10-11 | Test pre-presentación en producción: web, 5 guías, vitrinas, reserva Tutis (hasta paso 3), panel demo (todas las secciones), QR, 20 unit tests OK. Galaxy sin horarios = agenda llena hasta 8 nov (no bug) |
+| 2026-10-07 | Guion taller: nuevo orden (reserva en vivo → tour panel Tutis por Ruth → Vitrina Andrea); hoja imprimible `TALLER_GUION` |
+| 2026-10-04 | Taller fijado: dom 11 oct, 4:00 pm, Salón Yaya; invitación digital con QR de confirmación por WhatsApp (`files/invitacion/`) |
 | 2026-09-30 | Marketing: diseño nuevo publicado en `gotacheck.app/` (reemplaza landing anterior; `/nuevo` → 308 a `/`) |
 | 2026-09-30 | Marketing: preview rediseño `/nuevo` (noindex, sin link desde `/`; capturas reales Tutis/Galaxy en `marketing/public/nuevo/`) |
 | 2026-09-30 | Fix `/reservar` + `/vitrina`: con sesión de otro salón ya no sale “Salón no encontrado”; fallas de Supabase muestran reintento |

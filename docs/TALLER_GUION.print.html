@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Gota+Check — Guion de la presentación (equipo)</title>
+  <style>
+    @page { size: letter; margin: 9mm 11mm 9mm 11mm; }
+    * { box-sizing: border-box; }
+    body {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: #1d1718; font-size: 9pt; line-height: 1.3; margin: 0; padding: 8px 12px 16px;
+    }
+    .no-print {
+      margin: 0 0 14px; padding: 10px 12px; background: #fff4f2;
+      border: 1px solid #e8b4b0; border-radius: 8px; font-size: 10pt;
+    }
+    @media print {
+      .no-print { display: none !important; }
+      body { padding: 0; }
+    }
+    .page-break { break-before: page; }
+    .top { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2.5px solid #e8615a; padding-bottom: 6px; }
+    .brand { font-size: 17pt; font-weight: 800; letter-spacing: -0.02em; color: #c9463f; margin: 0; }
+    .brand small { font-size: 10pt; color: #6d4bd8; font-weight: 700; letter-spacing: 0; margin-left: 6px; }
+    .tag { font-size: 7.5pt; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #6d4bd8; background: #f1ecfd; padding: 3px 8px; border-radius: 99px; }
+    .event { display: flex; gap: 18px; margin: 6px 0 4px; font-size: 9.5pt; flex-wrap: wrap; }
+    .event b { color: #c9463f; }
+    .event .blank { display: inline-block; min-width: 120px; border-bottom: 1px solid #b9aca8; }
+    h2 { font-size: 10pt; margin: 8px 0 4px; color: #1d1718; text-transform: uppercase; letter-spacing: .05em; }
+    h2 .hint { text-transform: none; letter-spacing: 0; font-weight: 500; color: #5f5557; font-size: 8.5pt; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid #e3d8d5; padding: 2.5px 6px; text-align: left; vertical-align: top; }
+    th { background: #fff4f2; font-size: 8pt; }
+    .run td:nth-child(1) { width: 4%; text-align: center; font-weight: 800; color: #c9463f; }
+    .run td:nth-child(3) { width: 12%; white-space: nowrap; }
+    .run td:nth-child(4) { width: 30%; }
+    .run tr.star td { background: #f1ecfd; }
+    .thread { margin: 4px 0 2px; font-size: 8.8pt; color: #5f5557; }
+    .block { border: 1px solid #eee6e4; border-left: 4px solid #e8615a; border-radius: 6px; padding: 5px 9px; margin: 5px 0; break-inside: avoid; }
+    .block.v { border-left-color: #6d4bd8; }
+    .block h3 { margin: 0 0 3px; font-size: 9.8pt; display: flex; justify-content: space-between; gap: 10px; }
+    .block h3 span { font-weight: 600; color: #5f5557; font-size: 8.5pt; white-space: nowrap; }
+    .block ul, .block ol { margin: 2px 0 0; padding-left: 17px; }
+    .block li { margin: 1px 0; }
+    .say { color: #c9463f; font-style: italic; }
+    .note { font-size: 8.4pt; color: #5f5557; margin-top: 4px; }
+    .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .box { border: 1px solid #eee6e4; border-radius: 6px; padding: 6px 9px; break-inside: avoid; }
+    .box h3 { margin: 0 0 3px; font-size: 9.5pt; }
+    .box ul { margin: 2px 0 0; padding-left: 16px; }
+    .check { list-style: none; padding-left: 2px !important; }
+    .check li::before { content: "☐ "; color: #6d4bd8; }
+    .nope li::marker { content: "✕  "; color: #c9463f; }
+    .faq td:first-child { width: 36%; font-weight: 600; }
+    .prices td:first-child { width: 18%; font-weight: 600; }
+    .links td:first-child { width: 22%; font-weight: 600; }
+    .links td { font-size: 8.4pt; }
+    .footer { margin-top: 6px; font-size: 7.8pt; color: #5f5557; display: flex; justify-content: space-between; }
+  </style>
+</head>
+<body>
+  <div class="no-print">
+    <strong>Imprimir / PDF:</strong> Cmd+P → vertical, Letter. Son 2 páginas (se puede imprimir a doble cara).
+  </div>
+
+  <!-- ============ PÁGINA 1 ============ -->
+  <div class="top">
+    <p class="brand">Gota+Check <small>Guion de la presentación oficial</small></p>
+    <span class="tag">Uso interno · equipo</span>
+  </div>
+  <div class="event">
+    <div>📅 <b>Domingo 11 de octubre · 4:00 pm</b></div>
+    <div>📍 <b>Salón Yaya</b> · Barrio San Joaquín, Esquipulas</div>
+    <div>Presentador: <span class="blank">&nbsp;</span></div>
+  </div>
+
+  <h2>Orden del evento <span class="hint">· ~22 min + preguntas</span></h2>
+  <table class="run">
+    <thead><tr><th>#</th><th>Bloque</th><th>Tiempo</th><th>Quién</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Apertura</td><td>1–2 min</td><td>Presentador</td></tr>
+      <tr><td>2</td><td>Problema + anécdota</td><td>3 min</td><td>Presentador + <b>Andrea</b></td></tr>
+      <tr class="star"><td>3</td><td><b>Así reserva tu cliente</b> (reserva en vivo)</td><td>3 min</td><td>Presentador + voluntario/a del público</td></tr>
+      <tr class="star"><td>4</td><td><b>Así lo ves tú</b> (tour del panel Tutis)</td><td>6–7 min</td><td><b>Ruth</b>, guiada por el presentador</td></tr>
+      <tr><td>5</td><td>Vitrina</td><td>3 min</td><td><b>Andrea</b> (Galaxy)</td></tr>
+      <tr><td>6</td><td>Oferta y precios</td><td>3 min</td><td>Presentador</td></tr>
+      <tr><td>7</td><td>Cómo entrar</td><td>2 min</td><td>Presentador</td></tr>
+      <tr><td>8</td><td>Preguntas</td><td>5+ min</td><td>Todos</td></tr>
+    </tbody>
+  </table>
+  <p class="thread"><b>Hilo conductor:</b> primero lo que vive tu cliente, después lo que ves tú. Un solo panel (el de Ruth) para no cambiar de teléfono en vivo.</p>
+
+  <div class="block">
+    <h3>1 · Apertura <span>1–2 min · Presentador</span></h3>
+    <ul>
+      <li class="say">“Somos Gota+Check: agenda digital para salones, barberías y maquillistas.”</li>
+      <li class="say">“Hoy no venimos a vender a la fuerza: vamos a ver la app funcionando. Ruth y Andrea ya la usan.”</li>
+      <li class="say">“Al final les damos precios claros y cómo entrar; el cupo es limitado.”</li>
+    </ul>
+  </div>
+
+  <div class="block">
+    <h3>2 · Problema + anécdota <span>3 min · Presentador + Andrea</span></h3>
+    <ul>
+      <li>Citas por WhatsApp y en papel · confirmar a mano · no saber qué hora está libre.</li>
+      <li class="say">“Sin página, el negocio se ve menos de lo que es.”</li>
+      <li><b>Andrea:</b> una anécdota corta (30–60 s), antes vs. ahora. Sin inventar números.</li>
+    </ul>
+  </div>
+
+  <div class="block v">
+    <h3>3 · Así reserva tu cliente <span>3 min · Presentador + voluntario/a</span></h3>
+    <ol>
+      <li>Pedir un voluntario/a; abre <b>app.gotacheck.app/reservar/salon-tutis</b> en su celular.</li>
+      <li>Elige un servicio corto → fecha → hora → sus datos.</li>
+      <li>Pago: <b>“efectivo en el salón”</b> (no subir comprobante real).</li>
+      <li class="say">“Listo. Ahora veamos qué le llegó a Ruth.”</li>
+    </ol>
+  </div>
+
+  <div class="block v">
+    <h3>4 · Así lo ves tú — tour del panel <span>6–7 min · Ruth (presentador pregunta)</span></h3>
+    <ol>
+      <li><b>Notificación + Inicio:</b> citas del día, pagos pendientes, ingresos → <span class="say">“Me entero al momento.”</span></li>
+      <li><b>Pagos:</b> aprobar comprobante → cita confirmada; rechazar libera el horario → <span class="say">“Yo decido cuándo se confirma.”</span></li>
+      <li><b>WhatsApp desde la cita</b> → <span class="say">“Le escribo con un toque.”</span> (es manual, no un bot)</li>
+      <li><b>Agenda día / semana</b> → <span class="say">“Veo mi semana de un vistazo.”</span></li>
+      <li><b>Crear cita a mano</b> ★ → <span class="say">“Si me escriben o me llaman, la agendo yo; no todos tienen que usar el link.”</span></li>
+      <li><b>Reagendar / cancelar</b> → <span class="say">“Si cambian de plan, lo muevo en dos toques.”</span></li>
+      <li><b>Clientes:</b> buscar uno → historial → <span class="say">“Sé qué se hizo la última vez.”</span></li>
+      <li><b>Solo mencionar:</b> horarios, días cerrados, catálogo → <span class="say">“Esto lo configuramos contigo.”</span></li>
+    </ol>
+    <p class="note"><b>Cierre:</b> <span class="say">“Tus clientes reservan solos; tú solo atiendes.”</span> &nbsp;·&nbsp; <b>Al terminar:</b> Ruth cancela la reserva de prueba. &nbsp;·&nbsp; <b>Privacidad:</b> no abrir la lista completa de clientes en el proyector.</p>
+  </div>
+
+  <div class="block">
+    <h3>5 · Vitrina <span>3 min · Andrea</span></h3>
+    <ol>
+      <li>Abrir <b>galaxybarberiagt.com</b> (respaldo: estudiotutis.com).</li>
+      <li>Recorrer: marca → servicios / portafolio → botón agendar (conecta con lo que ya vieron).</li>
+      <li class="say">“La vitrina la montamos nosotros con tu información; no tienes que pelear con un editor.”</li>
+    </ol>
+  </div>
+
+  <!-- ============ PÁGINA 2 ============ -->
+  <div class="page-break"></div>
+
+  <div class="block">
+    <h3>6 · Oferta y precios <span>3 min · Presentador · decir en voz alta</span></h3>
+    <table class="prices">
+      <thead><tr><th></th><th>Agenda</th><th>Vitrina</th></tr></thead>
+      <tbody>
+        <tr><td>Precio</td><td><b>Q100 / mes</b></td><td><b>Q3,500</b> (pago único)</td></tr>
+        <tr><td>Prueba</td><td><b>30 días gratis</b></td><td>No</td></tr>
+        <tr><td>Incluye</td><td>App + link de reserva + panel</td><td>Agenda + página hecha por nosotros + dominio <b>1er año</b></td></tr>
+        <tr><td>Después</td><td>—</td><td>Renovación de dominio <b>Q200 / año</b></td></tr>
+      </tbody>
+    </table>
+    <p class="note">Vitrinas: <b>4–6 por mes</b>, cuando entreguen su información completa. No incluye fotos profesionales, editor ni tienda en línea.</p>
+  </div>
+
+  <div class="block">
+    <h3>7 · Cómo entrar <span>2 min · Presentador</span></h3>
+    <ol>
+      <li>Dejar su WhatsApp en la lista (interés: Agenda, Vitrina o ambas).</li>
+      <li>El alta es <b>acompañada</b>: los contactamos y configuramos juntos (no se da de alta a todos ese día).</li>
+      <li>Agenda: 30 días de prueba → luego Q100. Vitrina: turno según cupo del mes.</li>
+    </ol>
+  </div>
+
+  <h2>8 · Preguntas frecuentes <span class="hint">· respuestas cortas</span></h2>
+  <table class="faq">
+    <tbody>
+      <tr><td>¿Puedo editar mi página yo?</td><td>No por ahora; los cambios los hacemos nosotros.</td></tr>
+      <tr><td>¿Incluye fotos?</td><td>No; usamos las que tú nos pases.</td></tr>
+      <tr><td>¿El dominio es mío?</td><td>Sí, de quien paga. El 1er año va incluido en Vitrina.</td></tr>
+      <tr><td>¿Funciona en iPhone?</td><td>Sí, es web. Se instala en la pantalla de inicio y recibe notificaciones.</td></tr>
+      <tr><td>¿Está en la App Store / Play Store?</td><td>No; se abre desde el navegador y se instala como app.</td></tr>
+      <tr><td>¿Cuándo me dan de alta?</td><td>Coordinamos por WhatsApp; Vitrina según cupo del mes.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="cols" style="margin-top:7px">
+    <div class="box">
+      <h3>Qué NO prometer</h3>
+      <ul class="nope">
+        <li>Editor para que el dueño edite solo</li>
+        <li>Sesión de fotos incluida</li>
+        <li>Alta de todos el mismo día</li>
+        <li>Dominio gratis para siempre</li>
+        <li>WhatsApp automático / bots</li>
+        <li>App de la tienda (iOS / Android)</li>
+        <li>Tienda, carrito o blog</li>
+        <li>Vitrinas sin límite</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3>Antes del domingo</h3>
+      <ul class="check">
+        <li><b>Ruth:</b> app instalada con notificaciones activadas</li>
+        <li><b>Ruth:</b> OK a mostrar su agenda real en proyector</li>
+        <li><b>Ruth:</b> 1 comprobante pendiente para aprobar en vivo</li>
+        <li><b>Andrea:</b> anécdota lista (30–60 s)</li>
+        <li>Contraseñas a mano (Ruth y Andrea)</li>
+        <li>Probar proyección del teléfono en Salón Yaya</li>
+        <li>WiFi del lugar probado + hotspot de respaldo</li>
+        <li>Capturas del panel como plan B (sin internet)</li>
+        <li>Lista de asistentes impresa + QR impresos</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="cols" style="margin-top:7px">
+    <div class="box">
+      <h3>El día</h3>
+      <ul class="check">
+        <li>Batería llena + datos móviles</li>
+        <li>Teléfonos desbloqueados, sesión iniciada</li>
+        <li>No borrar ni resetear datos del salón</li>
+        <li>Anotar nombre · negocio · WhatsApp de todos antes de que se vayan</li>
+        <li>Anotar dudas que no sepamos responder</li>
+        <li><b>Ruth:</b> cancelar la reserva de prueba</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3>Después (mismo día)</h3>
+      <ul class="check">
+        <li>Pasar la lista a digital</li>
+        <li>Mensaje de “gracias + próximos pasos”</li>
+        <li>Separar: Agenda (prueba 30 días) vs. Vitrina (turno)</li>
+        <li>No prometer fecha de vitrina sin revisar cupo</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Links del día</h2>
+  <table class="links">
+    <tbody>
+      <tr><td>Reserva Tutis (en vivo)</td><td>app.gotacheck.app/reservar/salon-tutis</td></tr>
+      <tr><td>Reserva Galaxy</td><td>app.gotacheck.app/reservar/galaxy-barberia-infantil</td></tr>
+      <tr><td>Vitrinas</td><td>galaxybarberiagt.com · estudiotutis.com</td></tr>
+      <tr><td>Panel (login)</td><td>app.gotacheck.app/login</td></tr>
+      <tr><td>Web / WhatsApp</td><td>gotacheck.app · 5046-0346</td></tr>
+    </tbody>
+  </table>
+
+  <div class="footer">
+    <span>Gota+Check · VajaLabs</span>
+    <span>Guion completo: docs/TALLER_PRESENTACION.md</span>
+  </div>
+</body>
+</html>
