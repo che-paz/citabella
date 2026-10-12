@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { requireAdminUser, requireAuthUser } from "@/lib/auth/get-user";
-import { getAgendaCitas } from "@/lib/agenda/queries";
+import { getAgendaBloqueos, getAgendaCitas } from "@/lib/agenda/queries";
 import { fetchAvailabilitySlots, isCitaOverlapDbError } from "@/lib/availability/queries";
 import { validateNoOverlap } from "@/lib/availability/engine";
 import { BLOCKING_CITA_ESTADOS } from "@/lib/availability/slots";
@@ -167,7 +167,7 @@ async function resolveAdminCitaRange(params: {
   if (!fits) {
     return {
       error:
-        "Ese horario no cabe (fuera de atención, en pausa, o se solapa con otra cita).",
+        "Ese horario no cabe (fuera de atención, en pausa, con un evento personal o se solapa con otra cita).",
     };
   }
 
@@ -718,6 +718,17 @@ export async function reactivarCitaAction(
       .lt("inicio", cita.fin)
       .gt("fin", cita.inicio);
 
+    const { data: bloqueosRows, error: bloqueosError } = await supabase
+      .from("bloqueos_agenda")
+      .select("inicio, fin, colaboradora_id")
+      .eq("salon_id", user.salon_id)
+      .lt("inicio", cita.fin)
+      .gt("fin", cita.inicio);
+
+    if (bloqueosError) {
+      return { error: "No se pudo verificar la disponibilidad" };
+    }
+
     const slotFree = validateNoOverlap(
       { inicio: new Date(cita.inicio), fin: new Date(cita.fin) },
       (overlapping ?? []).map((c) => ({
@@ -728,7 +739,12 @@ export async function reactivarCitaAction(
         estado: c.estado,
       })),
       cita.colaboradora_id,
-      citaId
+      citaId,
+      (bloqueosRows ?? []).map((bloqueo) => ({
+        inicio: new Date(bloqueo.inicio),
+        fin: new Date(bloqueo.fin),
+        colaboradora_id: bloqueo.colaboradora_id,
+      }))
     );
 
     if (!slotFree) {
@@ -768,7 +784,11 @@ export async function reactivarCitaAction(
 export async function fetchAgendaCitasAction(params: {
   dateKey: string;
   view: "day" | "week" | "month";
-}): Promise<{ citas?: Awaited<ReturnType<typeof getAgendaCitas>>; error?: string }> {
+}): Promise<{
+  citas?: Awaited<ReturnType<typeof getAgendaCitas>>;
+  bloqueos?: Awaited<ReturnType<typeof getAgendaBloqueos>>["bloqueos"];
+  error?: string;
+}> {
   const user = await requireAuthUser();
 
   if (!/^\d{4}-\d{2}-\d{2}$/.test(params.dateKey)) {
@@ -784,13 +804,14 @@ export async function fetchAgendaCitasAction(params: {
   const timezone = user.salon.timezone ?? "America/Guatemala";
 
   try {
-    const citas = await getAgendaCitas(
-      user.salon_id,
-      params.dateKey,
-      view,
-      timezone
-    );
-    return { citas };
+    const [citas, bloqueosResult] = await Promise.all([
+      getAgendaCitas(user.salon_id, params.dateKey, view, timezone),
+      getAgendaBloqueos(user.salon_id, params.dateKey, view, timezone),
+    ]);
+    if (bloqueosResult.error) {
+      return { error: "No se pudieron cargar los eventos personales" };
+    }
+    return { citas, bloqueos: bloqueosResult.bloqueos };
   } catch {
     return { error: "No se pudieron cargar las citas" };
   }

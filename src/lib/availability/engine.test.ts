@@ -1,6 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { computeAvailability, isSlotAvailable } from "./engine";
+import {
+  computeAvailability,
+  getSalonDayStatus,
+  isSlotAvailable,
+  listFullDateKeys,
+  validateNoOverlap,
+} from "./engine";
 import type {
+  BloqueoOcupadoInput,
   CitaOcupadaInput,
   ExcepcionHorarioInput,
   HorarioSalonInput,
@@ -302,5 +309,147 @@ describe("isSlotAvailable", () => {
     expect(slotStarts).toContain(dateAt("2026-07-06", "11:00").getTime());
     expect(slotStarts).toContain(dateAt("2026-07-06", "13:00").getTime());
     expect(slotStarts).not.toContain(dateAt("2026-07-06", "12:00").getTime());
+  });
+});
+
+describe("eventos personales", () => {
+  const monday = {
+    date: dateAt("2026-07-06", "12:00"),
+    timezone: TZ,
+    duracionMinutos: 60,
+    horarios: weekdayHorarios,
+    excepcion: null as ExcepcionHorarioInput | null,
+    citas: [] as CitaOcupadaInput[],
+    slotStepMinutes: 60,
+  };
+
+  it("removes the occupied hour from public slots", () => {
+    const bloqueos: BloqueoOcupadoInput[] = [
+      {
+        inicio: dateAt("2026-07-06", "10:00"),
+        fin: dateAt("2026-07-06", "11:00"),
+        colaboradora_id: null,
+      },
+    ];
+
+    const slots = computeAvailability({ ...monday, bloqueos });
+    const starts = slots.map((slot) => slot.inicio.getTime());
+
+    expect(starts).toContain(dateAt("2026-07-06", "09:00").getTime());
+    expect(starts).not.toContain(dateAt("2026-07-06", "10:00").getTime());
+    expect(starts).toContain(dateAt("2026-07-06", "11:00").getTime());
+  });
+
+  it("lets another stylist keep the hour when the event is personal", () => {
+    const bloqueos: BloqueoOcupadoInput[] = [
+      {
+        inicio: dateAt("2026-07-06", "10:00"),
+        fin: dateAt("2026-07-06", "11:00"),
+        colaboradora_id: "colab-a",
+      },
+    ];
+
+    const forA = computeAvailability({
+      ...monday,
+      bloqueos,
+      colaboradoraId: "colab-a",
+    });
+    const forB = computeAvailability({
+      ...monday,
+      bloqueos,
+      colaboradoraId: "colab-b",
+    });
+
+    expect(
+      forA.some((slot) => slot.inicio.getTime() === dateAt("2026-07-06", "10:00").getTime())
+    ).toBe(false);
+    expect(
+      forB.some((slot) => slot.inicio.getTime() === dateAt("2026-07-06", "10:00").getTime())
+    ).toBe(true);
+  });
+
+  it("ignores an event outside opening hours", () => {
+    const slots = computeAvailability({
+      ...monday,
+      bloqueos: [
+        {
+          inicio: dateAt("2026-07-06", "07:00"),
+          fin: dateAt("2026-07-06", "08:00"),
+          colaboradora_id: null,
+        },
+      ],
+    });
+
+    expect(slots[0].inicio).toEqual(dateAt("2026-07-06", "09:00"));
+    expect(slots).toHaveLength(9);
+  });
+
+  it("marks a day full when an event covers opening hours", () => {
+    const bloqueos: BloqueoOcupadoInput[] = [
+      {
+        inicio: dateAt("2026-07-06", "09:00"),
+        fin: dateAt("2026-07-06", "18:00"),
+        colaboradora_id: null,
+      },
+    ];
+
+    expect(getSalonDayStatus({ ...monday, bloqueos })).toBe("full");
+    expect(
+      getSalonDayStatus({
+        ...monday,
+        date: dateAt("2026-07-05", "12:00"),
+        bloqueos,
+      })
+    ).toBe("closed");
+
+    expect(
+      listFullDateKeys(["2026-07-05", "2026-07-06"], {
+        timezone: TZ,
+        duracionMinutos: 60,
+        horarios: weekdayHorarios,
+        excepciones: [],
+        citas: [],
+        bloqueos,
+        slotStepMinutes: 60,
+      })
+    ).toEqual(["2026-07-06"]);
+  });
+
+  it("rejects a range that overlaps an event", () => {
+    const free = validateNoOverlap(
+      {
+        inicio: dateAt("2026-07-06", "11:00"),
+        fin: dateAt("2026-07-06", "12:00"),
+      },
+      [],
+      null,
+      undefined,
+      [
+        {
+          inicio: dateAt("2026-07-06", "10:00"),
+          fin: dateAt("2026-07-06", "11:00"),
+          colaboradora_id: null,
+        },
+      ]
+    );
+    const busy = validateNoOverlap(
+      {
+        inicio: dateAt("2026-07-06", "10:30"),
+        fin: dateAt("2026-07-06", "11:30"),
+      },
+      [],
+      null,
+      undefined,
+      [
+        {
+          inicio: dateAt("2026-07-06", "10:00"),
+          fin: dateAt("2026-07-06", "11:00"),
+          colaboradora_id: null,
+        },
+      ]
+    );
+
+    expect(free).toBe(true);
+    expect(busy).toBe(false);
   });
 });

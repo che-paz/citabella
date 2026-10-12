@@ -21,6 +21,8 @@ const WEEKDAY_HEADERS = [0, 1, 2, 3, 4, 5, 6] as const;
 export type MonthDaySummary = {
   count: number;
   labels: string[];
+  eventLabels?: string[];
+  full?: boolean;
 };
 
 type MonthCalendarProps = {
@@ -28,6 +30,8 @@ type MonthCalendarProps = {
   selectedDateKey: string;
   onSelectDate: (dateKey: string) => void;
   daySummaries?: Map<string, MonthDaySummary>;
+  /** En el link público, un día lleno no se abre. */
+  disableFullDays?: boolean;
   minDate?: string;
   maxDate?: string;
   className?: string;
@@ -38,6 +42,7 @@ export function MonthCalendar({
   selectedDateKey,
   onSelectDate,
   daySummaries,
+  disableFullDays = false,
   minDate,
   maxDate,
   className,
@@ -108,43 +113,74 @@ export function MonthCalendar({
             Boolean(maxDate && dayKey > maxDate);
           const summary = daySummaries?.get(dayKey);
           const hasCitas = (summary?.count ?? 0) > 0;
+          const eventLabels = summary?.eventLabels ?? [];
+          const hasEvents = eventLabels.length > 0;
+          const isFull = Boolean(summary?.full);
+          const outOfRange = disabled;
+          const fullBlocked = disableFullDays && isFull;
+          const dayLabel = isFull
+            ? `${formatDayOfMonth(dayKey)}, día lleno`
+            : undefined;
 
           return (
             <button
               key={dayKey}
               type="button"
-              disabled={disabled}
-              onClick={() => onSelectDate(dayKey)}
+              disabled={outOfRange || (fullBlocked && !isSelected)}
+              aria-label={dayLabel}
+              title={isFull ? "Día lleno" : undefined}
+              onClick={() => {
+                if (fullBlocked) return;
+                onSelectDate(dayKey);
+              }}
               className={cn(
                 "relative flex min-h-[3.25rem] flex-col items-stretch rounded-md p-1 text-left text-sm transition-colors md:min-h-[5.5rem]",
                 !inMonth && "text-muted-foreground/50",
-                disabled && "cursor-not-allowed opacity-40",
+                outOfRange && "cursor-not-allowed opacity-40",
+                fullBlocked && !outOfRange && "cursor-not-allowed",
                 hasCitas && !isSelected && "bg-primary/10 ring-1 ring-primary/20",
+                hasEvents &&
+                  !hasCitas &&
+                  !isSelected &&
+                  "bg-violet-50 ring-1 ring-violet-200",
+                isFull && !isSelected && !hasCitas && !hasEvents && "bg-muted",
                 isSelected && "bg-primary text-primary-foreground",
-                !isSelected && !disabled && !hasCitas && "hover:bg-muted"
+                !isSelected &&
+                  !outOfRange &&
+                  !fullBlocked &&
+                  !hasCitas &&
+                  !hasEvents &&
+                  "hover:bg-muted"
               )}
             >
               <span
                 className={cn(
-                  "self-center text-sm font-medium",
+                  "flex items-center justify-center gap-0.5 self-center text-sm font-medium",
                   isToday && !isSelected && "rounded-full bg-primary/15 px-1.5"
                 )}
               >
                 {formatDayOfMonth(dayKey)}
+                {isFull && (
+                  <span className="text-base font-bold leading-none" aria-hidden>
+                    ×
+                  </span>
+                )}
               </span>
 
-              {hasCitas && (
+              {(hasCitas || hasEvents) && (
                 <div className="mt-0.5 flex flex-1 flex-col gap-0.5 overflow-hidden">
-                  <span
-                    className={cn(
-                      "mx-auto rounded-full px-1.5 py-0.5 text-[10px] font-semibold leading-none",
-                      isSelected
-                        ? "bg-primary-foreground/20 text-primary-foreground"
-                        : "bg-primary text-primary-foreground"
-                    )}
-                  >
-                    {summary!.count}
-                  </span>
+                  {hasCitas && (
+                    <span
+                      className={cn(
+                        "mx-auto rounded-full px-1.5 py-0.5 text-[10px] font-semibold leading-none",
+                        isSelected
+                          ? "bg-primary-foreground/20 text-primary-foreground"
+                          : "bg-primary text-primary-foreground"
+                      )}
+                    >
+                      {summary!.count}
+                    </span>
+                  )}
                   <div className="hidden md:block">
                     {summary!.labels.slice(0, 2).map((label) => (
                       <p
@@ -154,6 +190,19 @@ export function MonthCalendar({
                           isSelected
                             ? "text-primary-foreground/90"
                             : "text-foreground/80"
+                        )}
+                      >
+                        {label}
+                      </p>
+                    ))}
+                    {eventLabels.slice(0, 1).map((label) => (
+                      <p
+                        key={label}
+                        className={cn(
+                          "truncate text-[10px] font-medium leading-tight",
+                          isSelected
+                            ? "text-primary-foreground"
+                            : "text-violet-700"
                         )}
                       >
                         {label}

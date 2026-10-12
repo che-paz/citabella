@@ -1,10 +1,12 @@
 "use server";
 
 import { z } from "zod";
-import { fetchAvailabilitySlots, isCitaOverlapDbError } from "@/lib/availability/queries";
+import { fetchAvailabilitySlots, fetchOccupancyForRange, isCitaOverlapDbError } from "@/lib/availability/queries";
+import { listFullDateKeys } from "@/lib/availability/engine";
 import { resolvePausaDiariaFromSalon } from "@/lib/availability/pausa";
 import { resolveSlotStepMinutes } from "@/lib/availability/salon-config";
-import { getSalonDateKey } from "@/lib/availability/timezone";
+import { endOfSalonDayUtc, getSalonDateKey, startOfSalonDayUtc } from "@/lib/availability/timezone";
+import { getMonthGridDateKeys, getMonthStartDateKey } from "@/lib/agenda/dates";
 import { getSalonBySlug } from "@/lib/reservar/queries";
 import {
   deleteComprobante,
@@ -147,6 +149,7 @@ export async function getPublicSlotsAction(params: {
       duracionMinutos: item.duracion,
       slotStepMinutes: resolveSlotStepMinutes(salon),
       pausaDiaria: resolvePausaDiariaFromSalon(salon),
+      publicBooking: true,
       client: createAnonymousClient(),
     });
 
@@ -171,6 +174,71 @@ export async function getPublicSlotsAction(params: {
   } catch {
     return { slots: [], error: "No se pudo calcular disponibilidad" };
   }
+}
+
+/** Días del mes visible sin ninguna hora libre para la duración elegida. */
+export async function getPublicFullDaysAction(params: {
+  slug: string;
+  fecha: string;
+  servicioId?: string;
+  paqueteId?: string;
+}): Promise<{ fullDays: string[]; error?: string }> {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(params.fecha)) {
+    return { fullDays: [], error: "Fecha inválida" };
+  }
+
+  const salon = await getSalonBySlugSafe(params.slug);
+  if (salon === "error") {
+    return { fullDays: [], error: SALON_UNAVAILABLE_ERROR };
+  }
+  if (!salon) {
+    return { fullDays: [], error: "Salón no encontrado" };
+  }
+
+  const item = await getItemDetails(
+    salon.id,
+    params.servicioId,
+    params.paqueteId
+  );
+  if (!item) {
+    return { fullDays: [], error: "Servicio o paquete no encontrado" };
+  }
+
+  const dateKeys = getMonthGridDateKeys(getMonthStartDateKey(params.fecha));
+  const rangeStart = startOfSalonDayUtc(dateKeys[0], salon.timezone).toISOString();
+  const rangeEnd = endOfSalonDayUtc(
+    dateKeys[dateKeys.length - 1],
+    salon.timezone
+  ).toISOString();
+
+  const occupancy = await fetchOccupancyForRange({
+    salonId: salon.id,
+    rangeStartIso: rangeStart,
+    rangeEndIso: rangeEnd,
+    dateStartKey: dateKeys[0],
+    dateEndKey: dateKeys[dateKeys.length - 1],
+    publicBooking: true,
+    client: createAnonymousClient(),
+    pausaDiaria: resolvePausaDiariaFromSalon(salon),
+  });
+
+  if (!occupancy.ok) {
+    return { fullDays: [], error: occupancy.error };
+  }
+
+  return {
+    fullDays: listFullDateKeys(dateKeys, {
+      timezone: salon.timezone,
+      duracionMinutos: item.duracion,
+      horarios: occupancy.horarios,
+      excepciones: occupancy.excepciones,
+      pausaDiaria: occupancy.pausaDiaria,
+      citas: occupancy.citas,
+      bloqueos: occupancy.bloqueos,
+      slotStepMinutes: resolveSlotStepMinutes(salon),
+      now: new Date(),
+    }),
+  };
 }
 
 export async function createReservaAction(
@@ -251,6 +319,7 @@ export async function createReservaAction(
     duracionMinutos: item.duracion,
     slotStepMinutes: resolveSlotStepMinutes(salon),
     pausaDiaria: resolvePausaDiariaFromSalon(salon),
+    publicBooking: true,
     client: createAnonymousClient(),
   });
 

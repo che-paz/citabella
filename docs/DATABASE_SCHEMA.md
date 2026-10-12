@@ -117,7 +117,26 @@ salones ──┬── usuarios
 | beneficiario_nombre | TEXT NULL | Quien asiste si ≠ clienta de contacto |
 | creada_por | ENUM | `admin`, `clienta`, `colaboradora` |
 | created_at | TIMESTAMPTZ | |
-| updated_at | TIMESTAMPTZ | Trigger `citas_prevent_overlap` (019) bloquea solapes en estados bloqueantes |
+| updated_at | TIMESTAMPTZ | Trigger `citas_prevent_overlap` (019) bloquea solapes entre citas. Trigger `citas_prevent_bloqueo` (020) bloquea solapes con `bloqueos_agenda`. Ambos solo en INSERT/UPDATE |
+
+### `bloqueos_agenda` (eventos personales, migración 020)
+
+No es una cita: no tiene clienta, servicio ni pago. Ocupa la agenda. El rol `anon` no tiene GRANT ni política SELECT. El link público usa `get_salon_bloqueos_ocupados` (solo `inicio`, `fin`, `colaboradora_id`, y solo si el salón está activo).
+
+| Columna | Tipo | Notas |
+|---------|------|-------|
+| id | UUID PK | |
+| salon_id | UUID FK | |
+| colaboradora_id | UUID FK NULL | NULL = todo el salón. Si se borra la colaboradora, se borra el evento |
+| inicio | TIMESTAMPTZ NOT NULL | |
+| fin | TIMESTAMPTZ NOT NULL | `fin > inicio`. Rango semiabierto `[)` |
+| titulo | TEXT NOT NULL | 1–120. Solo panel |
+| notas | TEXT NULL | Solo panel |
+| creado_por | UUID FK → usuarios | |
+| created_at | TIMESTAMPTZ | |
+| updated_at | TIMESTAMPTZ | |
+
+Triggers: `bloqueos_agenda_prevent_cita` rechaza el evento si choca con una cita en `pendiente`, `pendiente_validacion` o `confirmada` (misma regla de colaboradora que 019). No reescribe citas existentes.
 
 ### `pagos`
 
@@ -235,6 +254,7 @@ Captura taller → authorize → provision. RLS on, **sin policies** (solo servi
 ```sql
 CREATE INDEX idx_citas_salon_inicio ON citas(salon_id, inicio);
 CREATE INDEX idx_citas_colaboradora ON citas(colaboradora_id, inicio);
+CREATE INDEX idx_bloqueos_agenda_salon_inicio ON bloqueos_agenda(salon_id, inicio);
 CREATE INDEX idx_clientas_salon ON clientas(salon_id);
 CREATE UNIQUE INDEX idx_salones_slug ON salones(slug);
 ```
