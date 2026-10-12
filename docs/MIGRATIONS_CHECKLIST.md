@@ -1,6 +1,6 @@
 # Checklist de migraciones (Supabase Cloud)
 
-> **Última verificación:** 2026-09-22 (019 anti-solape en repo)  
+> **Última verificación:** 2026-10-12 (`020` aplicada en cloud)  
 > **Proyecto:** CITABELLA / Gota+Check — esquema multi-tenant  
 > **Regla:** nunca editar una migración ya aplicada; solo agregar `019_…` en adelante.
 
@@ -27,11 +27,11 @@
 | `017_paquete_descripcion.sql` | `paquetes.descripcion` opcional | ✅ 2026-09-10 |
 | `018_onboarding_leads.sql` | leads internos → provision | ⬜ aplicar en SQL Editor |
 | `019_prevent_cita_overlap.sql` | trigger anti-solape citas (misma colaboradora / salon-wide si null) | ⏳ aplicar en SQL Editor |
-| `020_bloqueos_agenda.sql` | eventos personales + triggers cita↔evento + RPC pública de ocupación | ⏳ aplicar en SQL Editor antes de publicar el código |
+| `020_bloqueos_agenda.sql` | eventos personales + triggers cita↔evento + RPC pública de ocupación | ✅ 2026-10-12 |
 
-**Pendiente:** aplicar `018` (si aún no), **`019`** y **`020`** en cloud (SQL Editor).  
+**Pendiente:** aplicar `018` (si aún no) y **`019`** en cloud (SQL Editor).  
 **Nota 019:** no mueve citas existentes; solo bloquea nuevos solapes. Andrea debe reagendar Emma/Santiago del 10-oct a mano.  
-**Nota 020:** no modifica filas de `citas`. Con la tabla vacía, una cita nueva sigue el mismo camino. El código nuevo falla cerrado si la RPC no existe: aplicar 020 antes de publicar.
+**Nota 020:** aplicada. No modifica filas de `citas`. Belleza Luna quedó sin eventos de prueba y con `activo=false`.
 
 ## Cómo re-verificar (rápido)
 

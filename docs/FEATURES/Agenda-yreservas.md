@@ -109,7 +109,7 @@ src/lib/agenda/dates.ts
 - Evento personal: botón aparte de «Nueva cita». Tabla `bloqueos_agenda`. Por defecto ocupa todo el salón; la admin puede asignarlo a una colaboradora. La colaboradora solo crea los suyos y ve los de todo el salón. Mismo día local; cualquier hora, también fuera del horario. En la agenda se ve como cita, en violeta. Si ya hay cita bloqueante, no se guarda y el aviso lleva el nombre y la hora
 - Día lleno: el mes marca × cuando ya no queda hora libre (citas + eventos + pausa). En el panel el día se puede abrir. En `/reservar` la × usa la duración del servicio elegido y ese día no se abre. Un día cerrado no lleva ×
 - El link público solo recibe inicio y fin del evento, vía `get_salon_bloqueos_ocupados`
-- Aplicar `020` en cloud antes de publicar: si la RPC no existe, la disponibilidad falla cerrada (no muestra horas libres)
+- Migración `020` aplicada en cloud (2026-10-12). Este código y esa migración van juntos: si la RPC no existe, la disponibilidad falla cerrada (no muestra horas libres)
 - Timezone desde `salones.timezone` (default `America/Guatemala`)
 - Reserva pública: `creada_por = 'clienta'`, sin colaboradora asignada
 - RPC `upsert_clienta_public` evita duplicar clientas por teléfono

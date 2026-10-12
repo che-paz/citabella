@@ -15,7 +15,7 @@ App en **`app.gotacheck.app`**. Marketing sin montos públicos (precios por What
 |------|--------|-------|
 | Documentación | 🟢 | + `S2.4_DOMAINS_CHECKLIST.md` |
 | Repositorio / código | 🟢 MVP core | Flujo reserva + validación pagos verificado |
-| Base de datos | 🟢 001–017 · ⏳ 018–020 | `020` eventos personales — aplicar en SQL Editor **antes** de publicar este código |
+| Base de datos | 🟢 001–017 · ⏳ 018–019 · ✅ 020 | `020` eventos personales aplicada en cloud 2026-10-12 |
 | Supabase | 🟡 Free → Pro pendiente | Pro al primer cobro (backups) |
 | Deploy | 🟢 Vercel Pro | App + marketing |
 | Prototipo UI | 🟢 MVP core | Dashboard + clientas listos |
@@ -107,7 +107,7 @@ Ninguno técnico duro. **Negocio:** confirmaciones taller (≤15) para el 11 oct
 
 ## Próximo paso inmediato
 
-1. Aplicar migración `020_bloqueos_agenda.sql` en el SQL Editor (aditiva; no toca citas de Tutis ni Galaxy) y probar en Belleza Luna
+1. Visto bueno para publicar eventos personales (PR #25). La migración `020` ya está en cloud; no mergear ni desplegar sin aprobación
 2. Alta asistida de interesadas del taller (`/interna`)
 3. Video en `/ayuda` si el texto+capturas no bajan soporte
 
@@ -168,7 +168,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
-| 2026-10-12 | Eventos personales v1 (migración 020, en repo): ocupan la agenda, título privado en el link, × en día lleno. Falta aplicar 020 en cloud y el visto bueno para publicar |
+| 2026-10-12 | Eventos personales v1: migración 020 aplicada en cloud. Probado en Belleza Luna (hora ocupada, × en día lleno, aviso si hay cita). Tutis y Galaxy siguen mostrando disponibilidad. Falta visto bueno para publicar |
 | 2026-10-07 | Guion taller: nuevo orden (reserva en vivo → tour panel Tutis por Ruth → Vitrina Andrea); hoja imprimible `TALLER_GUION` |
 | 2026-10-04 | Taller fijado: dom 11 oct, 4:00 pm, Salón Yaya; invitación digital con QR de confirmación por WhatsApp (`files/invitacion/`) |
 | 2026-09-30 | Marketing: diseño nuevo publicado en `gotacheck.app/` (reemplaza landing anterior; `/nuevo` → 308 a `/`) |
