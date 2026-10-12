@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { maxBookingDateKey, todayDateKey } from "@/lib/agenda/dates";
+import { useEffect, useMemo, useState } from "react";
+import { getMonthStartDateKey, maxBookingDateKey, todayDateKey } from "@/lib/agenda/dates";
 import { formatAgendaTime } from "@/lib/agenda/dates";
-import { getPublicSlotsAction } from "@/lib/reservar/actions";
+import { getPublicFullDaysAction, getPublicSlotsAction } from "@/lib/reservar/actions";
 import type { ReservaItem } from "@/types/database";
-import { MonthCalendar } from "@/components/ui/month-calendar";
+import { MonthCalendar, type MonthDaySummary } from "@/components/ui/month-calendar";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 
@@ -33,11 +33,41 @@ export function SlotPicker({
   onContinue,
 }: SlotPickerProps) {
   const [slots, setSlots] = useState<{ inicio: string; fin: string }[]>([]);
+  const [fullDays, setFullDays] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const today = todayDateKey(timezone);
   const maxDate = maxBookingDateKey(timezone, 3);
+  const monthStart = getMonthStartDateKey(fecha);
+
+  const daySummaries = useMemo(() => {
+    const summaries = new Map<string, MonthDaySummary>();
+    for (const day of fullDays) {
+      summaries.set(day, { count: 0, labels: [], full: true });
+    }
+    return summaries;
+  }, [fullDays]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadFullDays() {
+      const result = await getPublicFullDaysAction({
+        slug,
+        fecha: monthStart,
+        servicioId: item.tipo === "servicio" ? item.id : undefined,
+        paqueteId: item.tipo === "paquete" ? item.id : undefined,
+      });
+      if (cancelled) return;
+      setFullDays(result.error ? [] : result.fullDays);
+    }
+
+    loadFullDays();
+    return () => {
+      cancelled = true;
+    };
+  }, [slug, monthStart, item]);
 
   useEffect(() => {
     let cancelled = false;
@@ -98,6 +128,8 @@ export function SlotPicker({
           onFechaChange(next);
           onSlotChange("", "");
         }}
+        daySummaries={daySummaries}
+        disableFullDays
         minDate={today}
         maxDate={maxDate}
         className="rounded-lg border p-3"

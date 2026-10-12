@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import {
+  CalendarClock,
   CalendarPlus,
   ChevronLeft,
   ChevronRight,
@@ -14,27 +15,34 @@ import {
   reactivarCitaAction,
   updateCitaEstadoAction,
 } from "@/lib/agenda/actions";
+import { deleteEventoPersonalAction } from "@/lib/agenda/bloqueos";
 import {
   addDaysToDateKey,
   addMonthsToDateKey,
   formatDateKeyLabel,
   formatMonthYearLabel,
+  getMonthGridDateKeys,
   getMonthStartDateKey,
   getSalonDateKey,
   getWeekDateKeys,
   getWeekStartDateKey,
 } from "@/lib/agenda/dates";
+import { listFullDateKeys } from "@/lib/availability/engine";
 import { CitaForm } from "@/components/agenda/CitaForm";
 import { AgendaCitaCard } from "@/components/agenda/AgendaCitaCard";
+import { AgendaEventoCard } from "@/components/agenda/AgendaEventoCard";
+import { EventoPersonalForm } from "@/components/agenda/EventoPersonalForm";
 import { HorariosConfig } from "@/components/agenda/HorariosConfig";
 import {
   buildMonthSummariesFromCitas,
   MonthCalendar,
+  type MonthDaySummary,
 } from "@/components/ui/month-calendar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { MobileActionBar } from "@/components/ui/mobile-action-bar";
 import {
+  type BloqueoAgenda,
   type CitaConDetalle,
   type Clienta,
   type ExcepcionHorario,
@@ -50,6 +58,8 @@ type ViewMode = "day" | "week" | "month";
 
 type AgendaViewProps = {
   citas: CitaConDetalle[];
+  bloqueos: BloqueoAgenda[];
+  bloqueosError?: boolean;
   clientas: Clienta[];
   servicios: Servicio[];
   paquetes: Paquete[];
@@ -57,6 +67,7 @@ type AgendaViewProps = {
   horarios: HorarioSalon[];
   excepciones: ExcepcionHorario[];
   pausaDiaria: PausaDiaria;
+  slotStepMinutes: number;
   timezone: string;
   isAdmin: boolean;
   currentUserId: string;
@@ -66,6 +77,8 @@ type AgendaViewProps = {
 
 export function AgendaView({
   citas: initialCitas,
+  bloqueos: initialBloqueos,
+  bloqueosError = false,
   clientas,
   servicios,
   paquetes,
@@ -73,6 +86,7 @@ export function AgendaView({
   horarios,
   excepciones,
   pausaDiaria,
+  slotStepMinutes,
   timezone,
   isAdmin,
   currentUserId,
@@ -83,18 +97,87 @@ export function AgendaView({
   const [view, setView] = useState<ViewMode>(initialView);
   const [dateKey, setDateKey] = useState(initialDate);
   const [citas, setCitas] = useState(initialCitas);
+  const [bloqueos, setBloqueos] = useState(initialBloqueos);
   const [citaFormOpen, setCitaFormOpen] = useState(false);
+  const [eventoFormOpen, setEventoFormOpen] = useState(false);
   const [horariosOpen, setHorariosOpen] = useState(false);
   const [editingCita, setEditingCita] = useState<CitaConDetalle | undefined>();
+  const [editingEvento, setEditingEvento] = useState<BloqueoAgenda | undefined>();
   const [actionError, setActionError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const [citasLoading, setCitasLoading] = useState(false);
 
   const weekStart = getWeekStartDateKey(dateKey);
   const weekDays = getWeekDateKeys(weekStart);
-  const visibleDateKeys =
-    view === "week" ? weekDays : [dateKey];
-  const markedDates = buildMonthSummariesFromCitas(citas, timezone);
+  const visibleDateKeys = view === "week" ? weekDays : [dateKey];
+
+  const markedDates = useMemo(() => {
+    const summaries = buildMonthSummariesFromCitas(citas, timezone);
+    for (const evento of bloqueos) {
+      const key = getSalonDateKey(new Date(evento.inicio), timezone);
+      const existing = summaries.get(key) ?? { count: 0, labels: [] };
+      const eventLabels = existing.eventLabels ?? [];
+      if (!eventLabels.includes(evento.titulo)) eventLabels.push(evento.titulo);
+      existing.eventLabels = eventLabels;
+      summaries.set(key, existing);
+    }
+
+    if (view === "month") {
+      const pausa =
+        pausaDiaria.activa && pausaDiaria.hora_inicio && pausaDiaria.hora_fin
+          ? {
+              activa: true,
+              hora_inicio: pausaDiaria.hora_inicio.slice(0, 5),
+              hora_fin: pausaDiaria.hora_fin.slice(0, 5),
+            }
+          : null;
+      const fullKeys = listFullDateKeys(
+        getMonthGridDateKeys(getMonthStartDateKey(dateKey)),
+        {
+          timezone,
+          duracionMinutos: slotStepMinutes,
+          horarios,
+          excepciones,
+          pausaDiaria: pausa,
+          citas: citas.map((cita) => ({
+            id: cita.id,
+            inicio: new Date(cita.inicio),
+            fin: new Date(cita.fin),
+            colaboradora_id: cita.colaboradora_id,
+            estado: cita.estado,
+          })),
+          bloqueos: bloqueos.map((evento) => ({
+            id: evento.id,
+            inicio: new Date(evento.inicio),
+            fin: new Date(evento.fin),
+            colaboradora_id: evento.colaboradora_id,
+          })),
+          slotStepMinutes,
+          now: new Date(),
+        }
+      );
+      for (const key of fullKeys) {
+        const existing: MonthDaySummary = summaries.get(key) ?? {
+          count: 0,
+          labels: [],
+        };
+        existing.full = true;
+        summaries.set(key, existing);
+      }
+    }
+
+    return summaries;
+  }, [
+    bloqueos,
+    citas,
+    dateKey,
+    excepciones,
+    horarios,
+    pausaDiaria,
+    slotStepMinutes,
+    timezone,
+    view,
+  ]);
 
   function syncUrl(nextDate: string, nextView: ViewMode) {
     const url = `/agenda?date=${nextDate}&view=${nextView}`;
@@ -114,12 +197,17 @@ export function AgendaView({
         return;
       }
       if (result.citas) setCitas(result.citas);
+      if (result.bloqueos) setBloqueos(result.bloqueos);
     });
   }
 
   useEffect(() => {
     setCitas(initialCitas);
   }, [initialCitas]);
+
+  useEffect(() => {
+    setBloqueos(initialBloqueos);
+  }, [initialBloqueos]);
 
   function navigate(delta: number) {
     const next =
@@ -165,9 +253,32 @@ export function AgendaView({
       );
   }
 
+  function itemsForDate(dayKey: string) {
+    const citaItems = citasForDate(dayKey).map((cita) => ({
+      kind: "cita" as const,
+      inicio: cita.inicio,
+      cita,
+    }));
+    const eventoItems = bloqueos
+      .filter((evento) => getSalonDateKey(new Date(evento.inicio), timezone) === dayKey)
+      .map((evento) => ({
+        kind: "evento" as const,
+        inicio: evento.inicio,
+        evento,
+      }));
+    return [...citaItems, ...eventoItems].sort(
+      (a, b) => new Date(a.inicio).getTime() - new Date(b.inicio).getTime()
+    );
+  }
+
   function openCreate() {
     setEditingCita(undefined);
     setCitaFormOpen(true);
+  }
+
+  function openEvento() {
+    setEditingEvento(undefined);
+    setEventoFormOpen(true);
   }
 
   function openEdit(cita: CitaConDetalle) {
@@ -175,9 +286,32 @@ export function AgendaView({
     setCitaFormOpen(true);
   }
 
+  function openEditEvento(evento: BloqueoAgenda) {
+    setEditingEvento(evento);
+    setEventoFormOpen(true);
+  }
+
   function handleCitaFormOpenChange(open: boolean) {
     setCitaFormOpen(open);
     if (!open) setEditingCita(undefined);
+  }
+
+  function handleEventoFormOpenChange(open: boolean) {
+    setEventoFormOpen(open);
+    if (!open) setEditingEvento(undefined);
+  }
+
+  function handleDeleteEvento(eventoId: string) {
+    if (!window.confirm("¿Borrar este evento personal?")) return;
+    setActionError(null);
+    startTransition(async () => {
+      const result = await deleteEventoPersonalAction(eventoId);
+      if (result.error) setActionError(result.error);
+      else {
+        router.refresh();
+        loadCitas(dateKey, view);
+      }
+    });
   }
 
   function handleCancel(citaId: string) {
@@ -275,6 +409,14 @@ export function AgendaView({
             </Button>
           )}
           <Button
+            variant="outline"
+            className="w-full justify-center sm:w-auto"
+            onClick={openEvento}
+          >
+            <CalendarClock className="mr-2 h-4 w-4" />
+            Evento personal
+          </Button>
+          <Button
             className="w-full justify-center sm:w-auto"
             onClick={openCreate}
           >
@@ -308,6 +450,12 @@ export function AgendaView({
         </p>
       )}
 
+      {bloqueosError && (
+        <p className="text-sm text-destructive">
+          No se pudieron cargar los eventos personales.
+        </p>
+      )}
+
       {actionError && (
         <p className="text-sm text-destructive">{actionError}</p>
       )}
@@ -321,7 +469,7 @@ export function AgendaView({
         )}
       >
         {visibleDateKeys.map((dayKey) => {
-          const dayCitas = citasForDate(dayKey);
+          const dayItems = itemsForDate(dayKey);
           const isToday = dayKey === getSalonDateKey(new Date(), timezone);
 
           return (
@@ -343,27 +491,42 @@ export function AgendaView({
                 </div>
               )}
 
-              {dayCitas.length === 0 ? (
+              {dayItems.length === 0 ? (
                 <Card>
                   <CardContent className="py-6 text-center text-sm text-muted-foreground">
                     Sin citas
                   </CardContent>
                 </Card>
               ) : (
-                dayCitas.map((cita) => (
-                  <AgendaCitaCard
-                    key={cita.id}
-                    cita={cita}
-                    timezone={timezone}
-                    isAdmin={isAdmin}
-                    isPending={isPending}
-                    compact={view === "week"}
-                    onEdit={openEdit}
-                    onCancel={handleCancel}
-                    onEstado={handleEstado}
-                    onReactivar={handleReactivar}
-                  />
-                ))
+                dayItems.map((item) =>
+                  item.kind === "cita" ? (
+                    <AgendaCitaCard
+                      key={item.cita.id}
+                      cita={item.cita}
+                      timezone={timezone}
+                      isAdmin={isAdmin}
+                      isPending={isPending}
+                      compact={view === "week"}
+                      onEdit={openEdit}
+                      onCancel={handleCancel}
+                      onEstado={handleEstado}
+                      onReactivar={handleReactivar}
+                    />
+                  ) : (
+                    <AgendaEventoCard
+                      key={item.evento.id}
+                      evento={item.evento}
+                      timezone={timezone}
+                      compact={view === "week"}
+                      canEdit={
+                        isAdmin || item.evento.colaboradora_id === currentUserId
+                      }
+                      isPending={isPending}
+                      onEdit={openEditEvento}
+                      onDelete={handleDeleteEvento}
+                    />
+                  )
+                )
               )}
             </div>
           );
@@ -384,6 +547,19 @@ export function AgendaView({
           isAdmin={isAdmin}
           currentUserId={currentUserId}
           editingCita={editingCita}
+        />
+      )}
+
+      {eventoFormOpen && (
+        <EventoPersonalForm
+          key={editingEvento?.id ?? `evento-${dateKey}`}
+          open={eventoFormOpen}
+          onOpenChange={handleEventoFormOpenChange}
+          colaboradoras={colaboradoras}
+          timezone={timezone}
+          defaultDate={dateKey}
+          isAdmin={isAdmin}
+          editing={editingEvento}
         />
       )}
 

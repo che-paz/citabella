@@ -1,6 +1,7 @@
 import { getAuthUser } from "@/lib/auth/get-user";
-import { getAgendaCitas } from "@/lib/agenda/queries";
+import { getAgendaBloqueos, getAgendaCitas } from "@/lib/agenda/queries";
 import { todayDateKey } from "@/lib/agenda/dates";
+import { resolveSlotStepMinutes } from "@/lib/availability/salon-config";
 import { createClient } from "@/lib/supabase/server";
 import { AgendaView } from "@/components/agenda/AgendaView";
 
@@ -30,6 +31,7 @@ export default async function AgendaPage({ searchParams }: PageProps) {
 
   const [
     citas,
+    bloqueosResult,
     clientasRes,
     serviciosRes,
     paquetesRes,
@@ -39,6 +41,7 @@ export default async function AgendaPage({ searchParams }: PageProps) {
     salonRes,
   ] = await Promise.all([
     getAgendaCitas(user.salon_id, dateKey, view, timezone),
+    getAgendaBloqueos(user.salon_id, dateKey, view, timezone),
     supabase
       .from("clientas")
       .select("*")
@@ -76,7 +79,9 @@ export default async function AgendaPage({ searchParams }: PageProps) {
       .order("fecha"),
     supabase
       .from("salones")
-      .select("pausa_diaria_activa, pausa_hora_inicio, pausa_hora_fin")
+      .select(
+        "pausa_diaria_activa, pausa_hora_inicio, pausa_hora_fin, slot_step_minutes"
+      )
       .eq("id", user.salon_id)
       .single(),
   ]);
@@ -86,6 +91,11 @@ export default async function AgendaPage({ searchParams }: PageProps) {
     hora_inicio: salonRes.data?.pausa_hora_inicio?.slice(0, 5) ?? null,
     hora_fin: salonRes.data?.pausa_hora_fin?.slice(0, 5) ?? null,
   };
+
+  const slotStepMinutes = resolveSlotStepMinutes({
+    slug: user.salon.slug,
+    slot_step_minutes: salonRes.data?.slot_step_minutes ?? null,
+  });
 
   return (
     <div className="space-y-6">
@@ -100,6 +110,8 @@ export default async function AgendaPage({ searchParams }: PageProps) {
 
       <AgendaView
         citas={citas}
+        bloqueos={bloqueosResult.bloqueos}
+        bloqueosError={bloqueosResult.error}
         clientas={clientasRes.data ?? []}
         servicios={(serviciosRes.data ?? []).map((s) => ({
           ...s,
@@ -113,6 +125,7 @@ export default async function AgendaPage({ searchParams }: PageProps) {
         horarios={horariosRes.data ?? []}
         excepciones={excepcionesRes.data ?? []}
         pausaDiaria={pausaDiaria}
+        slotStepMinutes={slotStepMinutes}
         timezone={timezone}
         isAdmin={isAdmin}
         currentUserId={user.id}

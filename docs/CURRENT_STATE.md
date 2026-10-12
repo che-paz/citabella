@@ -1,6 +1,6 @@
 # CITABELLA / Gota+Check — Current State
 
-> **Última actualización:** 2026-09-30  
+> **Última actualización:** 2026-10-12  
 > **Marca presentación:** Gota+Check · **Estudio:** VajaLabs (sin constituir)  
 > **Sprint activo:** **Fase 3** — taller / GTM · marketing sin precios públicos  
 > **Fase:** MVP ✅ | Piloto founders | Vitrinas live | Taller **dom 11 oct 2026, 4:00 pm — Salón Yaya**
@@ -15,7 +15,7 @@ App en **`app.gotacheck.app`**. Marketing sin montos públicos (precios por What
 |------|--------|-------|
 | Documentación | 🟢 | + `S2.4_DOMAINS_CHECKLIST.md` |
 | Repositorio / código | 🟢 MVP core | Flujo reserva + validación pagos verificado |
-| Base de datos | 🟢 001–017 · ⏳ 018–019 | `019` trigger anti-solape citas — aplicar en SQL Editor |
+| Base de datos | 🟢 001–017 · ⏳ 018–019 · ✅ 020 | `020` eventos personales aplicada en cloud 2026-10-12 |
 | Supabase | 🟡 Free → Pro pendiente | Pro al primer cobro (backups) |
 | Deploy | 🟢 Vercel Pro | App + marketing |
 | Prototipo UI | 🟢 MVP core | Dashboard + clientas listos |
@@ -74,6 +74,7 @@ App en **`app.gotacheck.app`**. Marketing sin montos públicos (precios por What
 - Clientas: mismo teléfono permitido en varias fichas (admin); `upsert_clienta_public` no pisa hermanos si hay 2+ con ese WhatsApp (migración 016)
 - Clientas form: una sola action `saveClientaAction` (create vs update por `id`) para evitar “Clienta no encontrada” al crear
 - Agenda: trigger DB `prevent_cita_overlap` (019) + fail-closed si falla lectura de citas/horarios
+- Evento personal (v1): tabla `bloqueos_agenda` (020). Botón «Evento personal», tarjeta violeta, día lleno con ×. Título privado en el link público. No se guarda encima de una cita
 - Horas en UI: formato 12 h con AM/PM (ej. 2:00 PM); inputs `type="time"` siguen en 24 h
 
 ## Decisiones pendientes
@@ -106,9 +107,8 @@ Ninguno técnico duro. **Negocio:** confirmaciones taller (≤15) para el 11 oct
 
 ## Próximo paso inmediato
 
-1. Taller hecho (2026-10-11, sin fallas) → alta asistida de interesadas (`/interna`)
-2. **Bloqueos de agenda v1** (pedido en taller) — alcance en `ROADMAP.md` Fase 2; probar solo en Belleza Luna antes de publicar
-3. Video en `/ayuda` si el texto+capturas no bajan soporte
+1. Alta asistida de interesadas del taller (`/interna`)
+2. Video en `/ayuda` si el texto+capturas no bajan soporte
 
 ## Docs operativos
 
@@ -167,7 +167,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
-| 2026-10-11 | Test pre-presentación en producción: web, 5 guías, vitrinas, reserva Tutis (hasta paso 3), panel demo (todas las secciones), QR, 20 unit tests OK. Galaxy sin horarios = agenda llena hasta 8 nov (no bug) |
+| 2026-10-12 | Eventos personales v1 publicados (PR #25). Migración 020 en cloud. Hora ocupada, × en día lleno, título privado en el link |
 | 2026-10-07 | Guion taller: nuevo orden (reserva en vivo → tour panel Tutis por Ruth → Vitrina Andrea); hoja imprimible `TALLER_GUION` |
 | 2026-10-04 | Taller fijado: dom 11 oct, 4:00 pm, Salón Yaya; invitación digital con QR de confirmación por WhatsApp (`files/invitacion/`) |
 | 2026-09-30 | Marketing: diseño nuevo publicado en `gotacheck.app/` (reemplaza landing anterior; `/nuevo` → 308 a `/`) |

@@ -41,6 +41,16 @@ export type CitaOcupadaInput = {
   estado: string;
 };
 
+/** Evento personal. Ocupa la agenda igual que una cita bloqueante. */
+export type BloqueoOcupadoInput = {
+  id?: string;
+  inicio: Date;
+  fin: Date;
+  colaboradora_id: string | null;
+};
+
+export type SalonDayStatus = "closed" | "full" | "open";
+
 export type AvailabilityInput = {
   date: Date;
   timezone: string;
@@ -49,6 +59,7 @@ export type AvailabilityInput = {
   excepcion: ExcepcionHorarioInput | null;
   pausaDiaria?: PausaDiariaInput | null;
   citas: CitaOcupadaInput[];
+  bloqueos?: BloqueoOcupadoInput[];
   colaboradoraId?: string;
   excludeCitaId?: string;
   slotStepMinutes?: number;
@@ -103,13 +114,32 @@ function buildWorkingRanges(
   ];
 }
 
-function citasBlockColaboradora(
-  cita: CitaOcupadaInput,
+function ocupacionBlocksColaboradora(
+  ocupadaColaboradoraId: string | null,
   colaboradoraId?: string
 ): boolean {
   if (!colaboradoraId) return true;
-  if (cita.colaboradora_id === null) return true;
-  return cita.colaboradora_id === colaboradoraId;
+  if (ocupadaColaboradoraId === null) return true;
+  return ocupadaColaboradoraId === colaboradoraId;
+}
+
+function workingRangesForDay(input: AvailabilityInput): TimeRange[] {
+  const dateKey = getSalonDateKey(input.date, input.timezone);
+  const dayOfWeek = getSalonDayOfWeek(input.date, input.timezone);
+  const matchingExcepcion =
+    input.excepcion && input.excepcion.fecha.slice(0, 10) === dateKey
+      ? input.excepcion
+      : null;
+
+  const ranges = buildWorkingRanges(
+    dateKey,
+    input.timezone,
+    input.horarios,
+    matchingExcepcion,
+    dayOfWeek
+  );
+
+  return applyPausaDiaria(dateKey, input.timezone, ranges, input.pausaDiaria);
 }
 
 export function computeAvailability(input: AvailabilityInput): TimeRange[] {
@@ -117,32 +147,17 @@ export function computeAvailability(input: AvailabilityInput): TimeRange[] {
     date,
     timezone,
     duracionMinutos,
-    horarios,
-    excepcion,
-    pausaDiaria,
     citas,
+    bloqueos = [],
     colaboradoraId,
     excludeCitaId,
     slotStepMinutes = DEFAULT_SLOT_STEP_MINUTES,
   } = input;
 
   const dateKey = getSalonDateKey(date, timezone);
-  const dayOfWeek = getSalonDayOfWeek(date, timezone);
   const dayStart = startOfSalonDayUtc(dateKey, timezone);
   const dayEnd = endOfSalonDayUtc(dateKey, timezone);
-
-  const matchingExcepcion =
-    excepcion && excepcion.fecha === dateKey ? excepcion : null;
-
-  let workingRanges = buildWorkingRanges(
-    dateKey,
-    timezone,
-    horarios,
-    matchingExcepcion,
-    dayOfWeek
-  );
-
-  workingRanges = applyPausaDiaria(dateKey, timezone, workingRanges, pausaDiaria);
+  const workingRanges = workingRangesForDay(input);
 
   if (workingRanges.length === 0) return [];
 
@@ -150,14 +165,23 @@ export function computeAvailability(input: AvailabilityInput): TimeRange[] {
     if (excludeCitaId && cita.id === excludeCitaId) {
       return false;
     }
-    if (!citasBlockColaboradora(cita, colaboradoraId)) return false;
+    if (!ocupacionBlocksColaboradora(cita.colaboradora_id, colaboradoraId)) {
+      return false;
+    }
     return cita.fin > dayStart && cita.inicio < dayEnd;
   });
 
-  const busyRanges: TimeRange[] = blockingCitas.map((c) => ({
-    inicio: c.inicio,
-    fin: c.fin,
-  }));
+  const blockingBloqueos = bloqueos.filter((bloqueo) => {
+    if (!ocupacionBlocksColaboradora(bloqueo.colaboradora_id, colaboradoraId)) {
+      return false;
+    }
+    return bloqueo.fin > dayStart && bloqueo.inicio < dayEnd;
+  });
+
+  const busyRanges: TimeRange[] = [
+    ...blockingCitas.map((c) => ({ inicio: c.inicio, fin: c.fin })),
+    ...blockingBloqueos.map((b) => ({ inicio: b.inicio, fin: b.fin })),
+  ];
 
   const available = subtractBusyRanges(workingRanges, busyRanges);
   let slots = findSlotsInRanges(available, duracionMinutos, slotStepMinutes);
@@ -178,11 +202,54 @@ export function isSlotAvailable(
   return slots.some((s) => s.inicio.getTime() === target);
 }
 
+export function getSalonDayStatus(
+  input: AvailabilityInput & { now?: Date }
+): SalonDayStatus {
+  if (workingRangesForDay(input).length === 0) return "closed";
+
+  let slots = computeAvailability(input);
+  if (input.now) {
+    const dateKey = getSalonDateKey(input.date, input.timezone);
+    const nowKey = getSalonDateKey(input.now, input.timezone);
+    if (dateKey === nowKey) {
+      const nowMs = input.now.getTime();
+      slots = slots.filter((slot) => slot.inicio.getTime() > nowMs);
+    }
+  }
+
+  return slots.length === 0 ? "full" : "open";
+}
+
+export function listFullDateKeys(
+  dateKeys: string[],
+  input: Omit<AvailabilityInput, "date" | "excepcion"> & {
+    excepciones: ExcepcionHorarioInput[];
+    now?: Date;
+  }
+): string[] {
+  const full: string[] = [];
+
+  for (const dateKey of dateKeys) {
+    const excepcion =
+      input.excepciones.find((item) => item.fecha.slice(0, 10) === dateKey) ??
+      null;
+    const status = getSalonDayStatus({
+      ...input,
+      date: salonLocalToUtc(dateKey, "12:00", input.timezone),
+      excepcion,
+    });
+    if (status === "full") full.push(dateKey);
+  }
+
+  return full;
+}
+
 export function validateNoOverlap(
   newRange: TimeRange,
   citas: CitaOcupadaInput[],
   colaboradoraId: string | null,
-  excludeCitaId?: string
+  excludeCitaId?: string,
+  bloqueos: BloqueoOcupadoInput[] = []
 ): boolean {
   const blocking = filterBlockingCitas(citas).filter((c) => {
     if (excludeCitaId && c.id === excludeCitaId) return false;
@@ -194,9 +261,24 @@ export function validateNoOverlap(
     return true;
   });
 
-  return !blocking.some((c) =>
+  const citaConflict = blocking.some((c) =>
     rangesOverlap(newRange, { inicio: c.inicio, fin: c.fin })
   );
+  if (citaConflict) return false;
+
+  return !bloqueos.some((bloqueo) => {
+    if (
+      colaboradoraId &&
+      bloqueo.colaboradora_id !== null &&
+      bloqueo.colaboradora_id !== colaboradoraId
+    ) {
+      return false;
+    }
+    return rangesOverlap(newRange, {
+      inicio: bloqueo.inicio,
+      fin: bloqueo.fin,
+    });
+  });
 }
 
 function rangesOverlap(a: TimeRange, b: TimeRange): boolean {

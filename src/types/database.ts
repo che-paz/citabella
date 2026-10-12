@@ -185,6 +185,20 @@ export type Cita = {
   updated_at: string;
 };
 
+export type BloqueoAgenda = {
+  id: string;
+  salon_id: string;
+  colaboradora_id: string | null;
+  inicio: string;
+  fin: string;
+  titulo: string;
+  notas: string | null;
+  creado_por: string;
+  created_at: string;
+  updated_at: string;
+  colaboradora: Pick<Usuario, "id" | "nombre"> | null;
+};
+
 export type CitaConDetalle = Cita & {
   clienta: Pick<Clienta, "id" | "nombre" | "telefono">;
   colaboradora: Pick<Usuario, "id" | "nombre"> | null;

@@ -1,7 +1,7 @@
 import { addDaysToDateKey, getMonthGridDateKeys, getMonthStartDateKey, getWeekStartDateKey } from "@/lib/agenda/dates";
 import { endOfSalonDayUtc, startOfSalonDayUtc } from "@/lib/availability/timezone";
 import { createClient } from "@/lib/supabase/server";
-import type { CitaConDetalle } from "@/types/database";
+import type { BloqueoAgenda, CitaConDetalle } from "@/types/database";
 
 function mapCitaRow(c: Record<string, unknown>): CitaConDetalle {
   const clienta = Array.isArray(c.clienta) ? c.clienta[0] : c.clienta;
@@ -92,4 +92,87 @@ export async function getAgendaCitas(
     .order("inicio");
 
   return (data ?? []).map((c) => mapCitaRow(c as Record<string, unknown>));
+}
+
+function mapBloqueoRow(row: Record<string, unknown>): BloqueoAgenda {
+  const colaboradora = Array.isArray(row.colaboradora)
+    ? row.colaboradora[0]
+    : row.colaboradora;
+
+  return {
+    id: row.id as string,
+    salon_id: row.salon_id as string,
+    colaboradora_id: (row.colaboradora_id as string | null) ?? null,
+    inicio: row.inicio as string,
+    fin: row.fin as string,
+    titulo: row.titulo as string,
+    notas: (row.notas as string | null) ?? null,
+    creado_por: row.creado_por as string,
+    created_at: row.created_at as string,
+    updated_at: row.updated_at as string,
+    colaboradora: (colaboradora as BloqueoAgenda["colaboradora"]) ?? null,
+  };
+}
+
+export async function getAgendaBloqueos(
+  salonId: string,
+  dateKey: string,
+  view: "day" | "week" | "month",
+  timezone: string
+): Promise<{ bloqueos: BloqueoAgenda[]; error: boolean }> {
+  const supabase = await createClient();
+  const weekStart = getWeekStartDateKey(dateKey);
+  const monthStart = getMonthStartDateKey(dateKey);
+  const monthGrid = getMonthGridDateKeys(monthStart);
+
+  let rangeStartKey: string;
+  let rangeEndKey: string;
+
+  if (view === "week") {
+    rangeStartKey = weekStart;
+    rangeEndKey = addDaysToDateKey(weekStart, 6);
+  } else if (view === "month") {
+    rangeStartKey = monthGrid[0];
+    rangeEndKey = monthGrid[monthGrid.length - 1];
+  } else {
+    rangeStartKey = dateKey;
+    rangeEndKey = dateKey;
+  }
+
+  const rangeStart = startOfSalonDayUtc(rangeStartKey, timezone).toISOString();
+  const rangeEnd = endOfSalonDayUtc(rangeEndKey, timezone).toISOString();
+
+  const { data, error } = await supabase
+    .from("bloqueos_agenda")
+    .select(
+      `
+      id,
+      salon_id,
+      colaboradora_id,
+      inicio,
+      fin,
+      titulo,
+      notas,
+      creado_por,
+      created_at,
+      updated_at,
+      colaboradora:usuarios!bloqueos_agenda_colaboradora_id_fkey ( id, nombre )
+    `
+    )
+    .eq("salon_id", salonId)
+    .lt("inicio", rangeEnd)
+    .gt("fin", rangeStart)
+    .order("inicio");
+
+  if (error) {
+    console.error("[agenda] bloqueos query failed", error.message);
+    return { bloqueos: [], error: true };
+  }
+
+  return {
+    bloqueos: (data ?? []).map((row) =>
+      mapBloqueoRow(row as Record<string, unknown>)
+    ),
+    error: false,
+  };
 }
