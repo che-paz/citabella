@@ -1,6 +1,6 @@
 # CITABELLA — Roadmap Técnico
 
-> **Última actualización:** 2026-07-28  
+> **Última actualización:** 2026-10-15  
 > **Horizonte MVP:** ~6-9 semanas (1 dev + AI-assisted)  
 > **Go-to-market (Gota+Check):** ver `docs/ROUTE_GOTACHECK.md` — fases F0–F5 y sprints S1/S2 (no duplicar aquí)
 
@@ -107,7 +107,8 @@ Fundación    5-7 sem        4-5 sem     4-6 sem
 | Fotos servicio | Upload + galería por clienta |
 | Cumpleaños | Alertas fidelización |
 | WhatsApp | Recordatorios y confirmaciones automáticas |
-| Bloqueos de agenda v1 ✅ *(2026-10-12, pedido en taller)* | Evento personal de una vez (título, notas, cualquier hora/día). Ocupa la agenda; el link público solo ve la hora ocupada. No se guarda encima de una cita. Día lleno con ×. Fuera: repetición semanal (v2), recordatorios (v2), sync Google Calendar (no). Migración `020` aplicada en cloud 2026-10-12 |
+| Bloqueos de agenda v1 ✅ *(2026-10-12, pedido en taller)* | Evento personal de una vez (título, notas, cualquier hora/día). Ocupa la agenda; el link público solo ve la hora ocupada. No se guarda encima de una cita. Día lleno con ×. Fuera: repetición semanal (v2), sync Google Calendar (no). Migración `020` aplicada en cloud 2026-10-12 |
+| Recordatorios v1 *(fuera del MVP, código en `feat/recordatorios`)* | Push con anticipación para eventos personales y para citas del salón. El aviso de citas nace apagado. Falta aplicar `021` en cloud, probar en Belleza Luna y programar el cron. Fuera de v1: destinatario por colaboradora, SMS, WhatsApp, repetición de eventos y avisos a la clienta. |
 
 **Dependencias:** MVP estable en producción con founders  
 **Riesgos:** Costos/límites WhatsApp Business API

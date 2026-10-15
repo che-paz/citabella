@@ -4,6 +4,7 @@ import { formatAgendaTime } from "@/lib/agenda/dates";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import type { BloqueoAgenda } from "@/types/database";
+import { Bell } from "lucide-react";
 
 type AgendaEventoCardProps = {
   evento: BloqueoAgenda;
@@ -35,12 +36,18 @@ export function AgendaEventoCard({
           <p
             className={
               compact
-                ? "truncate text-sm font-medium leading-tight text-violet-950"
-                : "font-medium leading-snug text-violet-950"
+                ? "flex items-center gap-1 text-sm font-medium leading-tight text-violet-950"
+                : "flex items-center gap-1 font-medium leading-snug text-violet-950"
             }
             title={evento.titulo}
           >
-            {evento.titulo}
+            <span className="truncate">{evento.titulo}</span>
+            {evento.recordatorio_minutos != null && (
+              <Bell
+                className="h-3.5 w-3.5 shrink-0"
+                aria-label="Con recordatorio"
+              />
+            )}
           </p>
           <p className={compact ? "text-[11px] text-violet-800" : "text-xs text-violet-800"}>
             {inicio} – {fin}

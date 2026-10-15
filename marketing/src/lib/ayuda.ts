@@ -167,6 +167,29 @@ export const GUIDES: Guide[] = [
     ],
     tip: "Hasta que apruebes, la cita está pendiente y el horario queda reservado. No dejes la cola sin revisar el mismo día.",
   },
+  {
+    slug: "recordatorios",
+    title: "Recordatorios",
+    summary:
+      "Un aviso en el teléfono antes de un evento personal o de una cita. No le llega a la clienta.",
+    minutes: 2,
+    where: "Ajustes y Agenda",
+    steps: [
+      {
+        title: "Activá este teléfono",
+        body: "En Ajustes, «Notificaciones de reservas», tocá «Activar en este dispositivo» y aceptá el permiso. Repetilo en cada teléfono o computadora donde quieras el aviso. En iPhone, abrí Gota+Check desde el icono de inicio.",
+      },
+      {
+        title: "Evento personal",
+        body: "En Agenda, «Evento personal». En «Recordarme» elegí sin aviso, 15 min, 30 min, 1 hora o 1 día antes. Al crear uno nuevo queda en 30 min. Si el evento ya existía y no tenía aviso, sigue en «Sin aviso» hasta que lo cambies. La tarjeta muestra una campana cuando sí avisa.",
+      },
+      {
+        title: "Citas del salón",
+        body: "En Ajustes, «Recordarme mis citas». Nace apagado. Si lo encendés, avisa 15, 30 o 60 min antes, solo de citas pendientes de validar o confirmadas. Canceladas, completadas y las que no llegaron no avisan.",
+      },
+    ],
+    tip: "Cada aviso sale una sola vez. Si cambiás la hora, se vuelve a programar. Si lo borrás, no sale.",
+  },
 ];
 
 export function getGuide(slug: string): Guide | undefined {

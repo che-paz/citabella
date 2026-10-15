@@ -110,6 +110,9 @@ function mapBloqueoRow(row: Record<string, unknown>): BloqueoAgenda {
     creado_por: row.creado_por as string,
     created_at: row.created_at as string,
     updated_at: row.updated_at as string,
+    recordatorio_minutos: (row.recordatorio_minutos as number | null) ?? null,
+    recordatorio_enviado_at:
+      (row.recordatorio_enviado_at as string | null) ?? null,
     colaboradora: (colaboradora as BloqueoAgenda["colaboradora"]) ?? null,
   };
 }
@@ -156,6 +159,8 @@ export async function getAgendaBloqueos(
       creado_por,
       created_at,
       updated_at,
+      recordatorio_minutos,
+      recordatorio_enviado_at,
       colaboradora:usuarios!bloqueos_agenda_colaboradora_id_fkey ( id, nombre )
     `
     )
