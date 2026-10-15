@@ -108,7 +108,7 @@ Fundación    5-7 sem        4-5 sem     4-6 sem
 | Cumpleaños | Alertas fidelización |
 | WhatsApp | Recordatorios y confirmaciones automáticas |
 | Bloqueos de agenda v1 ✅ *(2026-10-12, pedido en taller)* | Evento personal de una vez (título, notas, cualquier hora/día). Ocupa la agenda; el link público solo ve la hora ocupada. No se guarda encima de una cita. Día lleno con ×. Fuera: repetición semanal (v2), sync Google Calendar (no). Migración `020` aplicada en cloud 2026-10-12 |
-| Recordatorios v1 *(fuera del MVP, código en `feat/recordatorios`)* | Push con anticipación para eventos personales y para citas del salón. El aviso de citas nace apagado. Falta aplicar `021` en cloud, probar en Belleza Luna y programar el cron. Fuera de v1: destinatario por colaboradora, SMS, WhatsApp, repetición de eventos y avisos a la clienta. |
+| Recordatorios v1 ✅ *(2026-10-15)* | Push con anticipación para eventos personales y para citas del salón. El aviso de citas nace apagado. Migración `021` aplicada y probado en Belleza Luna. El cron de producción aún no está programado. Fuera de v1: destinatario por colaboradora, SMS, WhatsApp, repetición de eventos y avisos a la clienta. |
 
 **Dependencias:** MVP estable en producción con founders  
 **Riesgos:** Costos/límites WhatsApp Business API

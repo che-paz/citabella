@@ -1,6 +1,6 @@
 # Checklist de migraciones (Supabase Cloud)
 
-> **Última verificación:** 2026-10-15 (`020` en cloud; `021` escrita, sin aplicar)  
+> **Última verificación:** 2026-10-15 (`021` aplicada en cloud; el cron aún no está programado)  
 > **Proyecto:** CITABELLA / Gota+Check — esquema multi-tenant  
 > **Regla:** nunca editar una migración ya aplicada; solo agregar `019_…` en adelante.
 
@@ -28,7 +28,7 @@
 | `018_onboarding_leads.sql` | leads internos → provision | ⬜ aplicar en SQL Editor |
 | `019_prevent_cita_overlap.sql` | trigger anti-solape citas (misma colaboradora / salon-wide si null) | ⏳ aplicar en SQL Editor |
 | `020_bloqueos_agenda.sql` | eventos personales + triggers cita↔evento + RPC pública de ocupación | ✅ 2026-10-12 |
-| `021_recordatorios.sql` | columnas NULL de recordatorio + tabla `recordatorios_enviados` + reclamo atómico | ⬜ sin aplicar. No reescribe filas. Aplicar antes de publicar el código |
+| `021_recordatorios.sql` | columnas NULL de recordatorio + tabla `recordatorios_enviados` + reclamo atómico | ✅ 2026-10-15. No reescribió filas. Tutis y Galaxy quedaron en NULL |
 
 **Pendiente:** aplicar `018` (si aún no) y **`019`** en cloud (SQL Editor).  
 **Nota 019:** no mueve citas existentes; solo bloquea nuevos solapes. Andrea debe reagendar Emma/Santiago del 10-oct a mano.  
