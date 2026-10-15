@@ -168,6 +168,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-10-15 | Marketing: la portada de gotacheck.app menciona recordatorios (aviso en el celular, plan Agenda y pregunta frecuente) |
 | 2026-10-15 | Recordatorios v1 publicados (PR #26). Migración `021` aplicada. Probado en Belleza Luna. Tutis y Galaxy siguen en NULL. Cron de producción sin programar |
 | 2026-10-12 | Eventos personales v1 publicados (PR #25). Migración 020 en cloud. Hora ocupada, × en día lleno, título privado en el link |
 | 2026-10-07 | Guion taller: nuevo orden (reserva en vivo → tour panel Tutis por Ruth → Vitrina Andrea); hoja imprimible `TALLER_GUION` |

@@ -59,7 +59,7 @@ const features: { title: string; body: string; icon: ReactNode }[] = [
   },
   {
     title: "Aviso en tu celular",
-    body: "Te llega una notificación cada vez que entra una reserva.",
+    body: "Te llega una notificación cada vez que entra una reserva, y un recordatorio antes de la cita o de un evento personal.",
     icon: <IconBell />,
   },
   {
@@ -101,6 +101,10 @@ const faqs = [
   {
     q: "¿Funciona en iPhone y Android?",
     a: "Sí. Tú usas el panel desde el celular o la compu, y puedes agregarlo a tu pantalla de inicio como una app.",
+  },
+  {
+    q: "¿El recordatorio le llega a mi clienta?",
+    a: "No. Llega al celular del salón. La clienta sigue reservando por el link, sin app.",
   },
   {
     q: "¿Cómo cobro anticipos?",
@@ -514,6 +518,7 @@ export default function HomePage() {
                   "Link de reserva para tus clientes",
                   "Agenda, clientes y equipo",
                   "Anticipos por comprobante",
+                  "Recordatorio en tu celular antes de la cita",
                   "Alta acompañada",
                 ]}
                 tone="coral"
