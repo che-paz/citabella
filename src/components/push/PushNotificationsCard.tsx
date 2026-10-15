@@ -260,7 +260,8 @@ export function PushNotificationsCard() {
         </CardTitle>
         <CardDescription>
           Activa en cada dispositivo por separado (teléfono y computadora). Las
-          reservas del link público avisan a todos los dispositivos registrados.
+          reservas del link público y los recordatorios avisan a todos los
+          dispositivos registrados.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-3">

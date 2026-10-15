@@ -159,6 +159,28 @@ export function EventoPersonalForm({
           ) : null}
 
           <div className="space-y-1">
+            <Label htmlFor="evento-recordatorio">Recordarme</Label>
+            <select
+              id="evento-recordatorio"
+              name="recordatorio_minutos"
+              defaultValue={
+                editing
+                  ? editing.recordatorio_minutos == null
+                    ? ""
+                    : String(editing.recordatorio_minutos)
+                  : "30"
+              }
+              className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            >
+              <option value="">Sin aviso</option>
+              <option value="15">15 min antes</option>
+              <option value="30">30 min antes</option>
+              <option value="60">1 hora antes</option>
+              <option value="1440">1 día antes</option>
+            </select>
+          </div>
+
+          <div className="space-y-1">
             <Label htmlFor="evento-notas">Notas (opcional)</Label>
             <Textarea
               id="evento-notas"

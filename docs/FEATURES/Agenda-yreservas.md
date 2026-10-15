@@ -17,6 +17,9 @@
 - [x] Crear evento personal (reunión, dentista): título, fecha, inicio, fin y notas; ocupa la agenda
 - [x] Editar y borrar un evento personal
 - [x] Ver el evento en día, semana y mes, con el mismo formato de una cita y color violeta
+- [x] Elegir «Recordarme» en un evento personal (sin aviso, 15 min, 30 min, 1 hora o 1 día). Al crear, el default es 30 min
+- [x] Ver una campana en la tarjeta del evento cuando tiene recordatorio
+- [x] En Ajustes, «Recordarme mis citas» (apagado, 15, 30 o 60 min). Nace apagado
 
 ### Clienta (link público)
 - [x] Acceder a `/reservar/[slug]` sin login
@@ -40,6 +43,8 @@
 8. Un evento personal no se guarda encima de una cita bloqueante; el aviso incluye nombre y hora ✅
 9. Una cita nueva no cae encima de un evento personal (trigger `citas_prevent_bloqueo`, migración 020) ✅
 10. El link público no lee `titulo` ni `notas` (RPC `get_salon_bloqueos_ocupados`) ✅
+11. Un recordatorio se envía una sola vez. Si cambia la hora de inicio o el aviso del evento, queda pendiente otra vez. Si el evento se borra, no se envía ✅
+12. El aviso de citas solo sale para `pendiente_validacion` y `confirmada`, y solo si el salón lo encendió. Un reagendado puede avisar de nuevo. Lo ya empezado no se avisa ✅
 
 ## Motor de disponibilidad
 
@@ -77,13 +82,17 @@ src/lib/agenda/queries.ts
 src/lib/reservar/actions.ts
 src/lib/reservar/queries.ts
 src/lib/agenda/dates.ts
+src/lib/reminders/window.ts
+src/lib/reminders/format.ts
+src/lib/reminders/run.ts
+src/app/api/cron/recordatorios/route.ts
 ```
 
 ## Tablas DB
 
 - `citas`, `bloqueos_agenda`, `horarios_salon`, `excepciones_horario`, `clientas`, `pagos`
 - FK a `servicios`, `paquetes`, `clientas`, `usuarios`
-- Migraciones: `003_agenda_schema.sql`, `004_agenda_rls.sql`, `005_public_booking_rls.sql`, `019_prevent_cita_overlap.sql`, `020_bloqueos_agenda.sql`
+- Migraciones: `003_agenda_schema.sql`, `004_agenda_rls.sql`, `005_public_booking_rls.sql`, `019_prevent_cita_overlap.sql`, `020_bloqueos_agenda.sql`, `021_recordatorios.sql`
 
 ## Dependencias
 
@@ -97,7 +106,8 @@ src/lib/agenda/dates.ts
 - Sync con Google Calendar
 - Lista de espera
 - Repetición semanal de eventos personales (v2)
-- Recordatorios de eventos personales (v2)
+- Elegir qué colaboradora recibe el recordatorio (v1 avisa a todos los dispositivos del salón)
+- SMS y recordatorios a la clienta
 
 ## Notas
 
@@ -110,6 +120,7 @@ src/lib/agenda/dates.ts
 - Día lleno: el mes marca × cuando ya no queda hora libre (citas + eventos + pausa). En el panel el día se puede abrir. En `/reservar` la × usa la duración del servicio elegido y ese día no se abre. Un día cerrado no lleva ×
 - El link público solo recibe inicio y fin del evento, vía `get_salon_bloqueos_ocupados`
 - Migración `020` aplicada en cloud (2026-10-12). Este código y esa migración van juntos: si la RPC no existe, la disponibilidad falla cerrada (no muestra horas libres)
+- Recordatorios v1: push al salón, no a la clienta. Evento: «Recordarme» en el formulario (default 30 min al crear; un evento viejo sin valor sigue en «Sin aviso»). Citas: ajuste del salón, default apagado (`NULL`). Textos en 12 h, zona del salón. Al tocar, abre `/agenda` en ese día. Cada aviso sale una vez. La tarea corre cada 5 min (`pg_cron` + `pg_net` → `POST /api/cron/recordatorios`, header `Authorization: Bearer CRON_SECRET`). No usa Vercel Cron. Migración `021` aplicada en cloud el 2026-10-15. El cron de producción aún no está programado
 - Timezone desde `salones.timezone` (default `America/Guatemala`)
 - Reserva pública: `creada_por = 'clienta'`, sin colaboradora asignada
 - RPC `upsert_clienta_public` evita duplicar clientas por teléfono

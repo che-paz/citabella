@@ -7,6 +7,7 @@ import { requireAuthUser } from "@/lib/auth/get-user";
 import { BLOCKING_CITA_ESTADOS } from "@/lib/availability/slots";
 import { salonLocalToUtc } from "@/lib/availability/timezone";
 import { createClient } from "@/lib/supabase/server";
+import { parseEventReminderField } from "@/lib/reminders/window";
 import { optionalPgUuidSchema, pgUuidSchema } from "@/lib/utils/validation";
 import type { AgendaActionState } from "@/lib/agenda/actions";
 
@@ -23,6 +24,10 @@ const eventoSchema = z.object({
   notas: z.string().trim().max(2000).optional(),
   colaboradora_id: optionalPgUuidSchema(),
 });
+
+function formString(value: FormDataEntryValue | null): string | null {
+  return typeof value === "string" ? value : null;
+}
 
 function conflictFromDb(
   message: string | undefined,
@@ -100,6 +105,14 @@ export async function saveEventoPersonalAction(
     return { error: parsed.error.issues[0]?.message ?? "Datos inválidos" };
   }
 
+  const reminder = parseEventReminderField(
+    formString(formData.get("recordatorio_minutos")),
+    parsed.data.id ? "edit" : "create"
+  );
+  if (reminder === "invalid") {
+    return { error: "Elige un recordatorio válido" };
+  }
+
   const timezone = user.salon.timezone ?? "America/Guatemala";
   const inicio = salonLocalToUtc(
     parsed.data.fecha,
@@ -129,15 +142,45 @@ export async function saveEventoPersonalAction(
   if ("error" in conflict) return { error: conflict.error };
 
   const supabase = await createClient();
-  const payload = {
+  const payload: {
+    titulo: string;
+    notas: string | null;
+    inicio: string;
+    fin: string;
+    colaboradora_id: string | null;
+    recordatorio_minutos: number | null;
+    recordatorio_enviado_at?: null;
+  } = {
     titulo: parsed.data.titulo,
     notas: parsed.data.notas ? parsed.data.notas : null,
     inicio: inicio.toISOString(),
     fin: fin.toISOString(),
     colaboradora_id: colaboradoraId,
+    recordatorio_minutos: reminder,
   };
 
   const eventoId = parsed.data.id;
+  if (eventoId) {
+    const { data: existing, error: readError } = await supabase
+      .from("bloqueos_agenda")
+      .select("inicio, recordatorio_minutos")
+      .eq("id", eventoId)
+      .eq("salon_id", user.salon_id)
+      .maybeSingle();
+
+    if (readError || !existing) {
+      return { error: "No se encontró el evento personal" };
+    }
+
+    const inicioChanged =
+      new Date(existing.inicio as string).getTime() !== inicio.getTime();
+    const minutosChanged =
+      ((existing.recordatorio_minutos as number | null) ?? null) !== reminder;
+    if (inicioChanged || minutosChanged) {
+      payload.recordatorio_enviado_at = null;
+    }
+  }
+
   const { error } = eventoId
     ? await supabase
         .from("bloqueos_agenda")

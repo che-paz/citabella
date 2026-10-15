@@ -18,6 +18,7 @@ export type Salon = {
   pausa_hora_inicio?: string | null;
   pausa_hora_fin?: string | null;
   permite_reserva_otra_persona?: boolean;
+  recordatorio_citas_minutos?: number | null;
   activo: boolean;
   created_at: string;
   updated_at: string;
@@ -196,6 +197,8 @@ export type BloqueoAgenda = {
   creado_por: string;
   created_at: string;
   updated_at: string;
+  recordatorio_minutos: number | null;
+  recordatorio_enviado_at: string | null;
   colaboradora: Pick<Usuario, "id" | "nombre"> | null;
 };
 

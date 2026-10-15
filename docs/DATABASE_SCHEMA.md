@@ -32,6 +32,7 @@ salones ──┬── usuarios
 | plan_fin | TIMESTAMPTZ NULL | NULL = founder (sin fin) |
 | moneda | TEXT DEFAULT 'GTQ' | |
 | timezone | TEXT DEFAULT 'America/Guatemala' | |
+| recordatorio_citas_minutos | INT NULL | Push de citas: 15, 30 o 60. NULL = apagado (migración 021). No reescribe salones existentes |
 | fri_link | TEXT NULL | QR/instrucciones Fri |
 | logo_url | TEXT NULL | Path en Storage `logos-salon` |
 | slot_step_minutes | INT DEFAULT 15 | Intervalo slots reserva: 15, 30 o 60 (`:00` only) |
@@ -133,10 +134,29 @@ No es una cita: no tiene clienta, servicio ni pago. Ocupa la agenda. El rol `ano
 | titulo | TEXT NOT NULL | 1–120. Solo panel |
 | notas | TEXT NULL | Solo panel |
 | creado_por | UUID FK → usuarios | |
+| recordatorio_minutos | INT NULL | 15, 30, 60 o 1440 (1 día). NULL = sin aviso. Los eventos ya creados quedan NULL (migración 021) |
+| recordatorio_enviado_at | TIMESTAMPTZ NULL | Se llena al reclamar el aviso. Se vacía si cambia el inicio o el aviso |
 | created_at | TIMESTAMPTZ | |
 | updated_at | TIMESTAMPTZ | |
 
 Triggers: `bloqueos_agenda_prevent_cita` rechaza el evento si choca con una cita en `pendiente`, `pendiente_validacion` o `confirmada` (misma regla de colaboradora que 019). No reescribe citas existentes.
+
+### `recordatorios_enviados` (avisos de citas, migración 021)
+
+No agrega columnas a `citas`. Una fila significa que ese inicio ya se avisó. Si la cita se reagenda, el inicio nuevo no está en la clave y puede avisarse otra vez.
+
+| Columna | Tipo | Notas |
+|---------|------|-------|
+| id | UUID PK | |
+| salon_id | UUID FK | |
+| cita_id | UUID FK → citas | |
+| inicio_programado | TIMESTAMPTZ | UNIQUE junto con `cita_id` |
+| minutos | INT | 15, 30 o 60. El valor del salón al reclamar |
+| enviado_at | TIMESTAMPTZ | |
+| created_at | TIMESTAMPTZ | |
+| updated_at | TIMESTAMPTZ | |
+
+RLS: SELECT del propio salón. INSERT, UPDATE y DELETE del panel quedan en `false`. Escribe el cron con service role. Funciones `claim_evento_recordatorios` y `claim_cita_recordatorios`, solo `service_role`.
 
 ### `pagos`
 
@@ -255,6 +275,8 @@ Captura taller → authorize → provision. RLS on, **sin policies** (solo servi
 CREATE INDEX idx_citas_salon_inicio ON citas(salon_id, inicio);
 CREATE INDEX idx_citas_colaboradora ON citas(colaboradora_id, inicio);
 CREATE INDEX idx_bloqueos_agenda_salon_inicio ON bloqueos_agenda(salon_id, inicio);
+CREATE INDEX idx_bloqueos_agenda_recordatorio_pendiente ON bloqueos_agenda(inicio) WHERE recordatorio_minutos IS NOT NULL AND recordatorio_enviado_at IS NULL;
+CREATE UNIQUE INDEX recordatorios_enviados_cita_inicio_key ON recordatorios_enviados(cita_id, inicio_programado);
 CREATE INDEX idx_clientas_salon ON clientas(salon_id);
 CREATE UNIQUE INDEX idx_salones_slug ON salones(slug);
 ```

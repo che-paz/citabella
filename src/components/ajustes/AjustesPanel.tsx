@@ -34,6 +34,7 @@ type SalonSettings = {
   politica_reembolso: string;
   slot_step_minutes?: number | null;
   permite_reserva_otra_persona?: boolean | null;
+  recordatorio_citas_minutos?: number | null;
 };
 
 type AjustesPanelProps = {
@@ -202,6 +203,30 @@ export function AjustesPanel({ user, salon }: AjustesPanelProps) {
                   <p className="text-xs text-muted-foreground">
                     Define cómo aparecen los horarios en tu link de reserva y al
                     crear citas.
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="recordatorio_citas_minutos">
+                    Recordarme mis citas
+                  </Label>
+                  <select
+                    id="recordatorio_citas_minutos"
+                    name="recordatorio_citas_minutos"
+                    defaultValue={
+                      salon.recordatorio_citas_minutos == null
+                        ? ""
+                        : String(salon.recordatorio_citas_minutos)
+                    }
+                    className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  >
+                    <option value="">Apagado</option>
+                    <option value="15">15 min antes</option>
+                    <option value="30">30 min antes</option>
+                    <option value="60">1 hora antes</option>
+                  </select>
+                  <p className="text-xs text-muted-foreground">
+                    Avisa en los dispositivos con notificaciones activas, antes
+                    de cada cita pendiente o confirmada. Apagado: no avisamos.
                   </p>
                 </div>
                 <label className="flex items-start gap-3 rounded-lg border p-3 text-sm">

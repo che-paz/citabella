@@ -1,6 +1,6 @@
 # CITABELLA / Gota+Check — Current State
 
-> **Última actualización:** 2026-10-12  
+> **Última actualización:** 2026-10-15  
 > **Marca presentación:** Gota+Check · **Estudio:** VajaLabs (sin constituir)  
 > **Sprint activo:** **Fase 3** — taller / GTM · marketing sin precios públicos  
 > **Fase:** MVP ✅ | Piloto founders | Vitrinas live | Taller **dom 11 oct 2026, 4:00 pm — Salón Yaya**
@@ -15,7 +15,7 @@ App en **`app.gotacheck.app`**. Marketing sin montos públicos (precios por What
 |------|--------|-------|
 | Documentación | 🟢 | + `S2.4_DOMAINS_CHECKLIST.md` |
 | Repositorio / código | 🟢 MVP core | Flujo reserva + validación pagos verificado |
-| Base de datos | 🟢 001–017 · ⏳ 018–019 · ✅ 020 | `020` eventos personales aplicada en cloud 2026-10-12 |
+| Base de datos | 🟢 001–017 · ⏳ 018–019 · ✅ 020–021 | `021` recordatorios aplicada en cloud 2026-10-15. Cron aún no programado |
 | Supabase | 🟡 Free → Pro pendiente | Pro al primer cobro (backups) |
 | Deploy | 🟢 Vercel Pro | App + marketing |
 | Prototipo UI | 🟢 MVP core | Dashboard + clientas listos |
@@ -76,6 +76,7 @@ App en **`app.gotacheck.app`**. Marketing sin montos públicos (precios por What
 - Agenda: trigger DB `prevent_cita_overlap` (019) + fail-closed si falla lectura de citas/horarios
 - Evento personal (v1): tabla `bloqueos_agenda` (020). Botón «Evento personal», tarjeta violeta, día lleno con ×. Título privado en el link público. No se guarda encima de una cita
 - Horas en UI: formato 12 h con AM/PM (ej. 2:00 PM); inputs `type="time"` siguen en 24 h
+- Recordatorios v1 publicados (PR #26). Push de eventos personales y de citas. Citas apagadas en Tutis y Galaxy. Belleza Luna quedó en 15 min por la prueba. El cron de producción aún no está programado: no sale ningún aviso en `app.gotacheck.app` hasta encenderlo
 
 ## Decisiones pendientes
 
@@ -167,6 +168,7 @@ src/app/(dashboard)/ajustes/         → Personalización salón + perfil ✅
 
 | Fecha | Cambio |
 |-------|--------|
+| 2026-10-15 | Recordatorios v1 publicados (PR #26). Migración `021` aplicada. Probado en Belleza Luna. Tutis y Galaxy siguen en NULL. Cron de producción sin programar |
 | 2026-10-12 | Eventos personales v1 publicados (PR #25). Migración 020 en cloud. Hora ocupada, × en día lleno, título privado en el link |
 | 2026-10-07 | Guion taller: nuevo orden (reserva en vivo → tour panel Tutis por Ruth → Vitrina Andrea); hoja imprimible `TALLER_GUION` |
 | 2026-10-04 | Taller fijado: dom 11 oct, 4:00 pm, Salón Yaya; invitación digital con QR de confirmación por WhatsApp (`files/invitacion/`) |

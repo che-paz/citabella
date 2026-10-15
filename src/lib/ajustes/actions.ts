@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { requireAdminUser, requireAuthUser } from "@/lib/auth/get-user";
+import { parseCitaReminderField } from "@/lib/reminders/window";
 import { removeSalonLogo, uploadSalonLogo } from "@/lib/storage/logos";
 import { createClient } from "@/lib/supabase/server";
 
@@ -11,6 +12,10 @@ export type AjustesActionState = {
   success?: boolean;
   message?: string;
 };
+
+function formString(value: FormDataEntryValue | null): string | null {
+  return typeof value === "string" ? value : null;
+}
 
 const perfilSchema = z.object({
   nombre: z.string().min(2, "Nombre muy corto").max(100),
@@ -119,6 +124,13 @@ export async function updateSalonAction(
     return { error: parsed.error.issues[0]?.message ?? "Datos inválidos" };
   }
 
+  const recordatorioCitas = parseCitaReminderField(
+    formString(formData.get("recordatorio_citas_minutos"))
+  );
+  if (recordatorioCitas === "invalid") {
+    return { error: "Elige un aviso de citas válido" };
+  }
+
   const supabase = await createClient();
   const { error } = await supabase
     .from("salones")
@@ -127,6 +139,7 @@ export async function updateSalonAction(
       politica_reembolso: parsed.data.politica_reembolso,
       slot_step_minutes: parsed.data.slot_step_minutes,
       permite_reserva_otra_persona: parsed.data.permite_reserva_otra_persona,
+      recordatorio_citas_minutos: recordatorioCitas,
     })
     .eq("id", user.salon_id);
 
