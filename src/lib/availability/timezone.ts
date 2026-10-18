@@ -105,6 +105,16 @@ export function formatSalonTime(date: Date, timezone: string): string {
   }).format(date);
 }
 
+/** "9:00" y "09:00:00" (el reloj del iPhone) quedan en "09:00". */
+export function normalizeHHmm(value: string): string | null {
+  const match = /^(\d{1,2}):(\d{2})(?::\d{2})?$/.exec(value.trim());
+  if (!match) return null;
+  const hour = Number(match[1]);
+  const minute = Number(match[2]);
+  if (hour > 23 || minute > 59) return null;
+  return `${String(hour).padStart(2, "0")}:${match[2]}`;
+}
+
 /** Format a stored HH:mm / HH:mm:ss wall-clock string as "2:00 PM". */
 export function formatHHmmTo12h(time: string): string {
   const match = /^(\d{1,2}):(\d{2})/.exec(time.trim());

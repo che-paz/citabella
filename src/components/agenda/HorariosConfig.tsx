@@ -11,7 +11,7 @@ import {
   type AgendaActionState,
 } from "@/lib/agenda/actions";
 import { DIA_SEMANA_LABELS, type ExcepcionHorario, type HorarioSalon, type PausaDiaria } from "@/types/database";
-import { formatHHmmTo12h } from "@/lib/availability/timezone";
+import { formatHHmmTo12h, normalizeHHmm } from "@/lib/availability/timezone";
 import { Button } from "@/components/ui/button";
 import {
   FormSubmitButton,
@@ -120,27 +120,52 @@ export function HorariosConfig({
     );
   }
 
+  function updateTime(
+    dia: number,
+    field: "hora_inicio" | "hora_fin",
+    value: string
+  ) {
+    const normalized = normalizeHHmm(value);
+    if (!normalized) return;
+    updateRow(dia, { [field]: normalized });
+  }
+
   async function handleSaveHorarios() {
     setSavingHorarios(true);
     setHorarioSaveState(null);
 
     const formData = new FormData();
-    formData.set("horarios", JSON.stringify(rows));
+    formData.set(
+      "horarios",
+      JSON.stringify(
+        rows.map((row) => ({
+          ...row,
+          hora_inicio: normalizeHHmm(row.hora_inicio) ?? row.hora_inicio,
+          hora_fin: normalizeHHmm(row.hora_fin) ?? row.hora_fin,
+        }))
+      )
+    );
     formData.set(
       "pausa",
       JSON.stringify({
         activa: pausaActiva,
-        hora_inicio: pausaActiva ? pausaInicio : undefined,
-        hora_fin: pausaActiva ? pausaFin : undefined,
+        hora_inicio: pausaActiva ? normalizeHHmm(pausaInicio) ?? pausaInicio : undefined,
+        hora_fin: pausaActiva ? normalizeHHmm(pausaFin) ?? pausaFin : undefined,
       })
     );
 
-    const result = await saveHorariosAction({}, formData);
-    setSavingHorarios(false);
-    setHorarioSaveState(result);
-
-    if (result.success) {
-      router.refresh();
+    try {
+      const result = await saveHorariosAction({}, formData);
+      setHorarioSaveState(result);
+      if (result.success) {
+        router.refresh();
+      }
+    } catch {
+      setHorarioSaveState({
+        error: "No se pudieron guardar los horarios. Intenta de nuevo.",
+      });
+    } finally {
+      setSavingHorarios(false);
     }
   }
 
@@ -153,12 +178,12 @@ export function HorariosConfig({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
-        <DialogHeader>
+      <DialogContent className="flex max-h-[90vh] flex-col gap-0 overflow-hidden p-0 sm:max-w-lg">
+        <DialogHeader className="shrink-0 px-6 pt-6">
           <DialogTitle>Horarios del salón</DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-6">
+        <div className="min-h-0 flex-1 space-y-6 overflow-y-auto px-6 py-4">
           <section className="space-y-3">
             <h3 className="text-sm font-medium">Días de atención</h3>
             {rows.map((row) => (
@@ -181,18 +206,20 @@ export function HorariosConfig({
                   <>
                     <Input
                       type="time"
+                      step={60}
                       value={row.hora_inicio}
                       onChange={(e) =>
-                        updateRow(row.dia_semana, { hora_inicio: e.target.value })
+                        updateTime(row.dia_semana, "hora_inicio", e.target.value)
                       }
                       className="w-[7rem]"
                     />
                     <span className="text-muted-foreground">—</span>
                     <Input
                       type="time"
+                      step={60}
                       value={row.hora_fin}
                       onChange={(e) =>
-                        updateRow(row.dia_semana, { hora_fin: e.target.value })
+                        updateTime(row.dia_semana, "hora_fin", e.target.value)
                       }
                       className="w-[7rem]"
                     />
@@ -214,16 +241,24 @@ export function HorariosConfig({
                 <div className="flex flex-wrap items-center gap-2 pl-6">
                   <Input
                     type="time"
+                    step={60}
                     value={pausaInicio}
-                    onChange={(e) => setPausaInicio(e.target.value)}
+                    onChange={(e) => {
+                      const next = normalizeHHmm(e.target.value);
+                      if (next) setPausaInicio(next);
+                    }}
                     className="w-[7rem]"
                     aria-label="Inicio pausa"
                   />
                   <span className="text-muted-foreground">—</span>
                   <Input
                     type="time"
+                    step={60}
                     value={pausaFin}
-                    onChange={(e) => setPausaFin(e.target.value)}
+                    onChange={(e) => {
+                      const next = normalizeHHmm(e.target.value);
+                      if (next) setPausaFin(next);
+                    }}
                     className="w-[7rem]"
                     aria-label="Fin pausa"
                   />
@@ -233,22 +268,6 @@ export function HorariosConfig({
                 Bloquea reservas en ese rango todos los días que atiendes.
               </p>
             </div>
-            <SaveHorariosMessage state={horarioSaveState} />
-            <Button
-              onClick={handleSaveHorarios}
-              className="w-full sm:w-auto"
-              disabled={savingHorarios}
-              aria-busy={savingHorarios}
-            >
-              {savingHorarios ? (
-                <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-              ) : null}
-              {savingHorarios
-                ? "Guardando…"
-                : horarioSaveState?.success
-                  ? "Listo"
-                  : "Guardar horarios"}
-            </Button>
           </section>
 
           <section className="space-y-3">
@@ -331,6 +350,26 @@ export function HorariosConfig({
               </ul>
             )}
           </section>
+        </div>
+
+        <div className="shrink-0 space-y-3 border-t px-6 py-4">
+          <SaveHorariosMessage state={horarioSaveState} />
+          <Button
+            type="button"
+            onClick={handleSaveHorarios}
+            className="w-full"
+            disabled={savingHorarios}
+            aria-busy={savingHorarios}
+          >
+            {savingHorarios ? (
+              <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+            ) : null}
+            {savingHorarios
+              ? "Guardando…"
+              : horarioSaveState?.success
+                ? "Listo"
+                : "Guardar horarios"}
+          </Button>
         </div>
       </DialogContent>
     </Dialog>
