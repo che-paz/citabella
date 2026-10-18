@@ -8,7 +8,8 @@ import { fetchAvailabilitySlots, isCitaOverlapDbError } from "@/lib/availability
 import { validateNoOverlap } from "@/lib/availability/engine";
 import { BLOCKING_CITA_ESTADOS } from "@/lib/availability/slots";
 import { resolveSlotStepMinutes } from "@/lib/availability/salon-config";
-import { salonLocalToUtc, formatHHmmTo12h } from "@/lib/availability/timezone";
+import { salonLocalToUtc, formatHHmmTo12h, normalizeHHmm } from "@/lib/availability/timezone";
+import { DIA_SEMANA_LABELS } from "@/types/database";
 import { createClient } from "@/lib/supabase/server";
 import { optionalPgUuidSchema, pgUuidSchema } from "@/lib/utils/validation";
 import type { CitaEstado } from "@/types/database";
@@ -197,6 +198,34 @@ export async function saveHorariosAction(
     return { error: "Formato de horarios inválido" };
   }
 
+  if (parsedPausa && typeof parsedPausa === "object") {
+    const pausa = parsedPausa as Record<string, unknown>;
+    if (typeof pausa.hora_inicio === "string") {
+      pausa.hora_inicio = normalizeHHmm(pausa.hora_inicio) ?? pausa.hora_inicio;
+    }
+    if (typeof pausa.hora_fin === "string") {
+      pausa.hora_fin = normalizeHHmm(pausa.hora_fin) ?? pausa.hora_fin;
+    }
+  }
+
+  if (Array.isArray(parsedJson)) {
+    parsedJson = parsedJson.map((row) => {
+      if (!row || typeof row !== "object") return row;
+      const item = row as Record<string, unknown>;
+      return {
+        ...item,
+        hora_inicio:
+          typeof item.hora_inicio === "string"
+            ? (normalizeHHmm(item.hora_inicio) ?? item.hora_inicio)
+            : item.hora_inicio,
+        hora_fin:
+          typeof item.hora_fin === "string"
+            ? (normalizeHHmm(item.hora_fin) ?? item.hora_fin)
+            : item.hora_fin,
+      };
+    });
+  }
+
   const parsed = saveHorariosSchema.safeParse({
     horarios: parsedJson,
     pausa: parsedPausa,
@@ -215,17 +244,6 @@ export async function saveHorariosAction(
     }
   }
 
-  const supabase = await createClient();
-
-  const { error: deleteError } = await supabase
-    .from("horarios_salon")
-    .delete()
-    .eq("salon_id", user.salon_id);
-
-  if (deleteError) {
-    return { error: "No se pudieron actualizar los horarios" };
-  }
-
   const activeHorarios = parsed.data.horarios
     .filter((h) => h.activo)
     .map(({ dia_semana, hora_inicio, hora_fin }) => ({
@@ -235,14 +253,40 @@ export async function saveHorariosAction(
       hora_fin,
     }));
 
-  if (activeHorarios.length > 0) {
-    const { error: insertError } = await supabase
-      .from("horarios_salon")
-      .insert(activeHorarios);
+  for (const horario of activeHorarios) {
+    if (horario.hora_fin <= horario.hora_inicio) {
+      return {
+        error: `${DIA_SEMANA_LABELS[horario.dia_semana]}: la hora de salida tiene que ser después de la de entrada.`,
+      };
+    }
+  }
 
-    if (insertError) {
+  const supabase = await createClient();
+
+  if (activeHorarios.length > 0) {
+    const { error: upsertError } = await supabase
+      .from("horarios_salon")
+      .upsert(activeHorarios, { onConflict: "salon_id,dia_semana" });
+
+    if (upsertError) {
+      console.error("saveHorarios upsert", upsertError.message);
       return { error: "No se pudieron guardar los horarios" };
     }
+  }
+
+  const activeDays = activeHorarios.map((h) => h.dia_semana);
+  let deleteQuery = supabase
+    .from("horarios_salon")
+    .delete()
+    .eq("salon_id", user.salon_id);
+  if (activeDays.length > 0) {
+    deleteQuery = deleteQuery.not("dia_semana", "in", `(${activeDays.join(",")})`);
+  }
+  const { error: deleteError } = await deleteQuery;
+
+  if (deleteError) {
+    console.error("saveHorarios delete", deleteError.message);
+    return { error: "No se pudieron actualizar los horarios" };
   }
 
   const pausa = parsed.data.pausa;
